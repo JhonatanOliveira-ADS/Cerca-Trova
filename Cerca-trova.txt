@@ -1,0 +1,34 @@
+Frontend
+
+A interface pode ser bem rica.
+Sugestão de páginas:
+Home
+Login
+Cadastro
+Explorar Pets
+Detalhes do Pet
+Criar Publicação
+Editar Publicação
+Meu Perfil
+Meus Anúncios
+Favoritos
+Configuracoes (opcional)
+
+
+Backend
+Vocês conseguiriam mostrar vários conceitos:
+
+API REST
+CRUD completo
+JWT
+Middleware
+Upload de imagens
+Prisma
+MySQL/PostgreSQL
+Relacionamentos
+Filtros
+Paginação
+Busca por texto
+Validação
+Hash de senha
+ 
