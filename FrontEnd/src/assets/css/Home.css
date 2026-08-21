@@ -1,6 +1,50 @@
+/* fundo com patinhas e bordas nos textos , pensei em o compartilhar encaminhar  para chat e whats*/
 body {
     margin: 0;
-    background-color: #f1f5f9;
+
+    min-height: 100vh;
+
+    background:
+        radial-gradient(circle at 20% 20%,
+            rgba(167, 139, 250, 0.18),
+            transparent 35%),
+        radial-gradient(circle at 80% 30%,
+            rgba(96, 165, 250, 0.16),
+            transparent 40%),
+        linear-gradient(135deg,
+            #f8fafc 0%,
+            #eef2ff 45%,
+            #fdf4ff 100%);
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    position: relative;
+}
+
+body::before {
+    content: "🐾   🐾      🐾     🐾        🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾";
+
+    position: fixed;
+
+    top: 90px;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    font-size: 42px;
+
+    color: rgba(99, 102, 241, 0.08);
+
+    word-spacing: 80px;
+
+    line-height: 180px;
+
+    transform: rotate(-12deg);
+
+    pointer-events: none;
+
+    z-index: 0;
 }
 
 .home-container {
@@ -103,11 +147,10 @@ body {
 
 .feed-card-img {
     width: 100%;
-    max-height: 520px;
-
+    height: 400px;
     display: block;
-
     object-fit: cover;
+    object-position: center;
 }
 
 .feed-card-acoes {
@@ -153,6 +196,478 @@ body {
 
     .feed-card-acoes button {
         font-size: 12px;
+    }
+
+}
+
+/* Css individual , exceto os cards /*
+
+/* Css header para o topo ficar maais interessante , conforme vcs queiram algo diferente por favor me falem /*
+*/
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 64px;
+    padding: 0 24px;
+
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(12px);
+
+    border-bottom: 1px solid rgba(99, 102, 241, 0.10);
+
+    box-shadow:
+        0 4px 18px rgba(15, 23, 42, 0.06);
+}
+
+header nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+}
+
+header a {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px 16px;
+
+    text-decoration: none;
+
+    color: #475569;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    border-radius: 12px;
+
+    transition: 0.2s ease;
+}
+
+header a:hover {
+    color: #6d28d9;
+    background: #f3e8ff;
+
+    transform: translateY(-1px);
+}
+
+header a::after {
+    content: "";
+
+    position: absolute;
+    left: 50%;
+    bottom: 3px;
+
+    width: 0;
+    height: 3px;
+
+    border-radius: 10px;
+
+    background: linear-gradient(90deg,
+            #7c3aed,
+            #6366f1);
+
+    transform: translateX(-50%);
+
+    transition: width 0.2s ease;
+}
+
+header a:hover::after {
+    width: 55%;
+}
+
+
+
+
+.home-container {
+    width: 100%;
+    min-height: 100vh;
+}
+
+
+/* banner encontre seu melhor amigo.*/
+.home-banner-pets {
+    position: absolute;
+
+    /* traz os animais mais perto do texto */
+    right: 260px;
+
+    /* mantém apoiados no fundo */
+    bottom: -10px;
+
+    /* aumenta um pouco */
+    width: 630px;
+
+    max-height: 105%;
+    object-fit: contain;
+
+    z-index: 2;
+
+    pointer-events: none;
+
+    filter: drop-shadow(
+        0 18px 20px rgba(0, 0, 0, 0.16)
+    );
+}
+.home-banner {
+    position: relative;
+
+    width: calc(100% - 40px);
+    max-width: 1450px;
+    min-height: 280px;
+
+    margin: 30px auto 40px;
+
+    padding: 50px 60px;
+
+    display: flex;
+    align-items: center;
+
+    overflow: hidden;
+
+    border-radius: 30px;
+
+    background:
+        radial-gradient(circle at 80% 20%,
+            rgba(255, 255, 255, 0.20),
+            transparent 28%),
+        linear-gradient(135deg,
+            #7c3aed 0%,
+            #6366f1 50%,
+            #3b82f6 100%);
+
+    box-shadow:
+        0 20px 50px rgba(99, 102, 241, 0.25);
+}
+
+
+/* brilho grande */
+
+.home-banner::before {
+    content: "";
+
+    position: absolute;
+
+    width: 300px;
+    height: 300px;
+
+    right: -100px;
+    top: -140px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.10);
+}
+
+
+/* outro brilho */
+
+.home-banner::after {
+    content: "";
+
+    position: absolute;
+
+    width: 230px;
+    height: 230px;
+
+    right: 150px;
+    bottom: -180px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.08);
+}
+
+
+/* texto do banner */
+
+.home-banner-texto {
+    position: relative;
+
+    z-index: 2;
+
+    max-width: 680px;
+}
+
+
+.home-banner-tag {
+    display: inline-flex;
+    align-items: center;
+
+    margin-bottom: 18px;
+
+    padding: 7px 14px;
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+
+    border-radius: 50px;
+
+    background: rgba(255, 255, 255, 0.14);
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    backdrop-filter: blur(10px);
+}
+
+
+.home-banner h1 {
+    margin: 0;
+
+    max-width: 650px;
+
+    color: #ffffff;
+
+    font-size: clamp(36px, 5vw, 56px);
+
+    font-weight: 800;
+
+    line-height: 1.05;
+
+    letter-spacing: -1.5px;
+}
+
+
+.home-banner h1 strong {
+    color: #fde68a;
+}
+
+
+.home-banner p {
+    margin: 20px 0 0;
+
+    max-width: 570px;
+
+    color: rgba(255, 255, 255, 0.88);
+
+    font-size: 18px;
+
+    line-height: 1.6;
+}
+
+
+/* 
+   patinhas
+ */
+
+.home-banner-patas {
+    position: absolute;
+
+    right: 80px;
+    top: 50%;
+
+    transform:
+        translateY(-50%) rotate(-18deg);
+
+    font-size: 150px;
+
+    opacity: 0.13;
+
+    pointer-events: none;
+}
+
+
+/* FEED */
+
+.feed {
+    width: 100%;
+    max-width: 680px;
+
+    margin: 0 auto 80px;
+
+    padding: 0 16px;
+}
+
+
+.feed-topo {
+    margin-bottom: 25px;
+}
+
+
+.feed-label {
+    display: inline-block;
+
+    margin-bottom: 27px;
+
+    color: #7c3aed;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+}
+
+
+.feed-topo h2 {
+    margin: 0;
+
+    color: #1e293b;
+
+    font-size: 30px;
+
+    font-weight: 800;
+
+    letter-spacing: -0.5px;
+}
+
+
+.feed-topo p {
+    margin: 7px 0 0;
+
+    color: #64748b;
+
+    font-size: 15px;
+}
+
+
+/* 
+   MOBILE
+*/
+
+@media (max-width: 700px) {
+
+    .home-banner {
+        width: calc(100% - 20px);
+
+        min-height: 240px;
+
+        margin: 15px auto 30px;
+
+        padding: 35px 25px;
+
+        border-radius: 22px;
+    }
+
+
+    .home-banner h1 {
+        font-size: 34px;
+    }
+
+
+    .home-banner p {
+        font-size: 15px;
+
+        max-width: 90%;
+    }
+
+
+    .home-banner-patas {
+        right: -15px;
+
+        font-size: 110px;
+    }
+
+
+    .feed {
+        padding: 0 10px;
+    }
+
+
+    .feed-topo h2 {
+        font-size: 25px;
+    }
+
+}
+
+
+/* =========================
+   TÍTULO DO FEED
+ */
+
+.feed-topo {
+    position: relative;
+
+    margin-bottom: 24px;
+    padding: 0 4px 14px;
+}
+
+.feed-topo h2 {
+    margin: 0;
+
+    color: #1e293b;
+
+    font-size: 29px;
+    font-weight: 800;
+
+    letter-spacing: -0.5px;
+}
+
+.feed-topo p {
+    margin: 7px 0 0;
+
+    color: #64748b;
+
+    font-size: 15px;
+}
+
+.feed-topo::after {
+    content: "";
+
+    display: block;
+
+    width: 70px;
+    height: 4px;
+
+    margin-top: 13px;
+
+    border-radius: 10px;
+
+    background: linear-gradient(90deg,
+            #7c3aed,
+            #6366f1);
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    header {
+        padding: 0 8px;
+
+        overflow-x: auto;
+    }
+
+    header nav {
+        justify-content: flex-start;
+
+        min-width: max-content;
+    }
+
+    header a {
+        padding: 10px 9px;
+
+        font-size: 13px;
+    }
+
+    .banner {
+        width: calc(100% - 20px);
+
+        margin-top: 18px;
+        padding: 28px 22px;
+
+        border-radius: 18px;
+    }
+
+    .banner p {
+        font-size: 15px;
     }
 
 }

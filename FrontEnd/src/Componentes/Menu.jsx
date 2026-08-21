@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-//precisamos importar o css - devemos fazer css global ou individual , creio que o global seja melhor 
+import "../assets/css/Menu.css";
 
 export default function Menu() {
   return (
@@ -12,3 +12,6 @@ export default function Menu() {
     </nav>
   );
 }
+
+
+/* menu individual para facilitar nossa vida */

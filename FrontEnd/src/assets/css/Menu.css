@@ -1,19 +1,180 @@
-.navMenu {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-  background-color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    width: 100%;
+    min-height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 8px 20px;
+
+    background: rgba(255, 255, 255, 0.90);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    border-bottom: 1px solid rgba(124, 58, 237, 0.10);
+
+    box-shadow:
+        0 4px 20px rgba(15, 23, 42, 0.06);
 }
 
-.navMenu a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-  transition: color 0.2s ease;
+
+
+
+nav a {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 44px;
+
+    padding: 0 18px;
+
+    border-radius: 12px;
+
+    text-decoration: none;
+
+    color: #475569;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
 }
 
-.navMenu a:hover {
-  color: #4f46e5; /* Cor de destaque/primary */
+
+
+
+nav a:hover {
+    color: #7c3aed;
+
+    background: #f3e8ff;
+
+    transform: translateY(-2px);
+}
+
+
+
+
+nav a::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    bottom: 3px;
+
+    width: 0;
+    height: 3px;
+
+    border-radius: 20px;
+
+    background: linear-gradient(
+        90deg,
+        #7c3aed,
+        #6366f1
+    );
+
+    transform: translateX(-50%);
+
+    transition: width 0.25s ease;
+}
+
+
+nav a:hover::after {
+    width: 55%;
+}
+
+
+/* BOTÃO ENTRAR */
+
+nav a:last-child {
+    margin-left: 10px;
+
+    padding: 0 22px;
+
+    color: #ffffff;
+
+    background: linear-gradient(
+        135deg,
+        #7c3aed,
+        #6366f1
+    );
+
+    box-shadow:
+        0 5px 15px rgba(99, 102, 241, 0.25);
+}
+
+
+nav a:last-child:hover {
+    color: #ffffff;
+
+    background: linear-gradient(
+        135deg,
+        #6d28d9,
+        #4f46e5
+    );
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(99, 102, 241, 0.32);
+}
+
+
+nav a:last-child::after {
+    display: none;
+}
+
+
+
+
+@media (max-width: 600px) {
+
+    nav {
+        justify-content: flex-start;
+
+        gap: 3px;
+
+        padding: 7px 8px;
+
+        overflow-x: auto;
+
+        scrollbar-width: none;
+    }
+
+    nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    nav a {
+        flex-shrink: 0;
+
+        min-height: 40px;
+
+        padding: 0 10px;
+
+        font-size: 13px;
+    }
+
+    nav a:last-child {
+        margin-left: 2px;
+
+        padding: 0 14px;
+    }
+
 }
