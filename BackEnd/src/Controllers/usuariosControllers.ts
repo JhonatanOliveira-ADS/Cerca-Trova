@@ -4,7 +4,7 @@
 
     async criarUsuarios(req: Request, res: Response){
         const {id} = req.body
-        console.log()
+        
     }
 
  }
