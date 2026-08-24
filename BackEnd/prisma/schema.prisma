@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuarios {
+  id         String  @id @default(uuid())
+  email      String
+  senha      String
+  telefone   String
+  tipo       String
+  verificado Boolean
+
+  data_criacao     DateTime @default(now())
+  data_atualizacao DateTime @updatedAt
+
+  pets        Pets[]
+  publicacoes Publicacoes[]
+  favoritos   Favoritos[]
+  cometarios  Comentarios[]
+
+  @@map("usuarios")
+}
+
+model Pets {
+  id        String @id @default(uuid())
+  nome      String
+  especie   String
+  reca      String
+  idade     String
+  sexo      String
+  porte     String
+  descricao String
+
+  id_usuario  String
+  usuario     Usuarios      @relation(fields: [id_usuario], references: [id])
+  publicacoes Publicacoes[]
+
+  data_criacao     DateTime @default(now())
+  data_atualizacao DateTime @updatedAt
+
+  @@map("pets")
+}
+
+model Publicacoes {
+  id        String  @id @default(uuid())
+  pet       String
+  tipo      String
+  status    Boolean
+  data      String
+  nome_pet  String
+  especie   String
+  raca      String
+  idade_pet String
+  porte     String
+  descricao String
+
+  id_usuario  String
+  usuarios    Usuarios      @relation(fields: [id_usuario], references: [id])
+  id_pets     String
+  pets        Pets          @relation(fields: [id_pets], references: [id])
+  favoritos   Favoritos[]
+  comentarios Comentarios[]
+
+  data_criacao     DateTime @default(now())
+  data_atualizacao DateTime @updatedAt
+
+  @@map("publicacoes")
+}
+
+model Favoritos {
+  usuarios      Usuarios?    @relation(fields: [usuariosId], references: [id])
+  usuariosId    String?
+  publicacoes   Publicacoes? @relation(fields: [publicacoesId], references: [id])
+  publicacoesId String?
+}
+
+model Comentarios {
+  mensagem      String
+  usuarios      Usuarios?    @relation(fields: [usuariosId], references: [id])
+  usuariosId    String?
+  publicacoes   Publicacoes? @relation(fields: [publicacoesId], references: [id])
+  publicacoesId String?
+}
