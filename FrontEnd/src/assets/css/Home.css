@@ -22,7 +22,7 @@ body {
 }
 
 body::before {
-    content: "🐾   🐾      🐾     🐾        🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾";
+    content: "🐾    🐾      🐾     🐾        🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾";
 
     position: fixed;
 
