@@ -3,7 +3,7 @@ import multer from 'multer'
 
 
 const router = Router()
-const multer = multer(uploadConfig.uploead('./tmp'))
+
 
 //Importação dos controllers
 import usuariosControllers from "./Controllers/usuariosControllers";
@@ -12,7 +12,11 @@ import usuariosControllers from "./Controllers/usuariosControllers";
 router.post('/CriarUsuarios', new usuariosControllers().criarUsuarios)
 
 //endpoints GET
+router.get('/visualizarDadosUnico', new usuariosControllers().visualizarDadosUnico)
+router.get('/visualizarDadosGeral', new usuariosControllers().visualizarDadosGeral)
 
 //endpoints PUT
+router.put('/atualizarDadosUsuario', new usuariosControllers().atualizarDadosUsuario)
 
 //endpoints DELETE
+router.delete('/deletarUsuarios', new usuariosControllers().deletarUsuario)
