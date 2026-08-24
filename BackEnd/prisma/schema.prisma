@@ -3,68 +3,49 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model Usuarios {
-  id         String  @id @default(uuid())
-  email      String
+  id         String      @id @default(uuid())
+  nome       String
+  email      String      @unique
   senha      String
   telefone   String
-  tipo       String
+  tipo       tipoUsuario @default(USUARIO)
   verificado Boolean
 
   data_criacao     DateTime @default(now())
   data_atualizacao DateTime @updatedAt
 
-  pets        Pets[]
   publicacoes Publicacoes[]
   favoritos   Favoritos[]
-  comentarios Comentarios[]
 
   @@map("usuarios")
 }
 
-model Pets {
-  id        String @id @default(uuid())
-  nome      String
-  especie   String
-  reca      String
-  idade     String
-  sexo      String
-  porte     String
-  descricao String
-
-  id_usuario  String
-  usuario     Usuarios      @relation(fields: [id_usuario], references: [id])
-  publicacoes Publicacoes[]
-
-  data_criacao     DateTime @default(now())
-  data_atualizacao DateTime @updatedAt
-
-  @@map("pets")
-}
-
 model Publicacoes {
-  id        String  @id @default(uuid())
-  pet       String
-  tipo      String
-  status    Boolean
-  data      String
+  id   String         @id @default(uuid())
+  tipo tipoPublicacao
+
   nome_pet  String
   especie   String
   raca      String
   idade_pet String
+  sexo      String
   porte     String
   descricao String
+  foto      String
 
-  id_usuario  String
-  usuarios    Usuarios      @relation(fields: [id_usuario], references: [id])
-  id_pets     String
-  pets        Pets          @relation(fields: [id_pets], references: [id])
-  favoritos   Favoritos[]
-  comentarios Comentarios[]
+  cidade String
+  estado String
+
+  status Boolean @default(true)
+
+  id_usuario String
+  usuarios   Usuarios    @relation(fields: [id_usuario], references: [id])
+  favoritos  Favoritos[]
 
   data_criacao     DateTime @default(now())
   data_atualizacao DateTime @updatedAt
@@ -73,18 +54,22 @@ model Publicacoes {
 }
 
 model Favoritos {
-  usuarios      Usuarios    @relation(fields: [id_usuarios], references: [id])
-  id_usuarios    String
-  publicacoes   Publicacoes @relation(fields: [id_publicacoes], references: [id])
-  id_publicacoes String
-}
-
-model Comentarios {
-  id       String @id @default(uuid())
-  mensagem String
-
-  usuario        Usuarios    @relation(fields: [id_usuarios], references: [id])
+  usuarios       Usuarios    @relation(fields: [id_usuarios], references: [id])
   id_usuarios    String
   publicacoes    Publicacoes @relation(fields: [id_publicacoes], references: [id])
   id_publicacoes String
+  //significa que a combinação dos dois campos é única.
+
+  @@id([id_usuarios, id_publicacoes])
+}
+
+enum tipoUsuario {
+  USUARIO
+  ONG
+}
+
+enum tipoPublicacao {
+  ADOCAO
+  ENCONTRADO
+  PERDIDO
 }

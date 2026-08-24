@@ -12,14 +12,14 @@ app.use(router)
 app.use(
     '/files', express.static(path.resolve(__dirname, "..", 'tmp')))
 
-app.use((err: error, req: Request, res: Response, next: NextFunction) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof Error){
         return res.status(400).json({
-            error: error.message
+            error: err.message
         })
     }
     return res.status(500).json({
-        status: 'Erro'
+        status: 'Erro',
         message: 'Erro interno do Servidor'
     })
 

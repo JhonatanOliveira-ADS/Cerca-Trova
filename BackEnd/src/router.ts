@@ -1,9 +1,9 @@
 import { Router } from "express";
-import multer from 'multer'
+//import multer from 'multer'
 
 
 const router = Router()
-const multer = multer(uploadConfig.uploead('./tmp'))
+//const multer = multer(uploadConfig.uploead('./tmp'))
 
 //Importação dos controllers
 import usuariosControllers from "./Controllers/usuariosControllers";
@@ -16,3 +16,4 @@ router.post('/CriarUsuarios', new usuariosControllers().criarUsuarios)
 //endpoints PUT
 
 //endpoints DELETE
+export default router
