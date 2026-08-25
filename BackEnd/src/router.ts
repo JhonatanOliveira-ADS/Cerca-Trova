@@ -6,6 +6,7 @@ const router = Router()
 
 //Importação dos controllers
 import usuariosControllers from "./Controllers/usuariosControllers";
+import ongsControllers from "./Controllers/ongsControllers";
 
 //endpoints POST
 router.post('/CriarUsuarios', new usuariosControllers().criarUsuarios)
@@ -19,5 +20,8 @@ router.put('/atualizarDadosUsuario', new usuariosControllers().atualizarDadosUsu
 
 //endpoints DELETE
 router.delete('/deletarUsuarios', new usuariosControllers().deletarUsuario)
+
+//ONGS
+router.post('/CriarOng', new ongsControllers().criarOng)
 
 export default router;

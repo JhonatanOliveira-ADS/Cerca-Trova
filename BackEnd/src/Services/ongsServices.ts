@@ -15,7 +15,7 @@ interface cadOng {
 
 class ongsServices {
     async criarOng({ id_usuario, nome, descricao, foto, cidade, estado, telefone, instagram, site }: cadOng) {
-        const verificarOng = await prismaClient.ongs.findFist({
+        const verificarOng = await prismaClient.ongs.findFirst({
             where: {
                 id_usuario: id_usuario
             }
