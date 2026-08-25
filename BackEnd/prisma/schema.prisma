@@ -8,44 +8,59 @@ datasource db {
 }
 
 model Usuarios {
-  id         String      @id @default(uuid())
-  nome       String
-  email      String      @unique
-  senha      String
-  telefone   String
-  tipo       tipoUsuario @default(USUARIO)
-  verificado Boolean
+  id               String      @id @default(uuid())
+  nome             String
+  email            String      @unique
+  senha            String
+  telefone         String
+  foto_perfil      String
+  tipo             tipoUsuario @default(USUARIO)
+  verificado       Boolean     @default(false)
+  data_criacao     DateTime    @default(now())
+  data_atualizacao DateTime    @updatedAt
 
-  data_criacao     DateTime @default(now())
-  data_atualizacao DateTime @updatedAt
-
+  ong         Ongs?
   publicacoes Publicacoes[]
   favoritos   Favoritos[]
 
   @@map("usuarios")
 }
 
+model Ongs {
+  id         String @id @default(uuid())
+  id_usuario String @unique
+  nome       String
+  descricao  String
+  foto       String
+  cidade     String
+  estado     String
+  telefone   String
+  instagram  String
+  site       String
+
+  usuario Usuarios @relation(fields: [id_usuario], references: [id])
+
+  @@map("ongs")
+}
+
 model Publicacoes {
-  id   String         @id @default(uuid())
-  tipo tipoPublicacao
-
-  nome_pet  String
-  especie   String
-  raca      String
-  idade_pet String
-  sexo      String
-  porte     String
-  descricao String
-  foto      String
-
-  cidade String
-  estado String
-
-  status Boolean @default(true)
-
+  id         String         @id @default(uuid())
+  tipo       tipoPublicacao
+  status     Boolean        @default(true)
+  nome_pet   String
+  especie    String
+  raca       String
+  idade_pet  String
+  sexo       String
+  porte      String
+  descricao  String
+  foto       String
+  cidade     String
+  estado     String
   id_usuario String
-  usuarios   Usuarios    @relation(fields: [id_usuario], references: [id])
-  favoritos  Favoritos[]
+
+  usuario   Usuarios    @relation(fields: [id_usuario], references: [id])
+  favoritos Favoritos[]
 
   data_criacao     DateTime @default(now())
   data_atualizacao DateTime @updatedAt
@@ -54,13 +69,14 @@ model Publicacoes {
 }
 
 model Favoritos {
-  usuarios       Usuarios    @relation(fields: [id_usuarios], references: [id])
   id_usuarios    String
-  publicacoes    Publicacoes @relation(fields: [id_publicacoes], references: [id])
   id_publicacoes String
-  //significa que a combinação dos dois campos é única.
+
+  usuario    Usuarios    @relation(fields: [id_usuarios], references: [id])
+  publicacao Publicacoes @relation(fields: [id_publicacoes], references: [id])
 
   @@id([id_usuarios, id_publicacoes])
+  @@map("favoritos")
 }
 
 enum tipoUsuario {
