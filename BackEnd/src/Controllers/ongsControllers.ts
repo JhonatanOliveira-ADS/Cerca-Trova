@@ -19,6 +19,8 @@ class ongsControllers {
         return res.json(resposta)
 
     }
-
+    
 }
+
+
 export default ongsControllers
