@@ -1,4 +1,3 @@
-import { data } from "react-router-dom"
 import prismaClient from "../prismaCliente"
 
 interface cadUsuario{
@@ -41,7 +40,7 @@ class usuariosServices{
     }
 
     async visualizarDadosGeral(){
-        const visualizar = await prismaClient.usuarios.get({
+        const visualizar = await prismaClient.usuarios.findMany({
             select:{
                 id: true,
                 email: true,
