@@ -1,72 +1,99 @@
-import prismaClient from "../prismaCliente"
+import { hash } from "bcryptjs";
+import prismaClient from "../prismaCliente";
+import e from "express";
 
-interface cadOng {
 
-    id_usuario: string
-
-    nome: string
-
-    descricao: string
-
-    foto: string
-
-    cidade: string
-
-    estado: string
-
-    telefone: string
-
-    instagram: string
-
+interface CadOngs {
+    nome: string,
+    email: string,
+    senha: string,
+    descricao: string,
+    foto: string,
+    cidade: string,
+    estado: string,
+    telefone: string,
+    instagram: string,
     site: string
 
 }
 
-class ongsServices {
-
-    async criarOng({
-        id_usuario,
-        nome,
-        descricao,
-        foto,
-        cidade,
-        estado,
-        telefone,
-        instagram,
-        site
-    }: cadOng) {
-
-        const verificarOng = await prismaClient.ongs.findFirst({
-            where: {
-                id_usuario: id_usuario
-            }
-        })
-
-        if (verificarOng) {
-            return "Esse usuário já possui um perfil de ONG"
-        }
-
-        const ong = await prismaClient.ongs.create({
-            data: {
-                nome,
-                descricao,
-                foto,
-                cidade,
-                estado,
-                telefone,
-                instagram,
-                site,
-                usuario: {
-                    connect: {
-                        id: id_usuario
-                    }
-                }
-            }
-        })
-
-        return ong
-    }
-
+interface AltOngs {
+    id: string,
+    nome: string,
+    email: string,
+    descricao: string,
+    foto: string,
+    cidade: string,
+    estado: string,
+    telefone: string,
+    instagram: string,
+    site: string
 }
 
-export default ongsServices
+class OngsServices {
+    async criarOng({ nome, email, senha, descricao, foto, cidade, estado, telefone, instagram, site }: CadOngs) {
+        const senhaHash = await hash(senha, 8)
+
+        await prismaClient.ongs.create({
+            data: {
+                nome: nome,
+                email: email,
+                senha: senhaHash,
+                descricao: descricao,
+                foto: foto,
+                cidade: cidade,
+                estado: estado,
+                telefone: telefone,
+                instagram: instagram,
+                site: site
+            }
+        })
+        return ({ dados: 'Dados Salvo Com Sucesso' })
+    }
+    async visualizarONG() {
+        const resposta = await prismaClient.ongs.findMany({
+            select: {
+                nome: true,
+                email: true,
+                descricao: true,
+                foto: true,
+                cidade: true,
+                estado: true,
+                telefone: true,
+                instagram: true,
+                site: true
+            }
+        })
+        return resposta
+    }
+    async atualizarONG({ id, nome, email, descricao, foto, cidade, estado, telefone, instagram, site }: AltOngs) {
+        await prismaClient.ongs.update({
+            where: {
+                id: id
+            },
+            data: {
+                id: id,
+                nome:nome ,
+                email: email,
+                descricao: descricao,
+                foto: foto,
+                cidade: cidade,
+                estado: estado,
+                telefone: telefone,
+                instagram: instagram,
+                site: site
+            }
+        })
+        return ({ dados: 'Dados Alterados com Sucesso' })
+    }
+    async deletarOng(id: string) {
+        const resposta = await prismaClient.ongs.delete({
+            where: {
+                id: id
+            }
+        })
+        return ({ dados: 'Dados apagados com Sucesso' })
+    }
+}
+
+export default OngsServices

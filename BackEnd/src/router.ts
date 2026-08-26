@@ -25,4 +25,8 @@ router.delete('/deletarUsuarios', new usuariosControllers().deletarUsuario)
 //ONGS
 router.post('/CriarOng', new ongsControllers().criarOng)
 
+router.delete('/DeletarONG', new ongsControllers().deletarOng)
+router.put('/atualizarONG', new ongsControllers().atualizarONG)
+router.get('/visualizarONG', new ongsControllers().visualizarONG)
+
 export default router;

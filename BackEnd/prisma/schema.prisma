@@ -19,26 +19,25 @@ model Usuarios {
   data_criacao     DateTime    @default(now())
   data_atualizacao DateTime    @updatedAt
 
-  ong         Ongs?
   publicacoes Publicacoes[]
   favoritos   Favoritos[]
+  ongsId      String?
 
   @@map("usuarios")
 }
 
 model Ongs {
-  id         String @id @default(uuid())
-  id_usuario String @unique
-  nome       String
-  descricao  String
-  foto       String
-  cidade     String
-  estado     String
-  telefone   String
-  instagram  String
-  site       String
-
-  usuario Usuarios @relation(fields: [id_usuario], references: [id])
+  id        String     @id @default(uuid())
+  nome      String
+  email     String
+  senha     String
+  descricao String
+  foto      String
+  cidade    String
+  estado    String
+  telefone  String
+  instagram String
+  site      String
 
   @@map("ongs")
 }
@@ -69,13 +68,14 @@ model Publicacoes {
 }
 
 model Favoritos {
+  id         String         @id @default(uuid())
   id_usuarios    String
   id_publicacoes String
 
   usuario    Usuarios    @relation(fields: [id_usuarios], references: [id])
   publicacao Publicacoes @relation(fields: [id_publicacoes], references: [id])
 
-  @@id([id_usuarios, id_publicacoes])
+  
   @@map("favoritos")
 }
 
