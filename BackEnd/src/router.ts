@@ -13,7 +13,7 @@ import ongsControllers from "./Controllers/ongsControllers";
 router.post('/CriarUsuarios', new usuariosControllers().criarUsuarios)
 
 //endpoints GET
-router.get('/visualizarDadosUnico', new usuariosControllers().visualizarDadosUnico)
+router.post('/visualizarDadosUnico', new usuariosControllers().visualizarDadosUnico)
 router.get('/visualizarDadosGeral', new usuariosControllers().visualizarDadosGeral)
 
 //endpoints PUT
