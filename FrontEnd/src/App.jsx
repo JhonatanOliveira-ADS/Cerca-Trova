@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "./App.css";
 
 // Componentes
 import Menu from "./Componentes/Menu";
@@ -18,29 +17,18 @@ import Configuracoes from "./Paginas/Configuracoes";
 export default function App() {
   return (
     <BrowserRouter>
-
-      <div className="app-container">
-
-        <Menu />
-
-        <div className="app-conteudo">
-
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/adocao" element={<AdocaoDoacao />} />
-            <Route path="/achados-perdidos" element={<AchadosPerdidos />} />
-            <Route path="/favoritos" element={<Favoritos />} />
-            <Route path="/perfil" element={<MeuPerfil />} />
-            <Route path="/painel" element={<Painel />} />
-            <Route path="/tinder-pet" element={<TinderPet />} />
-            <Route path="/configuracoes" element={<Configuracoes />} />
-          </Routes>
-
-        </div>
-
-      </div>
-
+      <Menu />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/adocao" element={<AdocaoDoacao />} />
+        <Route path="/achados-perdidos" element={<AchadosPerdidos />} />
+        <Route path="/favoritos" element={<Favoritos />} />
+        <Route path="/perfil" element={<MeuPerfil />} />
+        <Route path="/painel" element={<Painel />} />
+        <Route path="/tinder-pet" element={<TinderPet />} />
+        <Route path="/configuracoes" element={<Configuracoes />} />
+      </Routes>
     </BrowserRouter>
   );
 }

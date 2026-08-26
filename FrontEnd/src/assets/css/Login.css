@@ -1,0 +1,251 @@
+/* Configurações Globais da Página */
+.login-page {
+  --bg-primary: #0e1e2b;
+  --bg-card: #152735;
+  --bg-input: #101f2c;
+  --color-orange: #e29e4b;
+  --color-pink: #d95e78;
+  --color-text-gray: #8fa0ae;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Patinhas de Fundo */
+.bg-decorations {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.08;
+}
+
+.paw {
+  position: absolute;
+  font-size: 1.5rem;
+}
+.paw.p1 { top: 10%; left: 8%; transform: rotate(-15deg); }
+.paw.p2 { top: 25%; left: 15%; transform: rotate(20deg); font-size: 1.2rem; }
+.paw.p3 { top: 45%; left: 6%; transform: rotate(-35deg); }
+.paw.p4 { top: 65%; left: 12%; transform: rotate(10deg); }
+.paw.p5 { bottom: 15%; left: 5%; transform: rotate(-20deg); }
+.paw.p6 { bottom: 5%; left: 14%; transform: rotate(45deg); font-size: 1.1rem; }
+
+/* Cabeçalho - Removido qualquer fundo indesejado */
+.login-header {
+  text-align: center;
+  margin-bottom: 25px;
+  background: transparent !important;
+}
+
+.login-header h1 {
+  font-size: 2.2rem;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  background: transparent !important;
+}
+
+.login-header .highlight {
+  color: var(--color-orange);
+}
+
+.login-header .slogan {
+  color: var(--color-text-gray);
+  font-style: italic;
+  font-size: 0.85rem;
+  margin: 5px 0 0 0;
+  background: transparent !important;
+}
+
+/* Estrutura do Card com a borda/sombra deslocada */
+.card-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+}
+
+.card-shadow-pink {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: -6px;
+  bottom: -6px;
+  background-color: var(--color-pink);
+  border-radius: 16px;
+  z-index: 1;
+}
+
+.login-card {
+  position: relative;
+  background-color: var(--bg-card);
+  border: 1px solid #233647;
+  border-radius: 16px;
+  padding: 30px 24px;
+  z-index: 2;
+}
+
+/* Abas (Entrar / Cadastrar) */
+.tab-container {
+  display: flex;
+  background-color: var(--bg-input);
+  border: 1px solid #1a2c3a;
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 24px;
+}
+
+.tab-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--color-text-gray);
+  padding: 10px 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+  background-color: var(--color-orange);
+  color: #101f2c;
+}
+
+/* Inputs do Formulário */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-input);
+  border: 1px solid #233647;
+  border-radius: 10px;
+  padding: 12px 14px;
+  position: relative;
+}
+
+.input-group:focus-within {
+  border-color: var(--color-orange);
+}
+
+.input-icon {
+  margin-right: 10px;
+  opacity: 0.6;
+  font-size: 1.1rem;
+}
+
+.input-group input {
+  background: transparent !important;
+  border: none;
+  color: #ffffff !important;
+  font-size: 0.9rem;
+  width: 100%;
+  outline: none;
+  box-shadow: 0 0 0px 1000px transparent inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Remove a cor branca do preenchimento automático (Autofill) do Chrome/Edge/Safari */
+.input-group input:-webkit-autofill,
+.input-group input:-webkit-autofill:hover, 
+.input-group input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-box-shadow: 0 0 0px 1000px var(--bg-input) inset !important;
+  box-shadow: 0 0 0px 1000px var(--bg-input) inset !important;
+}
+
+.input-group input::placeholder {
+  color: #53697a;
+}
+
+.btn-reveal {
+  background: none;
+  border: none;
+  color: var(--color-text-gray);
+  font-size: 0.75rem;
+  cursor: pointer;
+  position: absolute;
+  right: 14px;
+}
+
+/* Links auxiliares */
+.forgot-password-container {
+  text-align: right;
+  margin-top: -6px;
+}
+
+.forgot-password {
+  color: var(--color-text-gray);
+  font-size: 0.75rem;
+  text-decoration: none;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+/* Botão de Envio Principal */
+.btn-submit {
+  background-color: var(--color-orange);
+  color: #101f2c;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-submit:hover {
+  background-color: #cb8b3e;
+}
+
+/* Rodapés */
+.card-footer {
+  text-align: center;
+  margin-top: 24px;
+  margin-bottom: 0;
+  font-size: 0.8rem;
+  color: var(--color-text-gray);
+}
+
+.page-footer {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 0.8rem;
+  color: var(--color-text-gray);
+  max-width: 320px;
+  line-height: 1.4;
+}
+
+.highlight-link {
+  color: var(--color-orange);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.highlight-link:hover {
+  text-decoration: underline;
+}
+
+.text-pink {
+  color: var(--color-pink);
+  font-weight: 600;
+}
