@@ -1,93 +1,111 @@
 import prismaClient from "../prismaCliente"
 
-interface cadUsuario{
-    id: string
+interface cadUsuario {
+    nome: string
     email: string
     senha: string
     telefone: string
-    verificado: boolean
+    foto_perfil: string
+    tipo: "USUARIO" | "ONG"
 }
 
 
-interface altUsuario{
-    id: string,
-    email: string,
-    senha: string,
-    telefone: string,
-    verificado: boolean
+interface altUsuario {
+    id: string
+    nome: string
+    email: string
+    senha: string
+    telefone: string
+    foto_perfil: string
+    tipo: "USUARIO" | "ONG"
 }
 
-class usuariosServices{
+class usuariosServices {
 
-    async criarUsuario({id, email, senha, telefone, verificado}: cadUsuario){
+    async criarUsuario({ nome, email, senha, telefone, foto_perfil, tipo }: cadUsuario) {
         const verificarEmail = await prismaClient.usuarios.findFirst({
-            email: email
+            where: {
+                email: email
+            }
         })
 
-        if(verificarEmail){
-            return('Já existe um usuário cadastrado com esse E-mail')
+        if (verificarEmail) {
+            return ('Já existe um usuário cadastrado com esse E-mail')
         }
 
-        await prismaClient.usuarios.create({
-            data:{
-                id: id,
+        const usuario = await prismaClient.usuarios.create({
+            data: {
+                nome: nome,
                 email: email,
                 senha: senha,
-                telefone:telefone,
-                verificado: false
+                telefone: telefone,
+                foto_perfil: foto_perfil,
+                tipo: tipo
             }
         })
+        return usuario
     }
-
-    async visualizarDadosGeral(){
+    async visualizarDadosGeral() {
         const visualizar = await prismaClient.usuarios.findMany({
-            select:{
+            select: {
                 id: true,
+                nome: true,
                 email: true,
-                senha: true,
                 telefone: true,
-                verificado: true 
-            }
-        })
-    }
-
-
-    async visualizarDadosUnico(id: string){
-        const visualizarDadosUnico = await prismaClient.usuarios.findFirst({
-            where:{
-                id:id
-            },
-            select:{
-                email: true,
-                senha: true,
-                telefone: true,
+                foto_perfil: true,
+                tipo: true,
                 verificado: true
             }
         })
+        return visualizar
     }
 
 
-    async atualizarDados({id, email, senha, telefone, verificado}: altUsuario){
-        const atualizarDados = await prismaClient.usuarios.PUT({
-            where:{
+    async visualizarDadosUnico(id: string) {
+        const visualizarDadosUnico = await prismaClient.usuarios.findFirst({
+            where: {
                 id: id
             },
-            data:{
+            select: {
+                id: true,
+                nome: true,
+                email: true,
+                telefone: true,
+                foto_perfil: true,
+                tipo: true,
+                verificado: true
+            }
+        })
+        return visualizarDadosUnico
+    }
+
+
+    async atualizarDados({ id, nome, email, senha, telefone, foto_perfil, tipo }: altUsuario) {
+        const atualizarDados = await prismaClient.usuarios.update({
+            where: {
+                id: id
+            },
+            data: {
+                id,
+                nome,
                 email,
                 senha,
                 telefone,
-                verificado
+                foto_perfil,
+                tipo
             }
         })
+        return atualizarDados
     }
 
 
-    async deletarDadosUsuarios(id: string){
-        const deletarDadosUsuarios = await prismaClient.usuarios.DELETE({
-            where:{
-                id:id
+    async deletarDadosUsuarios(id: string) {
+        const deletarDadosUsuarios = await prismaClient.usuarios.delete({
+            where: {
+                id: id
             }
-        }) 
+        })
+        return deletarDadosUsuarios
     }
 }
 

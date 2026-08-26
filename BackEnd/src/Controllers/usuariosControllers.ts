@@ -2,12 +2,14 @@
  import { Request, Response } from "express";
 
 
- class usuariosControllers{
+class usuariosControllers {
 
     async criarUsuarios(req: Request, res: Response){
-        const {id} = req.body
+        const {nome,email,senha, telefone,foto_perfil,tipo} = req.body
         const enviarDados = new usuariosServices()
-        const resposta = await enviarDados.criarUsuario(id)
+        const resposta = await enviarDados.criarUsuario({
+            nome,email,senha, telefone,foto_perfil,tipo
+        })
         return res.json(resposta)
     }
 
@@ -28,6 +30,7 @@
         
     }
 
+
     async deletarUsuario(req: Request, res: Response){
         const {id} = req.body
         const enviarDados = new usuariosServices()
@@ -36,6 +39,6 @@
     }
 
 
- }
+}
 
  export default usuariosControllers
