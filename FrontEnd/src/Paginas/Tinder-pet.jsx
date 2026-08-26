@@ -2,11 +2,11 @@ import { useState } from 'react';
 
 import '../assets/css/TinderPet.css';
 
-import lalinha from '../assets/lalinha.jpg';
-import loki from '../assets/loki.png';
-import bordercollie from '../assets/border-collie.webp';
+import lalinha from '../assets/imagens/lalinha.jpg';
+import loki from '../assets/imagens/loki.png';
+import bordercollie from '../assets/imagens/border-collie.webp';
 import husky from '../assets/husky.jpg';
-import rottweiler from '../assets/rottweiler.webp';
+import rottweiler from '../assets/imagens/rottweiler.webp';
 
 
 export default function TinderPet() {
