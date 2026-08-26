@@ -153,15 +153,66 @@ body::before {
     object-position: center;
 }
 
-.feed-card-acoes {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+/* ==========================================
+   AÇÕES DOS CARDS
+========================================== */
 
-    padding: 8px;
+.feed-card-acoes {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+
+    padding: 10px 28px;
 
     border-top: 1px solid #e2e8f0;
 }
 
+
+/* ==========================================
+   BOTÕES DOS CARDS
+========================================== */
+
+.feed-card-acoes button {
+    border: none;
+
+    background: transparent;
+
+    padding: 10px 14px;
+
+    color: #163147;
+
+    font-weight: 600;
+    font-size: 14px;
+
+    cursor: pointer;
+
+    border-radius: 10px;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+/* ==========================================
+   HOVER
+========================================== */
+
+.feed-card-acoes button:hover {
+    color: #163147;
+
+  background: linear-gradient(
+        135deg,
+        #163147 0%,
+        #a95e94 100%
+    );
+
+    transform: translateY(-2px);
+}
 .feed-card-acoes button {
     border: none;
     background: transparent;
@@ -170,7 +221,7 @@ body::before {
 
     color: #475569;
 
-    font-weight: 600;
+    font-weight: 400;
 
     cursor: pointer;
 
@@ -180,7 +231,14 @@ body::before {
 }
 
 .feed-card-acoes button:hover {
-    background: #f1f5f9;
+    background: linear-gradient(
+        135deg,
+        #a95e94 0%
+        #163147 100%
+       
+        
+    );
+    color: white
 }
 
 @media (max-width: 600px) {
