@@ -1,5 +1,7 @@
 import { useState } from "react";
-import '../assets/css/Login.css'
+
+import '../assets/css/Login.css';
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -24,6 +26,7 @@ export default function Login() {
 
       <header className="login-header">
         <h1>Cerca <span className="highlight">Trova</span></h1>
+        
         <p className="slogan">"Quem procura, acha"</p>
       </header>
 
