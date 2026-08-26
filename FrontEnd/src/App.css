@@ -6,9 +6,10 @@ html,
 body,
 #root {
     margin: 0;
+    padding: 0;
+
     width: 100%;
     min-height: 100%;
-    padding: 0;
 }
 
 body {
@@ -32,6 +33,12 @@ body {
     min-height: 100vh;
 
     /*
+       Garante que as camadas do fundo
+       fiquem organizadas dentro do app.
+    */
+    isolation: isolate;
+
+    /*
        DEGRADÊ GLOBAL ANIMADO
 
        Azul
@@ -53,7 +60,7 @@ body {
 
     /*
        Fundo maior que a tela
-       para as cores viajarem.
+       para as cores se movimentarem.
     */
     background-size: 500% 500%;
 
@@ -64,7 +71,6 @@ body {
         fundoCercaTrova 8s ease-in-out infinite;
 }
 
-
 /* ==========================================
    PATINHAS
 ========================================== */
@@ -73,63 +79,56 @@ body {
     content: "";
 
     position: fixed;
-
     inset: 0;
 
-    /*
-       IMAGEM DAS PATINHAS
-    */
     background-image:
-        url("./assets/imagens/fundo-patinhas.png.png");
+        url("./assets/imagens/patinhas.png");
 
     background-repeat: repeat;
 
     background-size:
-        600px auto;
+        720px auto;
 
     background-position:
         center top;
 
-    /*
-       Força das patinhas
-    */
-    opacity: 0.18;
+    opacity: 0.28;
 
     /*
-       Mantém as patinhas misturadas
-       com as cores do fundo.
+       Tirei o multiply por enquanto
+       para garantir que a imagem apareça.
     */
-    mix-blend-mode: multiply;
-
     pointer-events: none;
 
-    z-index: 1;
+    z-index: 0;
 }
-
-
 /* ==========================================
-   MENU E PÁGINAS ACIMA DAS PATINHAS
+   CONTEÚDO ACIMA DAS PATINHAS
 ========================================== */
 
-.app-container > nav,
 .app-conteudo {
     position: relative;
 
-    z-index: 2;
-}
+    z-index: 1;
 
-
-/* ==========================================
-   CONTEÚDO DAS PÁGINAS
-========================================== */
-
-.app-conteudo {
     width: 100%;
 
     min-height:
         calc(100vh - 64px);
 
     background: transparent;
+}
+
+
+/* ==========================================
+   MENU ACIMA DAS PATINHAS
+========================================== */
+
+.app-container > header,
+.app-container > nav {
+    position: relative;
+
+    z-index: 10;
 }
 
 
@@ -167,5 +166,24 @@ body {
     100% {
         background-position:
             0% 50%;
+    }
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+
+    .app-container::before {
+        /*
+           Patinhas um pouco menores
+           no celular.
+        */
+        background-size:
+            400px auto;
+
+        opacity: 0.18;
     }
 }
