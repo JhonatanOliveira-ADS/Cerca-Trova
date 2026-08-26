@@ -1,10 +1,40 @@
 /* ==========================================
-   GATENHO - TINDER PET
+   CERCA TROVA - TINDER PET
 ========================================== */
 
 * {
     box-sizing: border-box;
 }
+
+
+/* ==========================================
+   PALETA PRINCIPAL
+========================================== */
+
+:root {
+    --ct-azul: #0d2b3e;
+    --ct-azul-claro: #163a50;
+
+    --ct-dourado: #e9a34a;
+    --ct-dourado-claro: #f4bd73;
+
+    --ct-rosa: #d968a0;
+    --ct-roxo: #8b5fa8;
+
+    --ct-branco: #ffffff;
+
+    --ct-texto-claro: #f8fafc;
+    --ct-texto-secundario: #64748b;
+
+    --ct-card-texto: #334155;
+    --ct-card-texto-secundario: #64748b;
+}
+
+
+/* ==========================================
+   FUNDO DA PÁGINA
+   O FUNDO AGORA VEM DO APP.CSS
+========================================== */
 
 .gatenho-page {
     width: 100%;
@@ -12,23 +42,13 @@
 
     padding: 40px 20px 70px;
 
-    background:
-        radial-gradient(
-            circle at 15% 15%,
-            rgba(168, 85, 247, 0.14),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 85% 30%,
-            rgba(59, 130, 246, 0.12),
-            transparent 35%
-        ),
-        linear-gradient(
-            135deg,
-            #faf5ff,
-            #eef2ff,
-            #f8fafc
-        );
+    position: relative;
+
+    /*
+       Não existe mais fundo específico aqui.
+       O App.css controla o fundo do site.
+    */
+    background: transparent;
 }
 
 
@@ -43,10 +63,19 @@
     margin: 0 auto 30px;
 
     text-align: center;
+
+    position: relative;
+    z-index: 5;
 }
+
+
+/* ==========================================
+   TAG SUPERIOR
+========================================== */
 
 .gatenho-tag {
     display: inline-flex;
+
     align-items: center;
     justify-content: center;
 
@@ -56,51 +85,80 @@
 
     border-radius: 999px;
 
-    background: #ede9fe;
+    background:
+        rgba(233, 163, 74, 0.15);
 
-    color: #7c3aed;
+    border:
+        1px solid rgba(233, 163, 74, 0.35);
+
+    color: #b96e14;
 
     font-size: 12px;
     font-weight: 800;
 
     letter-spacing: 0.8px;
+
     text-transform: uppercase;
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
+
+
+/* ==========================================
+   TITULO PRINCIPAL
+========================================== */
 
 .gatenho-header h1 {
     margin: 5px 0;
 
-    color: #1e293b;
+    color: var(--ct-azul);
 
     font-size: 46px;
     font-weight: 900;
 
     line-height: 1;
+
+    letter-spacing: -1px;
 }
 
 .gatenho-header h1 span {
-    color: #7c3aed;
+    color: var(--ct-rosa);
 }
+
+
+/* ==========================================
+   SUBTITULO
+========================================== */
 
 .gatenho-header h2 {
     margin: 10px 0 6px;
 
-    color: #334155;
+    color: var(--ct-azul-claro);
 
     font-size: 22px;
     font-weight: 800;
 }
 
-.gatenho-header p {
-    margin: 0 auto;
 
+/* ==========================================
+   DESCRIÇÃO DO CABEÇALHO
+========================================== */
+
+.gatenho-header p {
     max-width: 560px;
 
-    color: #64748b;
+    margin: 0 auto;
+
+    color: var(--ct-texto-secundario);
 
     font-size: 15px;
 
     line-height: 1.6;
+}
+
+.gatenho-header p strong {
+    color: var(--ct-roxo);
 }
 
 
@@ -112,13 +170,18 @@
     width: 100%;
 
     display: flex;
+
     justify-content: center;
     align-items: flex-start;
+
+    position: relative;
+
+    z-index: 5;
 }
 
 
 /* ==========================================
-   CARD
+   CARD PRINCIPAL
 ========================================== */
 
 .gatenho-card {
@@ -127,14 +190,17 @@
 
     overflow: hidden;
 
-    background: #ffffff;
+    background:
+        rgba(255, 255, 255, 0.98);
 
     border-radius: 26px;
 
-    border: 1px solid rgba(226, 232, 240, 0.9);
+    border:
+        1px solid rgba(233, 163, 74, 0.35);
 
     box-shadow:
-        0 15px 40px rgba(15, 23, 42, 0.12);
+        0 18px 50px rgba(15, 23, 42, 0.16),
+        0 0 0 1px rgba(217, 104, 160, 0.08);
 
     transition:
         transform 0.25s ease,
@@ -142,10 +208,11 @@
 }
 
 .gatenho-card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-4px);
 
     box-shadow:
-        0 22px 55px rgba(15, 23, 42, 0.16);
+        0 26px 65px rgba(15, 23, 42, 0.20),
+        0 0 30px rgba(233, 163, 74, 0.10);
 }
 
 
@@ -161,7 +228,8 @@
 
     overflow: hidden;
 
-    background: #e2e8f0;
+    background:
+        var(--ct-azul-claro);
 }
 
 .gatenho-foto img {
@@ -173,15 +241,18 @@
     object-fit: cover;
     object-position: center;
 
-    transition: transform 0.35s ease;
+    transition:
+        transform 0.35s ease;
 }
 
 .gatenho-card:hover .gatenho-foto img {
-    transform: scale(1.02);
+    transform: scale(1.025);
 }
 
 
-/* sombra na parte inferior da foto */
+/* ==========================================
+   SOMBRA NA FOTO
+========================================== */
 
 .gatenho-foto-gradient {
     position: absolute;
@@ -191,8 +262,8 @@
     background:
         linear-gradient(
             to bottom,
-            rgba(15, 23, 42, 0) 45%,
-            rgba(15, 23, 42, 0.78) 100%
+            rgba(13, 43, 62, 0) 42%,
+            rgba(13, 43, 62, 0.90) 100%
         );
 
     pointer-events: none;
@@ -217,11 +288,14 @@
 
 .gatenho-info-principal h2 {
     display: flex;
+
     align-items: baseline;
 
     gap: 9px;
 
     margin: 0;
+
+    color: #ffffff;
 
     font-size: 31px;
     font-weight: 800;
@@ -231,13 +305,15 @@
     font-size: 16px;
     font-weight: 500;
 
-    color: rgba(255, 255, 255, 0.88);
+    color:
+        rgba(255, 255, 255, 0.90);
 }
 
 .gatenho-info-principal p {
     margin: 5px 0 0;
 
-    color: rgba(255, 255, 255, 0.88);
+    color:
+        rgba(255, 255, 255, 0.88);
 
     font-size: 13px;
 }
@@ -248,11 +324,14 @@
 ========================================== */
 
 .gatenho-conteudo {
-    padding: 20px 22px 24px;
+    padding:
+        20px 22px 24px;
 }
 
 
-/* status */
+/* ==========================================
+   STATUS
+========================================== */
 
 .gatenho-status {
     margin-bottom: 15px;
@@ -260,27 +339,38 @@
 
 .gatenho-status span {
     display: inline-flex;
+
     align-items: center;
 
-    padding: 6px 12px;
+    padding:
+        6px 12px;
 
     border-radius: 999px;
 
-    background: #f3e8ff;
+    background:
+        rgba(233, 163, 74, 0.15);
 
-    color: #7c3aed;
+    border:
+        1px solid rgba(233, 163, 74, 0.25);
+
+    color:
+        #b96e14;
 
     font-size: 12px;
     font-weight: 700;
 }
 
 
-/* descrição */
+/* ==========================================
+   DESCRIÇÃO
+========================================== */
 
 .gatenho-descricao {
-    margin: 0 0 16px;
+    margin:
+        0 0 16px;
 
-    color: #475569;
+    color:
+        var(--ct-card-texto);
 
     font-size: 14px;
 
@@ -294,6 +384,7 @@
 
 .gatenho-tags {
     display: flex;
+
     flex-wrap: wrap;
 
     gap: 7px;
@@ -302,13 +393,20 @@
 }
 
 .gatenho-tags span {
-    padding: 7px 11px;
+    padding:
+        7px 11px;
 
-    border-radius: 999px;
+    border-radius:
+        999px;
 
-    background: #f1f5f9;
+    background:
+        rgba(139, 95, 168, 0.10);
 
-    color: #475569;
+    border:
+        1px solid rgba(139, 95, 168, 0.18);
+
+    color:
+        #68447f;
 
     font-size: 12px;
     font-weight: 600;
@@ -322,25 +420,32 @@
 .gatenho-detalhes {
     display: grid;
 
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns:
+        repeat(3, 1fr);
 
     gap: 8px;
 
-    padding: 14px 0;
+    padding:
+        14px 0;
 
-    border-top: 1px solid #e2e8f0;
-    border-bottom: 1px solid #e2e8f0;
+    border-top:
+        1px solid #e2e8f0;
+
+    border-bottom:
+        1px solid #e2e8f0;
 }
 
 .gatenho-detalhes div {
     display: flex;
+
     flex-direction: column;
 
     text-align: center;
 }
 
 .gatenho-detalhes small {
-    color: #94a3b8;
+    color:
+        #94a3b8;
 
     font-size: 10px;
 }
@@ -348,7 +453,8 @@
 .gatenho-detalhes strong {
     margin-top: 4px;
 
-    color: #334155;
+    color:
+        var(--ct-azul);
 
     font-size: 13px;
 }
@@ -361,13 +467,24 @@
 .gatenho-mensagem {
     margin-top: 16px;
 
-    padding: 11px 13px;
+    padding:
+        11px 13px;
 
-    border-radius: 12px;
+    border-radius:
+        12px;
 
-    background: #faf5ff;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(233, 163, 74, 0.13),
+            rgba(217, 104, 160, 0.10)
+        );
 
-    color: #7c3aed;
+    border:
+        1px solid rgba(233, 163, 74, 0.18);
+
+    color:
+        #9a5d16;
 
     text-align: center;
 
@@ -393,6 +510,7 @@
 
 .gatenho-acoes button {
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -415,56 +533,81 @@
 }
 
 
-/* PASSAR */
+/* ==========================================
+   PASSAR
+========================================== */
 
 .btn-passar {
     width: 54px;
     height: 54px;
 
-    color: #ef4444;
+    color:
+        #ef5350;
 
     font-size: 24px;
 
+    border:
+        1px solid rgba(239, 83, 80, 0.15);
+
     box-shadow:
-        0 6px 18px rgba(239, 68, 68, 0.18);
+        0 7px 20px rgba(239, 83, 80, 0.20);
 }
 
 .btn-passar:hover {
-    background: #fef2f2;
+    background:
+        #fff2f2;
 }
 
 
-/* FAVORITO */
+/* ==========================================
+   FAVORITO
+========================================== */
 
 .btn-favorito {
     width: 48px;
     height: 48px;
 
+    color:
+        var(--ct-dourado);
+
     font-size: 20px;
 
+    border:
+        1px solid rgba(233, 163, 74, 0.20);
+
     box-shadow:
-        0 6px 18px rgba(245, 158, 11, 0.18);
+        0 7px 20px rgba(233, 163, 74, 0.25);
 }
 
 .btn-favorito:hover {
-    background: #fffbeb;
+    background:
+        #fff7eb;
 }
 
 
-/* MATCH */
+/* ==========================================
+   MATCH
+========================================== */
 
 .btn-match {
     width: 60px;
     height: 60px;
 
+    color:
+        var(--ct-rosa);
+
     font-size: 25px;
 
+    border:
+        1px solid rgba(217, 104, 160, 0.20);
+
     box-shadow:
-        0 6px 20px rgba(124, 58, 237, 0.22);
+        0 8px 24px rgba(217, 104, 160, 0.28);
 }
 
 .btn-match:hover {
-    background: #faf5ff;
+    background:
+        #fff3f8;
 }
 
 
@@ -475,13 +618,15 @@
 .gatenho-legendas {
     display: grid;
 
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns:
+        repeat(3, 1fr);
 
     gap: 5px;
 
     margin-top: 8px;
 
-    color: #94a3b8;
+    color:
+        #94a3b8;
 
     text-align: center;
 
@@ -496,11 +641,17 @@
 .gatenho-frase {
     max-width: 500px;
 
-    margin: 30px auto 0;
+    margin:
+        30px auto 0;
 
     text-align: center;
 
-    color: #64748b;
+    color:
+        var(--ct-texto-secundario);
+
+    position: relative;
+
+    z-index: 5;
 }
 
 .gatenho-frase > span {
@@ -508,13 +659,275 @@
 }
 
 .gatenho-frase p {
-    margin: 6px 0 0;
+    margin:
+        6px 0 0;
 
     font-size: 14px;
 }
 
 .gatenho-frase strong {
-    color: #7c3aed;
+    color:
+        #b96e14;
+}
+
+
+/* ==========================================
+   PUBLICIDADES LATERAIS
+========================================== */
+
+.tinder-publicidade {
+    position: fixed;
+
+    top: 150px;
+
+    width: 220px;
+
+    background:
+        #ffffff;
+
+    border-radius:
+        20px;
+
+    overflow: hidden;
+
+    text-decoration: none;
+
+    color:
+        var(--ct-azul);
+
+    border:
+        1px solid rgba(233, 163, 74, 0.30);
+
+    box-shadow:
+        0 18px 45px rgba(15, 23, 42, 0.18);
+
+    z-index: 20;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.tinder-publicidade:hover {
+    transform:
+        translateY(-5px);
+
+    box-shadow:
+        0 25px 55px rgba(15, 23, 42, 0.25);
+}
+
+
+/* ==========================================
+   LADO ESQUERDO
+========================================== */
+
+.tinder-publicidade-esquerda {
+    left: 25px;
+}
+
+
+/* ==========================================
+   LADO DIREITO
+========================================== */
+
+.tinder-publicidade-direita {
+    right: 25px;
+}
+
+
+/* ==========================================
+   CONTEÚDO DA PUBLICIDADE
+========================================== */
+
+.tinder-publicidade-conteudo {
+    width: 100%;
+
+    background:
+        #ffffff;
+
+    text-align: center;
+}
+
+
+/* ==========================================
+   MARCAS
+========================================== */
+
+.tinder-marca {
+    width: 100%;
+
+    padding:
+        14px 10px;
+
+    font-size: 17px;
+    font-weight: 900;
+
+    letter-spacing: 1px;
+}
+
+
+/* ==========================================
+   COBASI
+========================================== */
+
+.cobasi-marca {
+    background:
+        #ff6a00;
+
+    color:
+        #ffffff;
+}
+
+
+/* ==========================================
+   AGROSOLO
+========================================== */
+
+.agrosolo-marca {
+    background:
+        #15803d;
+
+    color:
+        #ffffff;
+}
+
+
+/* ==========================================
+   FOTO PUBLICIDADE
+========================================== */
+
+.tinder-publicidade-imagem {
+    width: 100%;
+    height: 190px;
+
+    overflow: hidden;
+
+    background:
+        #f1f5f9;
+}
+
+.tinder-publicidade-imagem img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* ==========================================
+   TEXTO PUBLICIDADE
+========================================== */
+
+.tinder-publicidade-texto {
+    padding:
+        15px;
+}
+
+.tinder-oferta {
+    display: inline-block;
+
+    margin-bottom: 8px;
+
+    color:
+        #b96e14;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+}
+
+.tinder-publicidade h3 {
+    margin:
+        4px 0 8px;
+
+    color:
+        var(--ct-azul);
+
+    font-size: 17px;
+
+    line-height: 1.25;
+}
+
+.tinder-publicidade p {
+    margin:
+        0 0 15px;
+
+    color:
+        var(--ct-card-texto-secundario);
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* ==========================================
+   BOTÃO PUBLICIDADE
+========================================== */
+
+.tinder-publicidade-botao {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 36px;
+
+    padding:
+        0 15px;
+
+    border-radius:
+        999px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--ct-dourado),
+            #d78b31
+        );
+
+    color:
+        var(--ct-azul);
+
+    font-size: 12px;
+    font-weight: 800;
+
+    box-shadow:
+        0 5px 15px rgba(233, 163, 74, 0.25);
+}
+
+
+/* ==========================================
+   ETIQUETA PUBLICIDADE
+========================================== */
+
+.tinder-publicidade-label {
+    position: absolute;
+
+    top: 8px;
+    right: 8px;
+
+    padding:
+        4px 8px;
+
+    border-radius:
+        20px;
+
+    background:
+        rgba(13, 43, 62, 0.86);
+
+    color:
+        #ffffff;
+
+    font-size: 9px;
+    font-weight: 600;
+
+    z-index: 10;
+
+    pointer-events: none;
 }
 
 
@@ -526,8 +939,7 @@
 
     .gatenho-page {
         padding:
-            30px 14px
-            60px;
+            30px 14px 60px;
     }
 
     .gatenho-header h1 {
@@ -553,8 +965,7 @@
 
     .gatenho-page {
         padding:
-            24px 10px
-            50px;
+            24px 10px 50px;
     }
 
     .gatenho-header {
@@ -576,7 +987,8 @@
     .gatenho-card {
         max-width: 100%;
 
-        border-radius: 21px;
+        border-radius:
+            21px;
     }
 
     .gatenho-foto {
@@ -585,6 +997,7 @@
 
     .gatenho-info-principal {
         left: 18px;
+        right: 18px;
         bottom: 17px;
     }
 
@@ -600,252 +1013,6 @@
         gap: 18px;
     }
 
-}
-/* ==========================================
-   PUBLICIDADES LATERAIS
-========================================== */
-
-.tinder-publicidade {
-    position: fixed;
-
-    top: 150px;
-
-    width: 220px;
-
-    background: #ffffff;
-
-    border-radius: 20px;
-
-    overflow: hidden;
-
-    text-decoration: none;
-
-    color: #1e293b;
-
-    border: 1px solid rgba(226, 232, 240, 0.9);
-
-    box-shadow:
-        0 15px 40px rgba(15, 23, 42, 0.16);
-
-    z-index: 20;
-
-    transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
-}
-
-
-.tinder-publicidade:hover {
-    transform: translateY(-5px);
-
-    box-shadow:
-        0 22px 50px rgba(15, 23, 42, 0.22);
-}
-
-
-/* LADO ESQUERDO */
-
-.tinder-publicidade-esquerda {
-    left: 25px;
-}
-
-
-/* LADO DIREITO */
-
-.tinder-publicidade-direita {
-    right: 25px;
-}
-
-
-/* ==========================================
-   CONTEÚDO
-========================================== */
-
-.tinder-publicidade-conteudo {
-    width: 100%;
-
-    background: #ffffff;
-
-    text-align: center;
-}
-
-
-/* NOME DA LOJA */
-
-.tinder-marca {
-    width: 100%;
-
-    padding: 14px 10px;
-
-    font-size: 17px;
-    font-weight: 900;
-
-    letter-spacing: 1px;
-}
-
-
-/* COBASI */
-
-.cobasi-marca {
-    background: #ff6a00;
-
-    color: #ffffff;
-}
-
-
-/* AGROSOLO */
-
-.agrosolo-marca {
-    background: #15803d;
-
-    color: #ffffff;
-}
-
-
-/* ==========================================
-   FOTO
-========================================== */
-
-.tinder-publicidade-imagem {
-    width: 100%;
-    height: 190px;
-
-    overflow: hidden;
-
-    background: #f1f5f9;
-}
-
-
-.tinder-publicidade-imagem img {
-    display: block;
-
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-}
-
-
-/* ==========================================
-   TEXTO
-========================================== */
-
-.tinder-publicidade-texto {
-    padding: 15px;
-}
-
-
-.tinder-oferta {
-    display: inline-block;
-
-    margin-bottom: 8px;
-
-    color: #7c3aed;
-
-    font-size: 11px;
-    font-weight: 800;
-
-    letter-spacing: 0.5px;
-}
-
-
-.tinder-publicidade h3 {
-    margin: 4px 0 8px;
-
-    color: #1e293b;
-
-    font-size: 17px;
-
-    line-height: 1.25;
-}
-
-
-.tinder-publicidade p {
-    margin: 0 0 15px;
-
-    color: #64748b;
-
-    font-size: 12px;
-
-    line-height: 1.5;
-}
-
-
-/* ==========================================
-   BOTÃO
-========================================== */
-
-.tinder-publicidade-botao {
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    min-height: 36px;
-
-    padding: 0 15px;
-
-    border-radius: 999px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #7c3aed,
-            #6366f1
-        );
-
-    color: #ffffff;
-
-    font-size: 12px;
-    font-weight: 700;
-}
-
-
-/* ==========================================
-   ETIQUETA PUBLICIDADE
-========================================== */
-
-.tinder-publicidade-label {
-    position: absolute;
-
-    top: 8px;
-    right: 8px;
-
-    padding: 4px 8px;
-
-    border-radius: 20px;
-
-    background: rgba(15, 23, 42, 0.72);
-
-    color: #ffffff;
-
-    font-size: 9px;
-    font-weight: 600;
-
-    z-index: 10;
-
-    pointer-events: none;
-}
-
-
-/* ==========================================
-   GARANTE QUE O TINDER FIQUE NO CENTRO
-========================================== */
-
-.gatenho-page {
-    position: relative;
-
-    width: 100%;
-    min-height: 100vh;
-}
-
-
-.gatenho-header,
-.gatenho-area,
-.gatenho-frase {
-    position: relative;
-
-    z-index: 5;
 }
 
 
@@ -871,7 +1038,7 @@
 
 
 /* ==========================================
-   ESCONDE NO TABLET/CELULAR
+   ESCONDE PUBLICIDADE NO TABLET / CELULAR
 ========================================== */
 
 @media (max-width: 1050px) {
