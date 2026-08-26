@@ -38,11 +38,7 @@ export default function CardAnimais({ pet }) {
         <button type="button">
           ❤️ Tenho interesse
         </button>
-
-        <button type="button">
-          💬 Comentar
-        </button>
-
+        
         <button type="button">
           ↗ Compartilhar
         </button>
