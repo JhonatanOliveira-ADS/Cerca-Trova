@@ -4,7 +4,7 @@ import {Request, Response} from 'express'
 class publicacoesControllers{
 
     async publicarPost(req: Request, res: Response){
-        const {tipo, nome_pet, especie, raca, idade_pet, porte, descricao, id_usuario} = req.body
+        const {tipo, nome_pet, especie, raca, idade_pet, porte, descricao,foto,sexo,cidade,estado, id_usuario} = req.body
         const enviarDados = new publicacoesServices()
         const resposta = await enviarDados.cadastrarPublicacao({
             tipo, 
@@ -14,6 +14,10 @@ class publicacoesControllers{
             idade_pet,
             porte,
             descricao,
+            foto,
+            sexo,
+            cidade,
+            estado,
             id_usuario
         })
 
@@ -28,7 +32,7 @@ class publicacoesControllers{
     }
 
     async atualizarPublicacao(req: Request, res: Response){
-        const {id, tipo, nome_pet, especie, raca, idade_pet, porte, descricao} = req.body
+        const {id, tipo, nome_pet, especie, raca, idade_pet, porte, foto, sexo, cidade, estado,status,id_usuario, descricao} = req.body
         const enviarDados = new publicacoesServices()
         const resposta = await enviarDados.atualizarPublicacao({
             id,
@@ -38,7 +42,13 @@ class publicacoesControllers{
             raca,
             idade_pet,
             porte,
-            descricao
+            foto,
+            sexo,
+            cidade,
+            estado,
+            status,
+            descricao,
+            id_usuario
         })
 
         return res.json(resposta)
