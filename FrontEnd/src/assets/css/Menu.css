@@ -1,40 +1,52 @@
-
+/* ==========================================
+   MENU - CERCA TROVA
+========================================== */
 
 nav {
     position: sticky;
+
     top: 0;
+
     z-index: 1000;
 
     width: 100%;
     min-height: 64px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
-    gap: 8px;
+    gap: 14px;
 
     padding: 8px 20px;
 
-    background: rgba(255, 255, 255, 0.90);
+    background: rgba(255, 255, 255, 0.94);
 
     backdrop-filter: blur(14px);
+
     -webkit-backdrop-filter: blur(14px);
 
-    border-bottom: 1px solid rgba(124, 58, 237, 0.10);
+    border-bottom:
+        1px solid rgba(22, 49, 71, 0.08);
 
     box-shadow:
-        0 4px 20px rgba(15, 23, 42, 0.06);
+        0 4px 18px rgba(22, 49, 71, 0.06);
 }
 
 
-
+/* ==========================================
+   LINKS DO MENU
+========================================== */
 
 nav a {
     position: relative;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     min-height: 44px;
@@ -45,30 +57,42 @@ nav a {
 
     text-decoration: none;
 
-    color: #475569;
+    color: #163147;
 
     font-size: 15px;
-    font-weight: 600;
+
+    font-weight: 700;
 
     transition:
         color 0.2s ease,
         background 0.2s ease,
-        transform 0.2s ease;
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 
-
+/* ==========================================
+   HOVER DOS LINKS
+========================================== */
 
 nav a:hover {
-    color: #7c3aed;
+    color: #ffffff;
 
-    background: #f3e8ff;
+    background: linear-gradient(
+        135deg,
+        #163147 0%,
+        #a95e94 100%
+    );
 
     transform: translateY(-2px);
+
+    box-shadow:
+        0 5px 14px rgba(51, 102, 102, 0.22);
 }
-
-
-
+/* ==========================================
+   LINHA EMBAIXO DO LINK
+========================================== */
 
 nav a::after {
     content: "";
@@ -76,18 +100,16 @@ nav a::after {
     position: absolute;
 
     left: 50%;
+
     bottom: 3px;
 
     width: 0;
+
     height: 3px;
 
     border-radius: 20px;
 
-    background: linear-gradient(
-        90deg,
-        #7c3aed,
-        #6366f1
-    );
+    background: #a95e94;
 
     transform: translateX(-50%);
 
@@ -99,56 +121,46 @@ nav a:hover::after {
     width: 55%;
 }
 
-
-/* BOTÃO ENTRAR */
+/* botao entrar */
 
 nav a:last-child {
     margin-left: 10px;
-
-    padding: 0 22px;
-
+    padding: 0 24px;
     color: #ffffff;
-
-    background: linear-gradient(
-        135deg,
-        #7c3aed,
-        #6366f1
-    );
-
-    box-shadow:
-        0 5px 15px rgba(99, 102, 241, 0.25);
+    background:#a95e94
+ ;
+    border: 1px solid #a95e94
+ ;
+    box-shadow: 0 6px 16px rgba(22, 49, 71, 0.22);
 }
 
-
+/* ========================================== HOVER DO BOTÃO ENTRAR ========================================== */
 nav a:last-child:hover {
     color: #ffffff;
-
-    background: linear-gradient(
+     background: linear-gradient(
         135deg,
-        #6d28d9,
-        #4f46e5
+        #163147 0%,
+        #a95e94 100%
     );
-
     transform: translateY(-2px);
-
-    box-shadow:
-        0 8px 20px rgba(99, 102, 241, 0.32);
+    box-shadow: 0 8px 20px rgba(169, 94, 148, 0.28);
 }
-
 
 nav a:last-child::after {
     display: none;
 }
 
 
-
+/* ==========================================
+   MOBILE
+========================================== */
 
 @media (max-width: 600px) {
 
     nav {
         justify-content: flex-start;
 
-        gap: 3px;
+        gap: 4px;
 
         padding: 7px 8px;
 
@@ -157,9 +169,11 @@ nav a:last-child::after {
         scrollbar-width: none;
     }
 
+
     nav::-webkit-scrollbar {
         display: none;
     }
+
 
     nav a {
         flex-shrink: 0;
@@ -171,10 +185,11 @@ nav a:last-child::after {
         font-size: 13px;
     }
 
-    nav a:last-child {
-        margin-left: 2px;
 
-        padding: 0 14px;
+    nav a:last-child {
+        margin-left: 4px;
+
+        padding: 0 16px;
     }
 
 }
