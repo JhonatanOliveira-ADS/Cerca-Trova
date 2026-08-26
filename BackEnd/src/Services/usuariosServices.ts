@@ -1,4 +1,5 @@
 import prismaClient from "../prismaCliente"
+import {hash} from 'bcryptjs'
 
 interface cadUsuario {
     nome: string
@@ -14,10 +15,8 @@ interface altUsuario {
     id: string
     nome: string
     email: string
-    senha: string
     telefone: string
     foto_perfil: string
-    tipo: "USUARIO" | "ONG"
 }
 
 class usuariosServices {
@@ -33,11 +32,13 @@ class usuariosServices {
             return ('Já existe um usuário cadastrado com esse E-mail')
         }
 
+        const senhaHash = await hash(senha, 8 )
+
         const usuario = await prismaClient.usuarios.create({
             data: {
                 nome: nome,
                 email: email,
-                senha: senha,
+                senha: senhaHash,
                 telefone: telefone,
                 foto_perfil: foto_perfil,
                 tipo: tipo
@@ -80,7 +81,7 @@ class usuariosServices {
     }
 
 
-    async atualizarDados({ id, nome, email, senha, telefone, foto_perfil, tipo }: altUsuario) {
+    async atualizarDados({ id, nome, email, telefone, foto_perfil }: altUsuario) {
         const atualizarDados = await prismaClient.usuarios.update({
             where: {
                 id: id
@@ -89,10 +90,8 @@ class usuariosServices {
                 id,
                 nome,
                 email,
-                senha,
                 telefone,
                 foto_perfil,
-                tipo
             }
         })
         return atualizarDados

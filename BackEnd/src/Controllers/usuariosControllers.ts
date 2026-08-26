@@ -27,7 +27,16 @@ class usuariosControllers {
     }
 
     async atualizarDadosUsuario(req: Request, res: Response){
-        
+        const {id, nome, email, telefone, foto_perfil} = req.body
+        const enviarDados = new usuariosServices()
+        const resposta = await enviarDados.atualizarDados({
+            id,
+            nome,
+            email,
+            telefone,
+            foto_perfil
+        })
+        return res.json(resposta)
     }
 
 
