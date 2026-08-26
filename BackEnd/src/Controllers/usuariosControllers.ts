@@ -22,7 +22,7 @@ class usuariosControllers {
     async visualizarDadosUnico (req: Request, res: Response){
         const {id} = req.body
         const enviarDados = new usuariosServices()
-        const resposta = await enviarDados.visualizarDadosUnico
+        const resposta = await enviarDados.visualizarDadosUnico(id)
         return res.json(resposta) 
     }
 

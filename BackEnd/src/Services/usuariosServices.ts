@@ -62,7 +62,7 @@ class usuariosServices {
 
 
     async visualizarDadosUnico(id: string) {
-        const visualizarDadosUnico = await prismaClient.usuarios.findFirst({
+        const resposta = await prismaClient.usuarios.findFirst({
             where: {
                 id: id
             },
@@ -76,7 +76,7 @@ class usuariosServices {
                 verificado: true
             }
         })
-        return visualizarDadosUnico
+        return resposta
     }
 
 
