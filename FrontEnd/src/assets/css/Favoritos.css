@@ -1,0 +1,118 @@
+
+ 
+/* ==========================================
+   PATINHAS
+========================================== */
+ 
+.app-container::before {
+    content: "";
+ 
+    position: fixed;
+    inset: 0;
+ 
+    background-image:
+        url("./assets/imagens/patinhas.png");
+ 
+    background-repeat: repeat;
+ 
+    background-size:
+        720px auto;
+ 
+    background-position:
+        center top;
+ 
+    opacity: 0.28;
+ 
+    /*
+       Tirei o multiply por enquanto
+       para garantir que a imagem apareça.
+    */
+    pointer-events: none;
+ 
+    z-index: 0;
+}
+/* ==========================================
+   CONTEÚDO ACIMA DAS PATINHAS
+========================================== */
+ 
+.app-conteudo {
+    position: relative;
+ 
+    z-index: 1;
+ 
+    width: 100%;
+ 
+    min-height:
+        calc(100vh - 64px);
+ 
+    background: transparent;
+}
+ 
+ 
+/* ==========================================
+   MENU ACIMA DAS PATINHAS
+========================================== */
+ 
+.app-container > header,
+.app-container > nav {
+    position: relative;
+ 
+    z-index: 10;
+}
+ 
+ 
+/* ==========================================
+   ANIMAÇÃO DO DEGRADÊ
+========================================== */
+ 
+@keyframes fundoCercaTrova {
+ 
+    0% {
+        background-position:
+            0% 50%;
+    }
+ 
+    20% {
+        background-position:
+            35% 20%;
+    }
+ 
+    40% {
+        background-position:
+            70% 50%;
+    }
+ 
+    60% {
+        background-position:
+            100% 80%;
+    }
+ 
+    80% {
+        background-position:
+            55% 100%;
+    }
+ 
+    100% {
+        background-position:
+            0% 50%;
+    }
+}
+ 
+ 
+/* ==========================================
+   MOBILE
+========================================== */
+ 
+@media (max-width: 600px) {
+ 
+    .app-container::before {
+        /*
+           Patinhas um pouco menores
+           no celular.
+        */
+        background-size:
+            400px auto;
+ 
+        opacity: 0.18;
+    }
+}
