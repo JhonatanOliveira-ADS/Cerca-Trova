@@ -1,7 +1,5 @@
 import { hash } from "bcryptjs";
 import prismaClient from "../prismaCliente";
-import e from "express";
-
 
 interface CadOngs {
     nome: string,
