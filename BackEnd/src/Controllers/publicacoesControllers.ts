@@ -61,3 +61,5 @@ class publicacoesControllers{
         return res.json(resposta)
     }
 }
+
+export default publicacoesControllers

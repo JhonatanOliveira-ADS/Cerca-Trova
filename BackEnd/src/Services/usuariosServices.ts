@@ -7,7 +7,6 @@ interface cadUsuario {
     senha: string
     telefone: string
     foto_perfil: string
-    tipo: "USUARIO" | "ONG"
 }
 
 
@@ -21,7 +20,7 @@ interface altUsuario {
 
 class usuariosServices {
 
-    async criarUsuario({ nome, email, senha, telefone, foto_perfil, tipo }: cadUsuario) {
+    async criarUsuario({ nome, email, senha, telefone, foto_perfil }: cadUsuario) {
         const verificarEmail = await prismaClient.usuarios.findFirst({
             where: {
                 email: email
@@ -40,8 +39,7 @@ class usuariosServices {
                 email: email,
                 senha: senhaHash,
                 telefone: telefone,
-                foto_perfil: foto_perfil,
-                tipo: tipo
+                foto_perfil: foto_perfil
             }
         })
         return usuario

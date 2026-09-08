@@ -13,8 +13,8 @@ model Usuarios {
   email            String      @unique
   senha            String
   telefone         String
-  foto_perfil      String
-  tipo             tipoUsuario @default(USUARIO)
+  foto_perfil      String?
+  tipo             String @default("USUARIO")
   verificado       Boolean     @default(false)
   data_criacao     DateTime    @default(now())
   data_atualizacao DateTime    @updatedAt

@@ -5,10 +5,11 @@
 class usuariosControllers {
 
     async criarUsuarios(req: Request, res: Response){
-        const {nome,email,senha, telefone,foto_perfil,tipo} = req.body
+        const {nome,email,senha, telefone,foto_perfil} = req.body
+        console.log(nome,email,senha, telefone,foto_perfil)
         const enviarDados = new usuariosServices()
         const resposta = await enviarDados.criarUsuario({
-            nome,email,senha, telefone,foto_perfil,tipo
+            nome,email,senha, telefone,foto_perfil
         })
         return res.json(resposta)
     }
