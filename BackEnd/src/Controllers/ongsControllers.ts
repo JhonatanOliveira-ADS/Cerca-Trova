@@ -3,7 +3,8 @@ import { Request, Response } from "express";
 
 class ongsControllers {
     async criarOng(req: Request, res: Response) {
-        const { nome,email,senha,descricao, foto, cidade, estado, telefone, instagram, site } = req.body
+        const { nome,email,senha,descricao, cidade, estado, telefone, instagram, site } = req.body
+        const{ originalname, filename: foto} = req.file
         const enviarDadosServices = new OngsServices()
         const resposta = await enviarDadosServices.criarOng({
             nome,

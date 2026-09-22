@@ -5,8 +5,8 @@
 class usuariosControllers {
 
     async criarUsuarios(req: Request, res: Response){
-        const {nome,email,senha, telefone,foto_perfil} = req.body
-        console.log(nome,email,senha, telefone,foto_perfil)
+        const {nome,email,senha, telefone} = req.body
+        const{ originalname, filename: foto_perfil} = req.file
         const enviarDados = new usuariosServices()
         const resposta = await enviarDados.criarUsuario({
             nome,email,senha, telefone,foto_perfil

@@ -19,16 +19,16 @@ import loginONGsControllers from "./Controllers/loginONGsControllers/loginONGsCo
 
 
 //endpoints POST
-router.post('/CadastrarUsuarios', uploead.single('file'),new usuariosControllers().criarUsuarios)
+router.post('/CadastrarUsuarios', uploead.single('file'), new usuariosControllers().criarUsuarios)
 router.post('/CadastrarONG', uploead.single('file'), new ongsControllers().criarOng)
-router.post ('/CriarPublicacao', estaAutenticado, new publicacoesControllers().publicarPost)
+router.post ('/CriarPublicacao', uploead.single('file'), estaAutenticado, new publicacoesControllers().publicarPost)
 router.post ('/CriarFavorito', estaAutenticado, new favoritosControllers().criarFavorito)
 router.post('/logarUsuario', new loginUsuariosControllers().logarUsuario)
 router.post ('/logarONGs', new loginONGsControllers().logarONG)
 
 
 //endpoints GET
-router.post('/visualizarDadosUnico', estaAutenticado, new usuariosControllers().visualizarDadosUnico)
+router.get('/visualizarDadosUnico', estaAutenticado, new usuariosControllers().visualizarDadosUnico)
 router.get('/visualizarDadosGeral', estaAutenticado, new usuariosControllers().visualizarDadosGeral)
 router.get('/visualizarONG', estaAutenticado, new ongsControllers().visualizarONG)
 router.get('/visualizarFavorito', estaAutenticado, new favoritosControllers().visualizarFavorito)
@@ -36,9 +36,9 @@ router.get('/visualizarPublicacao', estaAutenticado, new publicacoesControllers(
 
 
 //endpoints PUT
-router.put('/atualizarDadosUsuario', estaAutenticado, new usuariosControllers().atualizarDadosUsuario)
-router.put('/atualizarDadosONG', estaAutenticado, new ongsControllers().atualizarONG)
-router.put('atualizarDadosPublicacao', estaAutenticado, new publicacoesControllers().atualizarPublicacao)
+router.put('/atualizarDadosUsuario', uploead.single('file'), estaAutenticado, new usuariosControllers().atualizarDadosUsuario)
+router.put('/atualizarDadosONG', uploead.single('file'), estaAutenticado, new ongsControllers().atualizarONG)
+router.put('/atualizarDadosPublicacao', uploead.single('file'), estaAutenticado, new publicacoesControllers().atualizarPublicacao)
 
 //endpoints DELETE
 router.delete('/deletarUsuarios', estaAutenticado, new usuariosControllers().deletarUsuario)

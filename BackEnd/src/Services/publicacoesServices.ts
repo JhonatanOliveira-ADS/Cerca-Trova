@@ -53,6 +53,7 @@ class publicacoesServices {
                 id_usuario: id_usuario
             }
         })
+        return("Sua publicação vai ser analisada, por favor aguarde")
     }
 
     async visualizarPublicacaoUnico(id: string) {
@@ -67,6 +68,7 @@ class publicacoesServices {
         }
 
         const visualizar = await prismaClient.publicacoes.findFirst({
+            
             where: {
                 id: id
             },
@@ -87,6 +89,9 @@ class publicacoesServices {
                 id_usuario: true
             }
         })
+
+        return visualizar
+
     }
 
     async atualizarPublicacao({ id, tipo, nome_pet, especie, raca, idade_pet,sexo, porte, descricao, foto, cidade, estado,status}: altPublicacoes) {
@@ -142,6 +147,7 @@ class publicacoesServices {
                 id: id
             }
         })
+        return ("Publicação deletada")
     }
 }
 

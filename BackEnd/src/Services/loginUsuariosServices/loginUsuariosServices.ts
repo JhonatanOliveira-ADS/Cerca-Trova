@@ -30,7 +30,7 @@ class LoginUsuariosServices{
             nome: emailExiste.nome,
             email: emailExiste.email
         },
-        process.env.JWT_SECRET,
+        process.env.JWT_SECRETO,
         {
             subject: emailExiste.id,
             expiresIn:"24h"

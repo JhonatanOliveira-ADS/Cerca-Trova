@@ -102,7 +102,7 @@ class usuariosServices {
                 id: id
             }
         })
-        return deletarDadosUsuarios
+        return ("Dados de usuário deletado")
     }
 }
 

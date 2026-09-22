@@ -1,97 +1,73 @@
 import prismaClient from "../prismaCliente";
 
-interface cadFavorito{
+interface cadFavorito {
     id_usuarios: string,
     id_publicacoes: string
 }
 
-class favoritosServices{
-    async criarFavorito({id_usuarios, id_publicacoes}: cadFavorito){
-        
+
+
+interface deletarFavorito {
+    id_usuarios: string,
+    id_publicacoes: string,
+    id: string
+}
+
+class favoritosServices {
+    async criarFavorito({ id_usuarios, id_publicacoes }: cadFavorito) {
+
         const usuarioExiste = await prismaClient.usuarios.findFirst({
-            where:{
-                id:id_usuarios
-            }
-        }) 
-
-        if(!usuarioExiste){
-            return("Usuario não existe")
-        }
-
-        const publicacaoExiste = await prismaClient.publicacoes.findFirst({
-            where:{
-                id:id_usuarios
+            where: {
+                id: id_usuarios
             }
         })
 
-        if(!publicacaoExiste){
-            return("Publicação não existe")
+        if (!usuarioExiste) {
+            return ("Usuario não existe")
         }
 
-       const criarFavorito = await prismaClient.favoritos.create({
-            data:{
+        const publicacaoExiste = await prismaClient.publicacoes.findFirst({
+            where: {
+                id: id_publicacoes
+            }
+        })
+
+        if (!publicacaoExiste) {
+            return ("Publicação não existe")
+        }
+
+        const criarFavorito = await prismaClient.favoritos.create({
+            data: {
                 id_usuarios,
                 id_publicacoes
             }
         })
     }
 
-    async visualizarFavorito(id: string){
-         const usuarioExiste = await prismaClient.usuarios.findFirst({
-            where:{
-                id:id
-            }
-        }) 
+    async visualizarFavorito(id: string) {
 
-        if(!usuarioExiste){
-            return("Usuario não existe")
-        }
-
-        const publicacaoExiste = await prismaClient.publicacoes.findFirst({
-            where:{
-                id:id
+        const resposta = await prismaClient.favoritos.findFirst({
+            where: {
+                id: id
+            },
+            select:{
+                id: true
             }
         })
+    
+        return resposta
 
-        if(!publicacaoExiste){
-            return("Publicação não existe")
-        }
-
-        await prismaClient.favoritos.findFirst({
-            where:{
-                id:id
-            }
-        })
     }
 
+    async deletarFavorito({ id_usuarios, id_publicacoes, id }: deletarFavorito) {
 
-    async deletarFavorito(id: string){
-         const usuarioExiste = await prismaClient.usuarios.findFirst({
-            where:{
-                id:id
-            }
-        }) 
-
-        if(!usuarioExiste){
-            return("Usuario não existe")
-        }
-
-        const publicacaoExiste = await prismaClient.publicacoes.findFirst({
-            where:{
-                id:id
+        const resposta = await prismaClient.favoritos.delete({
+            where: {
+                id: id
             }
         })
 
-        if(!publicacaoExiste){
-            return("Publicação não existe")
-        }
-
-        await prismaClient.favoritos.delete({
-            where:{
-                id:id
-            }
-        })
+        return ("Publicação retirada dos favoritos")
     }
 }
-
 export default favoritosServices

@@ -36,8 +36,8 @@ model Ongs {
   cidade    String
   estado    String
   telefone  String
-  instagram String
-  site      String
+  instagram String?
+  site      String?
 
   @@map("ongs")
 }

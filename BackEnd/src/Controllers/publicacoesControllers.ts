@@ -4,7 +4,8 @@ import {Request, Response} from 'express'
 class publicacoesControllers{
 
     async publicarPost(req: Request, res: Response){
-        const {tipo, nome_pet, especie, raca, idade_pet, porte, descricao,foto,sexo,cidade,estado, id_usuario} = req.body
+        const {tipo, nome_pet, especie, raca, idade_pet, porte, descricao,sexo,cidade,estado, id_usuario} = req.body
+        const{ originalname, filename: foto} = req.file
         const enviarDados = new publicacoesServices()
         const resposta = await enviarDados.cadastrarPublicacao({
             tipo, 
@@ -22,6 +23,8 @@ class publicacoesControllers{
         })
 
         return res.json(resposta)
+            
+        
     }
 
     async visualizarPublicacoes(req: Request, res: Response){
