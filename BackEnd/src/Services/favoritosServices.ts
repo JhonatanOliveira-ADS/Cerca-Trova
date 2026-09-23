@@ -59,7 +59,7 @@ class favoritosServices {
 
     }
 
-    async deletarFavorito({ id_usuarios, id_publicacoes, id }: deletarFavorito) {
+    async deletarFavorito(id: string) {
 
         const resposta = await prismaClient.favoritos.delete({
             where: {

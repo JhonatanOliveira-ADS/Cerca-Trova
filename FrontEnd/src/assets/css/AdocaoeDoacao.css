@@ -1,0 +1,504 @@
+/*
+  AdocaoeDoacao.css
+  Estilos exclusivos da página de adoção e do feed de publicações.
+  Todos os elementos usam classes próprias para evitar conflitos com a Home.
+*/
+
+@keyframes fundoCercaTrova {
+
+    0% {
+        background-position:
+            0% 50%;
+    }
+
+    20% {
+        background-position:
+            35% 20%;
+    }
+
+    40% {
+        background-position:
+            70% 50%;
+    }
+
+    60% {
+        background-position:
+            100% 80%;
+    }
+
+    80% {
+        background-position:
+            55% 100%;
+    }
+
+    100% {
+        background-position:
+            0% 50%;
+    }
+}
+
+.adocao-page {
+  --adocao-navy: #163147;
+  --adocao-blue: #68a6c5;
+  --adocao-blue-soft: #e4f1f6;
+  --adocao-orange: #f4b25e;
+  --adocao-pink: #bd5f91;
+  --adocao-cream: #fbfaf7;
+  --adocao-muted: #6b8291;
+  --adocao-line: #e1eaee;
+  min-height: 100vh;
+  padding: 38px 24px 90px;
+  font-family: "Trebuchet MS", Arial, sans-serif;
+}
+
+.adocao-hero,
+.adocao-filter-panel,
+.adocao-feed {
+  width: min(1160px, 100%);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.adocao-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 225px;
+  margin-bottom: 26px;
+  padding: 34px 46px;
+  overflow: hidden;
+  border-radius: 30px;
+  background: linear-gradient(115deg, var(--adocao-blue) 0%, #86bfd4 53%, var(--adocao-orange) 100%);
+  box-shadow: 0 14px 34px rgba(22, 49, 71, 0.15);
+}
+
+.adocao-hero-copy {
+  max-width: 650px;
+}
+
+.adocao-eyebrow {
+  display: inline-block;
+  margin-bottom: 9px;
+  color: var(--adocao-pink);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.adocao-hero .adocao-eyebrow {
+  color: #ffffff;
+}
+
+.adocao-hero h1 {
+  max-width: 620px;
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(30px, 5vw, 54px);
+  line-height: 1.03;
+}
+
+.adocao-hero p {
+  max-width: 570px;
+  margin: 17px 0 0;
+  color: #ffffff;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.adocao-hero-art {
+  position: relative;
+  min-width: 265px;
+  color: #ffffff;
+  font-size: 90px;
+  letter-spacing: -18px;
+  transform: rotate(-5deg);
+}
+
+.adocao-hero-art span {
+  position: relative;
+  top: -35px;
+  color: var(--adocao-pink);
+  font-size: 48px;
+  letter-spacing: 0;
+}
+
+.adocao-filter-panel {
+  margin-bottom: 42px;
+  padding: 25px;
+  border: 1px solid var(--adocao-line);
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(22, 49, 71, 0.08);
+}
+
+.adocao-filter-heading,
+.adocao-feed-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.adocao-filter-heading h2,
+.adocao-feed-heading h2 {
+  margin: 0;
+  color: var(--adocao-navy);
+  font-size: 28px;
+}
+
+.adocao-results-count,
+.adocao-feed-heading p {
+  margin: 0 0 3px;
+  color: var(--adocao-muted);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.adocao-filter-controls {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 170px auto;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.adocao-search-field,
+.adocao-select-field {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  border: 1px solid var(--adocao-line);
+  border-radius: 15px;
+  background: #f8fbfc;
+}
+
+.adocao-search-field {
+  gap: 10px;
+  padding: 0 15px;
+}
+
+.adocao-search-field span {
+  color: var(--adocao-blue);
+  font-size: 29px;
+  transform: rotate(-20deg);
+}
+
+.adocao-search-field input,
+.adocao-select-field select {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  color: var(--adocao-navy);
+  background: transparent;
+  font: 600 14px "Trebuchet MS", Arial, sans-serif;
+}
+
+.adocao-select-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 5px 12px;
+}
+
+.adocao-select-field span {
+  position: absolute;
+  top: 5px;
+  color: var(--adocao-muted);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.adocao-select-field select {
+  height: 34px;
+  padding-top: 11px;
+  cursor: pointer;
+}
+
+.adocao-clear-button,
+.adocao-empty-state button {
+  min-height: 48px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 15px;
+  color: #ffffff;
+  background: var(--adocao-navy);
+  font: 800 14px "Trebuchet MS", Arial, sans-serif;
+  cursor: pointer;
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+
+.adocao-clear-button:hover,
+.adocao-empty-state button:hover {
+  background: var(--adocao-pink);
+  transform: translateY(-2px);
+}
+
+.adocao-tag-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 18px;
+}
+
+.adocao-filter-tag,
+.adocao-post-tag {
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.adocao-filter-tag {
+  padding: 9px 14px;
+  border: 1px solid var(--adocao-line);
+  color: var(--adocao-muted);
+  background: #ffffff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: color 0.18s ease, background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.adocao-filter-tag:hover,
+.adocao-filter-tag.selected {
+  color: #ffffff;
+  border-color: var(--adocao-blue);
+  background: var(--adocao-blue);
+  transform: translateY(-1px);
+}
+
+.adocao-filter-tag:nth-child(3).selected {
+  border-color: var(--adocao-orange);
+  background: var(--adocao-orange);
+}
+
+.adocao-filter-tag:nth-child(4).selected {
+  border-color: var(--adocao-pink);
+  background: var(--adocao-pink);
+}
+
+.adocao-filter-tag:nth-child(5).selected {
+  border-color: var(--adocao-navy);
+  background: var(--adocao-navy);
+}
+
+.adocao-feed-heading {
+  margin-bottom: 21px;
+}
+
+.adocao-post-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.adocao-post-card {
+  overflow: hidden;
+  border: 1px solid var(--adocao-line);
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 7px 20px rgba(22, 49, 71, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.adocao-post-card:hover {
+  box-shadow: 0 13px 28px rgba(22, 49, 71, 0.15);
+  transform: translateY(-4px);
+}
+
+.adocao-post-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 69px;
+  padding: 12px 14px;
+}
+
+.adocao-post-avatar {
+  display: grid;
+  flex: 0 0 42px;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  color: #ffffff;
+  background: var(--adocao-blue);
+  font-size: 20px;
+}
+
+.adocao-post-author {
+  min-width: 0;
+}
+
+.adocao-post-author h3,
+.adocao-post-author p {
+  overflow: hidden;
+  margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.adocao-post-author h3 {
+  color: var(--adocao-navy);
+  font-size: 14px;
+}
+
+.adocao-post-author p {
+  margin-top: 4px;
+  color: var(--adocao-muted);
+  font-size: 12px;
+}
+
+.adocao-post-tag {
+  max-width: 145px;
+  margin-left: auto;
+  padding: 6px 9px;
+  overflow: hidden;
+  color: #ffffff;
+  background: var(--adocao-blue);
+  font-size: 10px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.adocao-post-tag.tag-adoção { background: var(--adocao-pink); }
+.adocao-post-tag.tag-perdido { background: var(--adocao-navy); }
+.adocao-post-tag.tag-encontra { background: var(--adocao-blue); }
+.adocao-post-tag.tag-em-busca-de-um-cãopanheiro { color: var(--adocao-navy); background: var(--adocao-orange); }
+
+.adocao-post-content {
+  min-height: 137px;
+  padding: 0 16px 15px;
+}
+
+.adocao-post-content h2 {
+  margin: 0 0 8px;
+  color: var(--adocao-navy);
+  font-size: 21px;
+}
+
+.adocao-post-content p {
+  margin: 0 0 10px;
+  color: #4d6472;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.adocao-post-details {
+  color: var(--adocao-blue);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.adocao-post-details b {
+  padding: 0 4px;
+  color: var(--adocao-orange);
+}
+
+.adocao-post-image {
+  display: block;
+  width: 100%;
+  height: 245px;
+  object-fit: cover;
+}
+
+.adocao-post-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 7px;
+  padding: 9px 12px;
+  border-top: 1px solid var(--adocao-line);
+}
+
+.adocao-post-actions button {
+  flex: 1;
+  min-height: 35px;
+  padding: 0 5px;
+  border: 0;
+  border-radius: 9px;
+  color: var(--adocao-navy);
+  background: transparent;
+  font: 700 12px "Trebuchet MS", Arial, sans-serif;
+  cursor: pointer;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+
+.adocao-post-actions button:hover {
+  color: #ffffff;
+  background: var(--adocao-navy);
+}
+
+.adocao-empty-state {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 70px 20px;
+  border: 1px dashed var(--adocao-blue);
+  border-radius: 22px;
+  text-align: center;
+  background: #ffffff;
+}
+
+.adocao-empty-state > span {
+  font-size: 42px;
+}
+
+.adocao-empty-state h2 {
+  margin: 12px 0 7px;
+  color: var(--adocao-navy);
+}
+
+.adocao-empty-state p {
+  margin: 0 0 20px;
+  color: var(--adocao-muted);
+}
+
+@media (max-width: 900px) {
+  .adocao-post-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .adocao-page {
+    padding: 20px 10px 70px;
+  }
+
+  .adocao-hero {
+    min-height: 250px;
+    padding: 25px 22px;
+  }
+
+  .adocao-hero-art {
+    display: none;
+  }
+
+  .adocao-filter-panel {
+    padding: 18px 14px;
+    border-radius: 18px;
+  }
+
+  .adocao-filter-heading,
+  .adocao-feed-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .adocao-filter-heading h2,
+  .adocao-feed-heading h2 {
+    font-size: 24px;
+  }
+
+  .adocao-filter-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .adocao-post-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .adocao-post-image {
+    height: 280px;
+  }
+}

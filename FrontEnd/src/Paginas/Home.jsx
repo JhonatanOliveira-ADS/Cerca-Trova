@@ -98,6 +98,15 @@ export default function Home() {
             🐾 Comunidade
           </span>
 
+        
+          <div className='container-post'>
+            <h2>Crie seu post</h2>    
+            <form>
+              
+            </form>
+          </div>
+
+
           <h2>
             Encontre um novo amigo
           </h2>

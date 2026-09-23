@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 import "./App.css";
 
@@ -15,6 +15,8 @@ import MeuPerfil from "./Paginas/MeuPerfil";
 import Painel from "./Paginas/Painel";
 import TinderPet from "./Paginas/Tinder-pet";
 import Configuracoes from "./Paginas/Configuracoes";
+// Acrescentado: página de chat inspirada na referência visual fornecida.
+import Chat from "./Paginas/Chat";
 
 export default function App() {
   return (
@@ -36,9 +38,17 @@ export default function App() {
             <Route path="/painel" element={<Painel />} />
             <Route path="/tinder-pet" element={<TinderPet />} />
             <Route path="/configuracoes" element={<Configuracoes />} />
+            {/* Acrescentado: rota reutilizável para a tela de conversas. */}
+            <Route path="/chat" element={<Chat />} />
           </Routes>
 
         </div>
+
+        {/* Acrescentado: botão fixo que permanece no canto inferior direito em qualquer página. */}
+        <Link className="chat-floating-button" to="/chat" aria-label="Abrir chat" title="Abrir chat">
+          <span aria-hidden="true">◌</span>
+          <strong>Chat</strong>
+        </Link>
 
       </div>
 
