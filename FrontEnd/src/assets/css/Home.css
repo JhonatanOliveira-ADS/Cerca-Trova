@@ -1,286 +1,247 @@
 /* fundo com patinhas e bordas nos textos , pensei em o compartilhar encaminhar  para chat e whats*/
-/* Define os estilos gerais do corpo da página, incluindo margem, altura mínima, fundo, fonte e posicionamento. */
 body {
-    margin: 0;
+  margin: 0;
 
-    min-height: 100vh;
+  min-height: 100vh;
 
-    background:
-        radial-gradient(circle at 20% 20%,
-            rgba(167, 139, 250, 0.18),
-            transparent 35%),
-        radial-gradient(circle at 80% 30%,
-            rgba(96, 165, 250, 0.16),
-            transparent 40%),
-        linear-gradient(135deg,
-            #f8fafc 0%,
-            #eef2ff 45%,
-            #fdf4ff 100%);
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(167, 139, 250, 0.18),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 80% 30%,
+      rgba(96, 165, 250, 0.16),
+      transparent 40%
+    ),
+    linear-gradient(135deg, #f8fafc 0%, #eef2ff 45%, #fdf4ff 100%);
 
-    font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 
-    position: relative;
+  position: relative;
 }
 
-/* Cria uma camada decorativa fixa com patinhas ao fundo da página sem interferir nos cliques. */
 body::before {
-    content: "🐾    🐾      🐾     🐾        🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾";
+  content: "🐾    🐾      🐾     🐾        🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾";
 
-    position: fixed;
+  position: fixed;
 
-    top: 90px;
-    left: 0;
+  top: 90px;
+  left: 0;
 
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 
-    font-size: 42px;
+  font-size: 42px;
 
-    color: rgba(99, 102, 241, 0.08);
+  color: rgba(99, 102, 241, 0.08);
 
-    word-spacing: 80px;
+  word-spacing: 80px;
 
-    line-height: 180px;
+  line-height: 180px;
 
-    transform: rotate(-12deg);
+  transform: rotate(-12deg);
 
-    pointer-events: none;
+  pointer-events: none;
 
-    z-index: 0;
+  z-index: 0;
 }
 
-/* Define o contêiner principal da Home para ocupar toda a largura e, no mínimo, toda a altura da tela. */
 .home-container {
-    width: 100%;
-    min-height: 100vh;
+  width: 100%;
+  min-height: 100vh;
 }
 
-/* Define a largura, centralização e espaçamento principal da área do feed. */
 .feed {
-    width: 100%;
-    max-width: 680px;
-    margin: 40px auto 80px;
-    padding: 0 16px;
+  width: 100%;
+  max-width: 680px;
+  margin: 40px auto 80px;
+  padding: 0 16px;
 }
 
-/* Controla o espaçamento inferior da área de título localizada no topo do feed. */
 .feed-topo {
-    margin-bottom: 24px;
+  margin-bottom: 24px;
 }
 
-/* Estiliza o título principal exibido no topo do feed. */
 .feed-topo h2 {
-    margin: 0;
-    color: #1e293b;
-    font-size: 28px;
+  margin: 0;
+  color: #1e293b;
+  font-size: 28px;
 }
 
-/* Estiliza o texto complementar exibido abaixo do título do feed. */
 .feed-topo p {
-    color: #64748b;
-    margin-top: 6px;
+  color: #64748b;
+  margin-top: 6px;
 }
 
-/* Define a aparência geral dos cards do feed, incluindo fundo, borda, arredondamento, espaçamento e sombra. */
 .feed-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    margin-bottom: 24px;
-    overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  margin-bottom: 24px;
+  overflow: hidden;
 
-    box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-/* Organiza o cabeçalho de cada card do feed utilizando alinhamento flexível e espaçamento interno. */
 .feed-card-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 
-    padding: 16px;
+  padding: 16px;
 }
 
-/* Estiliza o avatar apresentado no cabeçalho dos cards. */
 .feed-avatar {
-    width: 44px;
-    height: 44px;
+  width: 44px;
+  height: 44px;
 
-    border-radius: 50%;
+  border-radius: 50%;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    background: #eef2ff;
+  background: #eef2ff;
 
-    font-size: 22px;
+  font-size: 22px;
 }
 
-/* Estiliza o nome ou título apresentado no cabeçalho do card. */
 .feed-card-header h3 {
-    margin: 0;
+  margin: 0;
 
-    color: #1e293b;
+  color: #1e293b;
 
-    font-size: 17px;
+  font-size: 17px;
 }
 
-/* Estiliza as informações secundárias exibidas no cabeçalho do card. */
 .feed-card-header span {
-    display: block;
+  display: block;
 
-    margin-top: 3px;
+  margin-top: 3px;
 
-    color: #64748b;
+  color: #64748b;
 
-    font-size: 13px;
+  font-size: 13px;
 }
 
-/* Define o espaçamento interno da área de texto dos cards. */
 .feed-card-texto {
-    padding: 0 16px 14px;
+  padding: 0 16px 14px;
 }
 
-/* Estiliza os parágrafos localizados dentro da área de texto dos cards. */
 .feed-card-texto p {
-    margin: 0 0 8px;
+  margin: 0 0 8px;
 
-    color: #334155;
+  color: #334155;
 
-    line-height: 1.5;
+  line-height: 1.5;
 }
 
-/* Estiliza os textos em span presentes na área textual dos cards. */
 .feed-card-texto span {
-    color: #6366f1;
+  color: #6366f1;
 
-    font-size: 14px;
-    font-weight: 600;
+  font-size: 14px;
+  font-weight: 600;
 }
 
-/* Define tamanho, exibição e enquadramento das imagens dos cards. */
 .feed-card-img {
-    width: 100%;
-    height: 400px;
-    display: block;
-    object-fit: cover;
-    object-position: center;
+  width: 100%;
+  height: 400px;
+  display: block;
+  object-fit: cover;
+  object-position: center;
 }
 
 /* ==========================================
    AÇÕES DOS CARDS
 ========================================== */
 
-/* Organiza a área que contém os botões de ação localizados na parte inferior dos cards. */
 .feed-card-acoes {
-    display: flex;
+  display: flex;
 
-    align-items: center;
-    justify-content: space-between;
+  align-items: center;
+  justify-content: space-between;
 
-    width: 100%;
+  width: 100%;
 
-    padding: 10px 28px;
+  padding: 10px 28px;
 
-    border-top: 1px solid #e2e8f0;
+  border-top: 1px solid #e2e8f0;
 }
-
 
 /* ==========================================
    BOTÕES DOS CARDS
 ========================================== */
 
-/* Define a aparência principal dos botões de ação dos cards, incluindo cores, espaçamento e transições. */
 .feed-card-acoes button {
-    border: none;
+  border: none;
 
-    background: transparent;
+  background: transparent;
 
-    padding: 10px 14px;
+  padding: 10px 14px;
 
-    color: #163147;
+  color: #163147;
 
-    font-weight: 600;
-    font-size: 14px;
+  font-weight: 600;
+  font-size: 14px;
 
-    cursor: pointer;
+  cursor: pointer;
 
-    border-radius: 10px;
+  border-radius: 10px;
 
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
-
 
 /* ==========================================
    HOVER
 ========================================== */
 
-/* Aplica o efeito visual aos botões de ação quando o usuário passa o mouse sobre eles. */
 .feed-card-acoes button:hover {
-    color: #163147;
+  color: #163147;
 
-  background: linear-gradient(
-        135deg,
-        #163147 0%,
-        #a95e94 100%
-    );
+  background: linear-gradient(135deg, #163147 0%, #a95e94 100%);
 
-    transform: translateY(-2px);
+  transform: translateY(-2px);
 }
-/* Define outra configuração visual para os botões de ação dos cards. */
 .feed-card-acoes button {
-    border: none;
-    background: transparent;
+  border: none;
+  background: transparent;
 
-    padding: 10px 6px;
+  padding: 10px 6px;
 
-    color: #475569;
+  color: #475569;
 
-    font-weight: 400;
+  font-weight: 400;
 
-    cursor: pointer;
+  cursor: pointer;
 
-    border-radius: 8px;
+  border-radius: 8px;
 
-    transition: background 0.2s ease;
+  transition: background 0.2s ease;
 }
 
-/* Aplica o efeito de hover correspondente à configuração dos botões definida anteriormente. */
 .feed-card-acoes button:hover {
-    background: linear-gradient(
-        135deg,
-        #a95e94 0%
-        #163147 100%
-       
-        
-    );
-    color: white
+  background: linear-gradient(135deg, #a95e94 0% #163147 100%);
+  color: white;
 }
 
-/* Aplica ajustes responsivos para telas com largura máxima de 600px. */
 @media (max-width: 600px) {
+  .feed {
+    padding: 0 8px;
+    margin-top: 20px;
+  }
 
-    /* Reduz os espaçamentos do feed em telas de até 600px. */
-    .feed {
-        padding: 0 8px;
-        margin-top: 20px;
-    }
+  .feed-card {
+    border-radius: 10px;
+  }
 
-    /* Ajusta o arredondamento dos cards em telas de até 600px. */
-    .feed-card {
-        border-radius: 10px;
-    }
-
-    /* Reduz o tamanho da fonte dos botões de ação em telas de até 600px. */
-    .feed-card-acoes button {
-        font-size: 12px;
-    }
-
+  .feed-card-acoes button {
+    font-size: 12px;
+  }
 }
 
 /* Css individual , exceto os cards /*
@@ -288,598 +249,942 @@ body::before {
 /* Css header para o topo ficar maais interessante , conforme vcs queiram algo diferente por favor me falem /*
 */
 
-/* Estiliza o cabeçalho principal, mantendo-o fixado no topo e organizando sua aparência e posicionamento. */
 header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    min-height: 64px;
-    padding: 0 24px;
+  min-height: 64px;
+  padding: 0 24px;
 
-    background: rgba(255, 255, 255, 0.88);
-    backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
 
-    border-bottom: 1px solid rgba(99, 102, 241, 0.10);
+  border-bottom: 1px solid rgba(99, 102, 241, 0.1);
 
-    box-shadow:
-        0 4px 18px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
 }
 
-/* Organiza os elementos de navegação dentro do cabeçalho. */
 header nav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    gap: 8px;
+  gap: 8px;
 }
 
-/* Define a aparência padrão dos links presentes no cabeçalho. */
 header a {
-    position: relative;
+  position: relative;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    padding: 10px 16px;
+  padding: 10px 16px;
 
-    text-decoration: none;
+  text-decoration: none;
 
-    color: #475569;
+  color: #475569;
 
-    font-size: 15px;
-    font-weight: 600;
+  font-size: 15px;
+  font-weight: 600;
 
-    border-radius: 12px;
+  border-radius: 12px;
 
-    transition: 0.2s ease;
+  transition: 0.2s ease;
 }
 
-/* Aplica efeitos visuais aos links do cabeçalho quando o usuário passa o mouse sobre eles. */
 header a:hover {
-    color: #6d28d9;
-    background: #f3e8ff;
+  color: #6d28d9;
+  background: #f3e8ff;
 
-    transform: translateY(-1px);
+  transform: translateY(-1px);
 }
 
-/* Cria o elemento decorativo exibido abaixo dos links do cabeçalho. */
 header a::after {
-    content: "";
+  content: "";
 
-    position: absolute;
-    left: 50%;
-    bottom: 3px;
+  position: absolute;
+  left: 50%;
+  bottom: 3px;
 
-    width: 0;
-    height: 3px;
+  width: 0;
+  height: 3px;
 
-    border-radius: 10px;
+  border-radius: 10px;
 
-    background: linear-gradient(90deg,
-            #7c3aed,
-            #6366f1);
+  background: linear-gradient(90deg, #7c3aed, #6366f1);
 
-    transform: translateX(-50%);
+  transform: translateX(-50%);
 
-    transition: width 0.2s ease;
+  transition: width 0.2s ease;
 }
 
-/* Expande o elemento decorativo inferior dos links quando ocorre o hover. */
 header a:hover::after {
-    width: 55%;
+  width: 55%;
 }
 
-
-
-
-/* Define novamente as dimensões gerais do contêiner principal da Home. */
 .home-container {
-    width: 100%;
-    min-height: 100vh;
+  width: 100%;
+  min-height: 100vh;
 }
-
 
 /* banner encontre seu melhor amigo.*/
-/* Posiciona e dimensiona a imagem dos pets exibida no banner principal da Home. */
 .home-banner-pets {
-    position: absolute;
+  position: absolute;
 
-    /* traz os animais mais perto do texto */
-    right: 260px;
+  /* traz os animais mais perto do texto */
+  right: 260px;
 
-    /* mantém apoiados no fundo */
-    bottom: -10px;
+  /* mantém apoiados no fundo */
+  bottom: -10px;
 
-    /* aumenta um pouco */
-    width: 630px;
+  /* aumenta um pouco */
+  width: 630px;
 
-    max-height: 105%;
-    object-fit: contain;
+  max-height: 105%;
+  object-fit: contain;
 
-    z-index: 2;
+  z-index: 2;
 
-    pointer-events: none;
+  pointer-events: none;
 
-    filter: drop-shadow(
-        0 18px 20px rgba(0, 0, 0, 0.16)
-    );
+  filter: drop-shadow(0 18px 20px rgba(0, 0, 0, 0.16));
 }
-/* Define o layout e a aparência geral do banner principal da Home. */
 .home-banner {
-    position: relative;
+  position: relative;
 
-    width: calc(100% - 40px);
-    max-width: 1450px;
-    min-height: 280px;
+  width: calc(100% - 40px);
+  max-width: 1450px;
+  min-height: 280px;
 
-    margin: 30px auto 40px;
+  margin: 30px auto 40px;
 
-    padding: 50px 60px;
+  padding: 50px 60px;
 
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    overflow: hidden;
+  overflow: hidden;
 
-    border-radius: 30px;
+  border-radius: 30px;
 
-    background:
-        radial-gradient(circle at 80% 20%,
-            rgba(255, 255, 255, 0.20),
-            transparent 28%),
-        linear-gradient(135deg,
-            #7c3aed 0%,
-            #6366f1 50%,
-            #3b82f6 100%);
+  background:
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(255, 255, 255, 0.2),
+      transparent 28%
+    ),
+    linear-gradient(135deg, #7c3aed 0%, #6366f1 50%, #3b82f6 100%);
 
-    box-shadow:
-        0 20px 50px rgba(99, 102, 241, 0.25);
+  box-shadow: 0 20px 50px rgba(99, 102, 241, 0.25);
 }
-
 
 /* brilho grande */
 
-/* Cria um elemento circular decorativo de brilho no banner principal. */
 .home-banner::before {
-    content: "";
+  content: "";
 
-    position: absolute;
+  position: absolute;
 
-    width: 300px;
-    height: 300px;
+  width: 300px;
+  height: 300px;
 
-    right: -100px;
-    top: -140px;
+  right: -100px;
+  top: -140px;
 
-    border-radius: 50%;
+  border-radius: 50%;
 
-    background: rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.1);
 }
-
 
 /* outro brilho */
 
-/* Cria um segundo elemento circular decorativo de brilho no banner principal. */
 .home-banner::after {
-    content: "";
+  content: "";
 
-    position: absolute;
+  position: absolute;
 
-    width: 230px;
-    height: 230px;
+  width: 230px;
+  height: 230px;
 
-    right: 150px;
-    bottom: -180px;
+  right: 150px;
+  bottom: -180px;
 
-    border-radius: 50%;
+  border-radius: 50%;
 
-    background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.08);
 }
-
 
 /* texto do banner */
 
-/* Controla o posicionamento e a largura máxima da área de texto do banner. */
 .home-banner-texto {
-    position: relative;
+  position: relative;
 
-    z-index: 2;
+  z-index: 2;
 
-    max-width: 680px;
+  max-width: 680px;
 }
 
-
-/* Estiliza a etiqueta exibida acima do conteúdo principal do banner. */
 .home-banner-tag {
-    display: inline-flex;
-    align-items: center;
+  display: inline-flex;
+  align-items: center;
 
-    margin-bottom: 18px;
+  margin-bottom: 18px;
 
-    padding: 7px 14px;
+  padding: 7px 14px;
 
-    border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.25);
 
-    border-radius: 50px;
+  border-radius: 50px;
 
-    background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.14);
 
-    color: #ffffff;
+  color: #ffffff;
 
-    font-size: 13px;
-    font-weight: 700;
+  font-size: 13px;
+  font-weight: 700;
 
-    backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
-
-/* Estiliza o título principal exibido dentro do banner. */
 .home-banner h1 {
-    margin: 0;
+  margin: 0;
 
-    max-width: 650px;
+  max-width: 650px;
 
-    color: #ffffff;
+  color: #ffffff;
 
-    font-size: clamp(36px, 5vw, 56px);
+  font-size: clamp(36px, 5vw, 56px);
 
-    font-weight: 800;
+  font-weight: 800;
 
-    line-height: 1.05;
+  line-height: 1.05;
 
-    letter-spacing: -1.5px;
+  letter-spacing: -1.5px;
 }
 
-
-/* Destaca visualmente a parte do título do banner envolvida pela tag strong. */
 .home-banner h1 strong {
-    color: #fde68a;
+  color: #fde68a;
 }
 
-
-/* Estiliza o parágrafo descritivo apresentado dentro do banner. */
 .home-banner p {
-    margin: 20px 0 0;
+  margin: 20px 0 0;
 
-    max-width: 570px;
+  max-width: 570px;
 
-    color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.88);
 
-    font-size: 18px;
+  font-size: 18px;
 
-    line-height: 1.6;
+  line-height: 1.6;
 }
-
 
 /* 
    patinhas
  */
 
-/* Posiciona e estiliza as patinhas decorativas presentes no banner. */
 .home-banner-patas {
-    position: absolute;
+  position: absolute;
 
-    right: 80px;
-    top: 50%;
+  right: 80px;
+  top: 50%;
 
-    transform:
-        translateY(-50%) rotate(-18deg);
+  transform: translateY(-50%) rotate(-18deg);
 
-    font-size: 150px;
+  font-size: 150px;
 
-    opacity: 0.13;
+  opacity: 0.13;
 
-    pointer-events: none;
+  pointer-events: none;
 }
-
 
 /* FEED */
 
-/* Define novamente a largura, centralização e espaçamento da área do feed. */
 .feed {
-    width: 100%;
-    max-width: 680px;
+  width: 100%;
+  max-width: 680px;
 
-    margin: 0 auto 80px;
+  margin: 0 auto 80px;
 
-    padding: 0 16px;
+  padding: 0 16px;
 }
 
-
-/* Define o espaçamento inferior do topo do feed. */
 .feed-topo {
-    margin-bottom: 25px;
+  margin-bottom: 25px;
 }
 
-
-/* Estiliza o pequeno rótulo apresentado acima do título do feed. */
 .feed-label {
-    display: inline-block;
+  display: inline-block;
 
-    margin-bottom: 27px;
+  margin-bottom: 27px;
 
-    color: #7c3aed;
+  color: #7c3aed;
 
-    font-size: 13px;
-    font-weight: 700;
+  font-size: 13px;
+  font-weight: 700;
 
-    text-transform: uppercase;
+  text-transform: uppercase;
 
-    letter-spacing: 1px;
+  letter-spacing: 1px;
 }
 
-
-/* Define a aparência do título principal do feed. */
 .feed-topo h2 {
-    margin: 0;
+  margin: 0;
 
-    color: #1e293b;
+  color: #1e293b;
 
-    font-size: 30px;
+  font-size: 30px;
 
-    font-weight: 800;
+  font-weight: 800;
 
-    letter-spacing: -0.5px;
+  letter-spacing: -0.5px;
 }
 
-
-/* Define a aparência do texto complementar localizado no topo do feed. */
 .feed-topo p {
-    margin: 7px 0 0;
+  margin: 7px 0 0;
 
-    color: #64748b;
+  color: #64748b;
 
-    font-size: 15px;
+  font-size: 15px;
 }
-
 
 /* 
    MOBILE
 */
 
-/* Aplica ajustes responsivos para dispositivos com largura máxima de 700px. */
 @media (max-width: 700px) {
+  .home-banner {
+    width: calc(100% - 20px);
 
-    /* Ajusta tamanho, margens, espaçamento e arredondamento do banner em telas de até 700px. */
-    .home-banner {
-        width: calc(100% - 20px);
+    min-height: 240px;
 
-        min-height: 240px;
+    margin: 15px auto 30px;
 
-        margin: 15px auto 30px;
+    padding: 35px 25px;
 
-        padding: 35px 25px;
+    border-radius: 22px;
+  }
 
-        border-radius: 22px;
-    }
+  .home-banner h1 {
+    font-size: 34px;
+  }
 
+  .home-banner p {
+    font-size: 15px;
 
-    /* Reduz o tamanho do título do banner em telas menores. */
-    .home-banner h1 {
-        font-size: 34px;
-    }
+    max-width: 90%;
+  }
 
+  .home-banner-patas {
+    right: -15px;
 
-    /* Ajusta o tamanho e a largura máxima do texto do banner em telas menores. */
-    .home-banner p {
-        font-size: 15px;
+    font-size: 110px;
+  }
 
-        max-width: 90%;
-    }
+  .feed {
+    padding: 0 10px;
+  }
 
-
-    /* Reposiciona e redimensiona as patinhas decorativas do banner em telas menores. */
-    .home-banner-patas {
-        right: -15px;
-
-        font-size: 110px;
-    }
-
-
-    /* Reduz o espaçamento lateral do feed em telas menores. */
-    .feed {
-        padding: 0 10px;
-    }
-
-
-    /* Reduz o tamanho do título do feed em telas menores. */
-    .feed-topo h2 {
-        font-size: 25px;
-    }
-
+  .feed-topo h2 {
+    font-size: 25px;
+  }
 }
-
 
 /* =========================
    TÍTULO DO FEED
  */
 
-/* Configura o posicionamento e os espaçamentos do bloco de título do feed. */
 .feed-topo {
-    position: relative;
+  position: relative;
 
-    margin-bottom: 24px;
-    padding: 0 4px 14px;
+  margin-bottom: 24px;
+  padding: 0 4px 14px;
 }
 
-/* Estiliza novamente o título localizado no topo do feed. */
 .feed-topo h2 {
-    margin: 0;
+  margin: 0;
 
-    color: #1e293b;
+  color: #1e293b;
 
-    font-size: 29px;
-    font-weight: 800;
+  font-size: 29px;
+  font-weight: 800;
 
-    letter-spacing: -0.5px;
+  letter-spacing: -0.5px;
 }
 
-/* Estiliza novamente o texto complementar localizado no topo do feed. */
 .feed-topo p {
-    margin: 7px 0 0;
+  margin: 7px 0 0;
 
-    color: #64748b;
+  color: #64748b;
 
-    font-size: 15px;
+  font-size: 15px;
 }
 
-/* Cria a linha decorativa exibida abaixo do título do feed. */
 .feed-topo::after {
-    content: "";
+  content: "";
 
-    display: block;
+  display: block;
 
-    width: 70px;
-    height: 4px;
+  width: 70px;
+  height: 4px;
 
-    margin-top: 13px;
+  margin-top: 13px;
 
-    border-radius: 10px;
+  border-radius: 10px;
 
-    background: linear-gradient(90deg,
-            #7c3aed,
-            #6366f1);
+  background: linear-gradient(90deg, #7c3aed, #6366f1);
 }
-
 
 /* =========================
    MOBILE
 ========================= */
 
-/* Aplica outro conjunto de ajustes responsivos para telas com largura máxima de 700px. */
 @media (max-width: 700px) {
+  header {
+    padding: 0 8px;
 
-    /* Ajusta o cabeçalho para permitir melhor navegação horizontal em telas menores. */
-    header {
-        padding: 0 8px;
+    overflow-x: auto;
+  }
 
-        overflow-x: auto;
-    }
+  header nav {
+    justify-content: flex-start;
 
-    /* Alinha a navegação do cabeçalho ao início e preserva a largura necessária para seus itens. */
-    header nav {
-        justify-content: flex-start;
+    min-width: max-content;
+  }
 
-        min-width: max-content;
-    }
+  header a {
+    padding: 10px 9px;
 
-    /* Reduz o espaçamento e o tamanho da fonte dos links do cabeçalho em telas menores. */
-    header a {
-        padding: 10px 9px;
+    font-size: 13px;
+  }
 
-        font-size: 13px;
-    }
+  .banner {
+    width: calc(100% - 20px);
 
-    /* Ajusta largura, margem, espaçamento e arredondamento do elemento com a classe banner em telas menores. */
-    .banner {
-        width: calc(100% - 20px);
+    margin-top: 18px;
+    padding: 28px 22px;
 
-        margin-top: 18px;
-        padding: 28px 22px;
+    border-radius: 18px;
+  }
 
-        border-radius: 18px;
-    }
-
-    /* Reduz o tamanho da fonte dos parágrafos do elemento com a classe banner em telas menores. */
-    .banner p {
-        font-size: 15px;
-    }
-
+  .banner p {
+    font-size: 15px;
+  }
 }
-
 
 /* ==========================================
    BOTÃO DE FAVORITOS DOS CARDS
    Bloco acrescentado para integrar Home e Favoritos.
 ========================================== */
-/* Define o cabeçalho dos cards como referência de posicionamento para os elementos internos. */
 .feed-card-header {
-    position: relative;
+  position: relative;
 }
 
-/* Permite que a área de identidade do card se adapte ao espaço disponível. */
 .feed-card-identidade {
-    min-width: 0;
+  min-width: 0;
 }
 
-/* Organiza as ações localizadas no cabeçalho do card e as posiciona ao lado direito. */
 .feed-card-header-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
 }
 
-/* Estiliza a etiqueta exibida no cabeçalho dos cards. */
 .feed-card-tag {
-    display: inline-flex;
-    align-items: center;
-    min-height: 26px;
-    padding: 0 10px;
-    border-radius: 999px;
-    color: #ffffff !important;
-    background: #68a6c5;
-    font-size: 11px !important;
-    font-weight: 800;
-    white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  color: #ffffff !important;
+  background: #68a6c5;
+  font-size: 11px !important;
+  font-weight: 800;
+  white-space: nowrap;
 }
 
-/* Estiliza o botão utilizado para favoritar uma publicação. */
 .feed-card-favorito {
-    display: grid;
-    place-items: center;
-    width: 36px;
-    height: 36px;
-    padding: 0;
-    border: 1px solid #e1eaee;
-    border-radius: 50%;
-    color: #bd5f91;
-    background: #ffffff;
-    font-size: 24px;
-    line-height: 1;
-    cursor: pointer;
-    transition: color 0.18s ease, background 0.18s ease, transform 0.18s ease, border-color 0.18s ease;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid #e1eaee;
+  border-radius: 50%;
+  color: #bd5f91;
+  background: #ffffff;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    transform 0.18s ease,
+    border-color 0.18s ease;
 }
 
-/* Define os efeitos visuais do botão de favorito quando ele está em hover ou marcado como ativo. */
 .feed-card-favorito:hover,
 .feed-card-favorito.ativo {
-    color: #ffffff;
-    border-color: #bd5f91;
-    background: #bd5f91;
-    transform: scale(1.06);
+  color: #ffffff;
+  border-color: #bd5f91;
+  background: #bd5f91;
+  transform: scale(1.06);
 }
 
-/* Aplica o efeito de clique ao botão de favorito. */
 .feed-card-favorito:active {
-    transform: scale(0.96);
+  transform: scale(0.96);
 }
 
-/* Aplica ajustes responsivos ao cabeçalho e ao botão de favoritos em telas de até 600px. */
 @media (max-width: 600px) {
-    /* Reduz o espaço entre as ações do cabeçalho do card em telas menores. */
-    .feed-card-header-actions {
-        gap: 5px;
-    }
+  .feed-card-header-actions {
+    gap: 5px;
+  }
 
-    /* Limita a largura da etiqueta do card e aplica reticências quando o texto ultrapassa o espaço disponível. */
-    .feed-card-tag {
-        max-width: 90px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+  .feed-card-tag {
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-    /* Reduz as dimensões e o tamanho do ícone do botão de favorito em telas menores. */
-    .feed-card-favorito {
-        width: 32px;
-        height: 32px;
-        font-size: 21px;
-    }
+  .feed-card-favorito {
+    width: 32px;
+    height: 32px;
+    font-size: 21px;
+  }
+}
+
+/* ==========================================
+   COMPONENTE DE CRIAÇÃO DE POSTS
+   Bloco acrescentado à Home para permitir
+   texto, categoria, imagem e publicação.
+========================================== */
+
+/* Cartão visual que envolve o formulário completo. */
+.criar-post {
+  margin: 0 0 28px;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(22, 49, 71, 0.08);
+}
+
+/* Cabeçalho do formulário com ícone e texto de orientação. */
+.criar-post-cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+/* Ícone circular que identifica a ação de criar publicação. */
+.criar-post-icone {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  color: #ffffff;
+  background: #163147;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* Título principal do componente. */
+.criar-post-cabecalho h3 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 20px;
+}
+
+/* Texto auxiliar apresentado abaixo do título. */
+.criar-post-cabecalho p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+/* Estrutura vertical dos campos e ações do formulário. */
+.criar-post-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Grupo reutilizado para texto, select e seus respectivos títulos. */
+.criar-post-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+/* Texto que identifica cada campo do formulário. */
+.criar-post-campo > span {
+  color: #334155;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Área de digitação da descrição do post. */
+.criar-post-campo textarea {
+  width: 100%;
+  min-height: 98px;
+  box-sizing: border-box;
+  resize: vertical;
+  padding: 12px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  outline: none;
+  color: #1e293b;
+  background: #f8fafc;
+  font:
+    15px Arial,
+    Helvetica,
+    sans-serif;
+  line-height: 1.45;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+/* Destaque acessível quando o usuário entra no campo de texto. */
+.criar-post-campo textarea:focus,
+.criar-post-campo select:focus {
+  border-color: #68a6c5;
+  box-shadow: 0 0 0 3px rgba(104, 166, 197, 0.18);
+}
+
+/* Linha que agrupa categoria e upload em telas maiores. */
+.criar-post-controles {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+}
+
+/* Select com a categoria que será exibida no novo card. */
+.criar-post-campo select {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  outline: none;
+  color: #1e293b;
+  background: #f8fafc;
+  font:
+    14px Arial,
+    Helvetica,
+    sans-serif;
+}
+
+/* Label visual que funciona como botão para selecionar uma imagem. */
+.criar-post-upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  border: 1px dashed #68a6c5;
+  border-radius: 10px;
+  color: #163147;
+  background: #edf3f6;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+/* Estado de interação do botão de upload. */
+.criar-post-upload:hover {
+  background: #dcecf3;
+  transform: translateY(-1px);
+}
+
+/* Ícone do controle de upload. */
+.criar-post-upload > span {
+  color: #68a6c5;
+  font-size: 22px;
+}
+
+/* Texto do controle de upload. */
+.criar-post-upload strong {
+  font-size: 13px;
+}
+
+/* Input nativo fica invisível, mantendo a área inteira clicável pelo label. */
+.criar-post-upload input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* Mensagem que informa o nome da imagem selecionada. */
+.criar-post-arquivo {
+  margin: -4px 0 0;
+  overflow: hidden;
+  color: #64748b;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Ação principal para concluir a publicação do novo post. */
+.criar-post-publicar {
+  align-self: flex-end;
+  min-height: 42px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 10px;
+  color: #ffffff;
+  background: #163147;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+/* Feedback visual do botão de publicação. */
+.criar-post-publicar:hover {
+  background: #a95e94;
+  transform: translateY(-1px);
+}
+
+/* Feedback visual durante o clique no botão. */
+.criar-post-publicar:active {
+  transform: scale(0.97);
+}
+
+/* Ajustes do formulário para telas estreitas. */
+@media (max-width: 600px) {
+  .criar-post {
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .criar-post-controles {
+    grid-template-columns: 1fr;
+  }
+
+  .criar-post-publicar {
+    width: 100%;
+  }
+}
+
+/* ==========================================
+   COMPOSITOR EM ESTILO DE REDE SOCIAL
+   Ajustes acrescentados para aproximar a
+   publicação do padrão Twitter/Facebook.
+========================================== */
+
+/* Identificação do usuário no topo do compositor. */
+.criar-post-usuario {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+/* Avatar circular usado para representar o usuário atual. */
+.criar-post-usuario-avatar {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: #163147;
+  background: #dcecf3;
+  font-size: 22px;
+}
+
+/* Bloco de nome e descrição da audiência da publicação. */
+.criar-post-usuario-dados {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+/* Nome do usuário que publica. */
+.criar-post-usuario-dados strong {
+  color: #1e293b;
+  font-size: 16px;
+}
+
+/* Descrição auxiliar da comunidade que receberá o post. */
+.criar-post-usuario-dados small {
+  color: #64748b;
+  font-size: 12px;
+}
+
+/* Campo de mensagem sem título visual, mantendo acessibilidade pelo label. */
+.criar-post-mensagem textarea {
+  min-height: 78px;
+  border: 0;
+  border-bottom: 1px solid #e2e8f0;
+  border-radius: 0;
+  background: #ffffff;
+  font-size: 16px;
+}
+
+/* Remove o contorno padrão do campo social sem perder foco visual. */
+.criar-post-mensagem textarea:focus {
+  border-color: #68a6c5;
+  box-shadow: none;
+}
+
+/* Barra que reúne os recursos complementares do compositor. */
+.criar-post-barra-acoes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Ação de anexar foto apresentada como botão social. */
+.criar-post-acao {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 0 11px;
+  border-radius: 8px;
+  color: #163147;
+  background: #edf3f6;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+/* Interação visual da ação de foto. */
+.criar-post-acao:hover {
+  background: #dcecf3;
+  transform: translateY(-1px);
+}
+
+/* Ícone da ação de foto. */
+.criar-post-acao > span {
+  color: #68a6c5;
+  font-size: 19px;
+}
+
+/* Texto da ação de foto. */
+.criar-post-acao strong {
+  font-size: 12px;
+}
+
+/* Input nativo escondido para manter o label como área clicável. */
+.criar-post-acao input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* Grupo horizontal das categorias disponíveis. */
+.criar-post-categorias {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+/* Texto que explica a função dos botões de categoria. */
+.criar-post-categorias-titulo {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* Botão individual de seleção de categoria. */
+.criar-post-categoria-botao {
+  min-height: 28px;
+  padding: 0 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  color: #475569;
+  background: #ffffff;
+  font-size: 11px;
+  cursor: pointer;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+/* Categoria ativa com destaque visual. */
+.criar-post-categoria-botao.selecionada {
+  border-color: #68a6c5;
+  color: #ffffff;
+  background: #68a6c5;
+}
+
+/* Área inferior com status e botão de publicação. */
+.criar-post-rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+/* Indica a categoria selecionada antes do envio. */
+.criar-post-status {
+  color: #64748b;
+  font-size: 12px;
+}
+
+/* Destaque do valor da categoria escolhida. */
+.criar-post-status strong {
+  color: #163147;
+}
+
+/* Classe utilizada para manter labels acessíveis sem ocupar espaço visual. */
+.visualmente-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* Organização mobile do compositor social. */
+@media (max-width: 600px) {
+  .criar-post-barra-acoes {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .criar-post-acao {
+    justify-content: center;
+  }
+
+  .criar-post-categorias {
+    justify-content: flex-start;
+  }
+
+  .criar-post-rodape {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .criar-post-status {
+    text-align: center;
+  }
 }
