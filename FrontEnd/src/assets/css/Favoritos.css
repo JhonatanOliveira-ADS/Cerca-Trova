@@ -1,9 +1,9 @@
-
- 
 /* ==========================================
    PATINHAS
 ========================================== */
- 
+
+/* Cria uma camada fixa com a imagem de patinhas por cima de toda a área do aplicativo,
+   funcionando como uma textura de fundo sem bloquear os cliques do usuário. */
 .app-container::before {
     content: "";
  
@@ -35,6 +35,8 @@
    CONTEÚDO ACIMA DAS PATINHAS
 ========================================== */
  
+/* Mantém todo o conteúdo principal do aplicativo acima da camada de patinhas,
+   ocupando toda a largura disponível e respeitando a altura da tela. */
 .app-conteudo {
     position: relative;
  
@@ -53,6 +55,7 @@
    MENU ACIMA DAS PATINHAS
 ========================================== */
  
+/* Mantém o cabeçalho e o menu de navegação acima das demais camadas visuais da página. */
 .app-container > header,
 .app-container > nav {
     position: relative;
@@ -65,6 +68,8 @@
    ANIMAÇÃO DO DEGRADÊ
 ========================================== */
  
+/* Define a animação responsável por movimentar gradualmente a posição do fundo,
+   criando o efeito visual de degradê animado do Cerca Trova. */
 @keyframes fundoCercaTrova {
  
     0% {
@@ -103,8 +108,10 @@
    MOBILE
 ========================================== */
  
+/* Aplica ajustes específicos para dispositivos com telas de até 600px de largura. */
 @media (max-width: 600px) {
  
+    /* Reduz o tamanho e a intensidade visual das patinhas em telas menores. */
     .app-container::before {
         /*
            Patinhas um pouco menores
@@ -115,4 +122,557 @@
  
         opacity: 0.18;
     }
+}
+
+
+/* ==========================================
+   PÁGINA DE FAVORITOS
+   Bloco acrescentado para a nova interface.
+   As classes possuem prefixo favoritos para evitar
+   conflitos com os estilos da Home e da adoção.
+========================================== */
+
+/* Define as variáveis de cores utilizadas exclusivamente na página de favoritos,
+   além das configurações gerais de tamanho, espaçamento, fundo, fonte e cor da página. */
+.favoritos-page {
+  --favoritos-navy: #163147;
+  --favoritos-blue: #68a6c5;
+  --favoritos-blue-soft: #e4f1f6;
+  --favoritos-orange: #f4b25e;
+  --favoritos-pink: #bd5f91;
+  --favoritos-cream: #fbfaf7;
+  --favoritos-muted: #6b8291;
+  --favoritos-line: #e1eaee;
+  min-height: 100vh;
+  padding: 38px 24px 90px;
+  color: var(--favoritos-navy);
+  background: var(--favoritos-cream);
+  font-family: "Trebuchet MS", Arial, sans-serif;
+}
+
+/* Padroniza a largura máxima e centralização das principais áreas da página de favoritos. */
+.favoritos-hero,
+.favoritos-filter-panel,
+.favoritos-feed {
+  width: min(1160px, 100%);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* Estiliza o banner principal da página de favoritos,
+   organizando o conteúdo horizontalmente e aplicando degradê, sombra e bordas arredondadas. */
+.favoritos-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 225px;
+  margin-bottom: 26px;
+  padding: 34px 46px;
+  overflow: hidden;
+  border-radius: 30px;
+  background: linear-gradient(115deg, var(--favoritos-pink), #d17ca4 55%, var(--favoritos-orange));
+  box-shadow: 0 14px 34px rgba(22, 49, 71, 0.15);
+}
+
+/* Limita a largura da área de textos exibida dentro do banner principal. */
+.favoritos-hero-copy {
+  max-width: 650px;
+}
+
+/* Estiliza o pequeno texto de destaque utilizado acima dos títulos. */
+.favoritos-eyebrow {
+  display: inline-block;
+  margin-bottom: 9px;
+  color: var(--favoritos-pink);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Altera a cor do texto de destaque especificamente quando ele está dentro do banner principal. */
+.favoritos-hero .favoritos-eyebrow {
+  color: #ffffff;
+}
+
+/* Estiliza o título principal da página de favoritos dentro do banner. */
+.favoritos-hero h1 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(34px, 5vw, 56px);
+  line-height: 1.03;
+}
+
+/* Estiliza o texto descritivo exibido abaixo do título principal do banner. */
+.favoritos-hero p {
+  max-width: 570px;
+  margin: 17px 0 0;
+  color: #ffffff;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+/* Define o tamanho, espaçamento e rotação do elemento decorativo presente no banner principal. */
+.favoritos-hero-art {
+  min-width: 250px;
+  color: #ffffff;
+  font-size: 82px;
+  letter-spacing: 4px;
+  transform: rotate(-5deg);
+}
+
+/* Estiliza o painel onde ficam os filtros da página de favoritos. */
+.favoritos-filter-panel {
+  margin-bottom: 42px;
+  padding: 25px;
+  border: 1px solid var(--favoritos-line);
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(22, 49, 71, 0.08);
+}
+
+/* Organiza os cabeçalhos das áreas de filtros e de publicações utilizando Flexbox. */
+.favoritos-filter-heading,
+.favoritos-feed-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* Padroniza os títulos das áreas de filtros e publicações. */
+.favoritos-filter-heading h2,
+.favoritos-feed-heading h2 {
+  margin: 0;
+  color: var(--favoritos-navy);
+  font-size: 28px;
+}
+
+/* Estiliza a quantidade de resultados e os textos auxiliares do cabeçalho das publicações. */
+.favoritos-results-count,
+.favoritos-feed-heading p {
+  margin: 0 0 3px;
+  color: var(--favoritos-muted);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* Organiza os controles de filtro em três colunas utilizando CSS Grid. */
+.favoritos-filter-controls {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 170px auto;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+/* Define a aparência base dos campos de pesquisa e seleção. */
+.favoritos-search-field,
+.favoritos-select-field {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  border: 1px solid var(--favoritos-line);
+  border-radius: 15px;
+  background: #f8fbfc;
+}
+
+/* Define o espaçamento interno e entre elementos do campo de pesquisa. */
+.favoritos-search-field {
+  gap: 10px;
+  padding: 0 15px;
+}
+
+/* Estiliza o ícone presente dentro do campo de pesquisa. */
+.favoritos-search-field span {
+  color: var(--favoritos-blue);
+  font-size: 29px;
+  transform: rotate(-20deg);
+}
+
+/* Remove os estilos padrões do navegador dos campos input e select,
+   mantendo a aparência integrada ao layout da página. */
+.favoritos-search-field input,
+.favoritos-select-field select {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  color: var(--favoritos-navy);
+  background: transparent;
+  font: 600 14px "Trebuchet MS", Arial, sans-serif;
+}
+
+/* Configura o posicionamento e espaçamento do campo de seleção. */
+.favoritos-select-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 5px 12px;
+}
+
+/* Posiciona e estiliza o pequeno rótulo exibido no campo de seleção. */
+.favoritos-select-field span {
+  position: absolute;
+  top: 5px;
+  color: var(--favoritos-muted);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+/* Ajusta a altura, espaçamento e cursor do elemento select. */
+.favoritos-select-field select {
+  height: 34px;
+  padding-top: 11px;
+  cursor: pointer;
+}
+
+/* Define o estilo padrão do botão para limpar filtros
+   e do botão presente no estado vazio da página. */
+.favoritos-clear-button,
+.favoritos-empty-state button {
+  min-height: 48px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 15px;
+  color: #ffffff;
+  background: var(--favoritos-navy);
+  font: 800 14px "Trebuchet MS", Arial, sans-serif;
+  cursor: pointer;
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+
+/* Cria o efeito visual quando o usuário passa o mouse sobre os botões. */
+.favoritos-clear-button:hover,
+.favoritos-empty-state button:hover {
+  background: var(--favoritos-pink);
+  transform: translateY(-2px);
+}
+
+/* Organiza os filtros em formato de tags,
+   permitindo que eles quebrem automaticamente para novas linhas. */
+.favoritos-tag-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 18px;
+}
+
+/* Define a aparência padrão das tags utilizadas como filtros. */
+.favoritos-filter-tag {
+  padding: 9px 14px;
+  border: 1px solid var(--favoritos-line);
+  border-radius: 999px;
+  color: var(--favoritos-muted);
+  background: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+
+/* Define o efeito ao passar o mouse ou selecionar uma tag de filtro. */
+.favoritos-filter-tag:hover,
+.favoritos-filter-tag.selected {
+  color: #ffffff;
+  border-color: var(--favoritos-blue);
+  background: var(--favoritos-blue);
+  transform: translateY(-1px);
+}
+
+/* Aplica a cor laranja quando a terceira tag de filtro está selecionada. */
+.favoritos-filter-tag:nth-child(3).selected {
+  border-color: var(--favoritos-orange);
+  background: var(--favoritos-orange);
+}
+
+/* Aplica a cor rosa quando a quarta tag de filtro está selecionada. */
+.favoritos-filter-tag:nth-child(4).selected {
+  border-color: var(--favoritos-pink);
+  background: var(--favoritos-pink);
+}
+
+/* Aplica a cor azul escuro quando a quinta tag de filtro está selecionada. */
+.favoritos-filter-tag:nth-child(5).selected {
+  border-color: var(--favoritos-navy);
+  background: var(--favoritos-navy);
+}
+
+/* Adiciona espaçamento abaixo do cabeçalho da área de publicações. */
+.favoritos-feed-heading {
+  margin-bottom: 21px;
+}
+
+/* Organiza os cards de publicações em uma grade de três colunas. */
+.favoritos-post-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+/* Define a aparência individual de cada card de publicação favorita. */
+.favoritos-post-card {
+  overflow: hidden;
+  border: 1px solid var(--favoritos-line);
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 7px 20px rgba(22, 49, 71, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Adiciona destaque ao card quando o usuário passa o mouse sobre ele. */
+.favoritos-post-card:hover {
+  box-shadow: 0 13px 28px rgba(22, 49, 71, 0.15);
+  transform: translateY(-4px);
+}
+
+/* Organiza avatar, autor e categoria no cabeçalho de cada publicação. */
+.favoritos-post-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 69px;
+  padding: 12px 14px;
+}
+
+/* Estiliza o avatar circular apresentado no cabeçalho da publicação. */
+.favoritos-post-avatar {
+  display: grid;
+  flex: 0 0 42px;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  color: #ffffff;
+  background: var(--favoritos-pink);
+  font-size: 20px;
+}
+
+/* Permite que a área com informações do autor se adapte ao espaço disponível. */
+.favoritos-post-author {
+  min-width: 0;
+}
+
+/* Evita quebra de linha no nome e informações do autor,
+   utilizando reticências quando o conteúdo ultrapassa o espaço disponível. */
+.favoritos-post-author h3,
+.favoritos-post-author p {
+  overflow: hidden;
+  margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Define a aparência do nome do autor da publicação. */
+.favoritos-post-author h3 {
+  color: var(--favoritos-navy);
+  font-size: 14px;
+}
+
+/* Estiliza as informações secundárias apresentadas abaixo do nome do autor. */
+.favoritos-post-author p {
+  margin-top: 4px;
+  color: var(--favoritos-muted);
+  font-size: 12px;
+}
+
+/* Estiliza a etiqueta de categoria localizada no cabeçalho das publicações. */
+.favoritos-post-tag {
+  max-width: 145px;
+  margin-left: auto;
+  padding: 6px 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  color: #ffffff;
+  background: var(--favoritos-blue);
+  font-size: 10px;
+  font-weight: 800;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Define cores específicas para cada categoria das publicações. */
+.favoritos-post-tag.tag-adoção { background: var(--favoritos-pink); }
+.favoritos-post-tag.tag-perdido { background: var(--favoritos-navy); }
+.favoritos-post-tag.tag-encontra { background: var(--favoritos-blue); }
+.favoritos-post-tag.tag-em-busca-de-um-cãopanheiro { color: var(--favoritos-navy); background: var(--favoritos-orange); }
+
+/* Define o tamanho mínimo e espaçamento da área de conteúdo textual das publicações. */
+.favoritos-post-content {
+  min-height: 137px;
+  padding: 0 16px 15px;
+}
+
+/* Estiliza o título exibido dentro de cada publicação. */
+.favoritos-post-content h2 {
+  margin: 0 0 8px;
+  color: var(--favoritos-navy);
+  font-size: 21px;
+}
+
+/* Estiliza o texto descritivo presente no conteúdo da publicação. */
+.favoritos-post-content p {
+  margin: 0 0 10px;
+  color: #4d6472;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+/* Define a aparência das informações adicionais apresentadas nas publicações. */
+.favoritos-post-details {
+  color: var(--favoritos-blue);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* Destaca elementos em negrito dentro dos detalhes utilizando a cor laranja. */
+.favoritos-post-details b {
+  padding: 0 4px;
+  color: var(--favoritos-orange);
+}
+
+/* Padroniza o tamanho da imagem da publicação e da área utilizada quando não existe imagem. */
+.favoritos-post-image,
+.favoritos-post-no-image {
+  display: block;
+  width: 100%;
+  height: 245px;
+}
+
+/* Faz a imagem preencher completamente sua área mantendo o enquadramento proporcional. */
+.favoritos-post-image {
+  object-fit: cover;
+}
+
+/* Cria uma área alternativa com degradê e ícone quando a publicação não possui imagem. */
+.favoritos-post-no-image {
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--favoritos-blue), var(--favoritos-pink));
+  font-size: 70px;
+}
+
+/* Organiza os botões de interação localizados na parte inferior dos cards. */
+.favoritos-post-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 7px;
+  padding: 9px 12px;
+  border-top: 1px solid var(--favoritos-line);
+}
+
+/* Define a aparência padrão dos botões de ação das publicações. */
+.favoritos-post-actions button {
+  flex: 1;
+  min-height: 35px;
+  padding: 0 5px;
+  border: 0;
+  border-radius: 9px;
+  color: var(--favoritos-navy);
+  background: transparent;
+  font: 700 12px "Trebuchet MS", Arial, sans-serif;
+  cursor: pointer;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+
+/* Destaca os botões de ação quando o usuário passa o mouse sobre eles. */
+.favoritos-post-actions button:hover {
+  color: #ffffff;
+  background: var(--favoritos-navy);
+}
+
+/* Estiliza a mensagem apresentada quando nenhuma publicação favorita é encontrada. */
+.favoritos-empty-state {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 70px 20px;
+  border: 1px dashed var(--favoritos-blue);
+  border-radius: 22px;
+  text-align: center;
+  background: #ffffff;
+}
+
+/* Define o tamanho do ícone apresentado no estado vazio. */
+.favoritos-empty-state > span {
+  font-size: 42px;
+}
+
+/* Estiliza o título apresentado quando não existem resultados. */
+.favoritos-empty-state h2 {
+  margin: 12px 0 7px;
+  color: var(--favoritos-navy);
+}
+
+/* Estiliza o texto explicativo apresentado no estado vazio. */
+.favoritos-empty-state p {
+  margin: 0 0 20px;
+  color: var(--favoritos-muted);
+}
+
+/* Ajusta o layout da página para telas com largura máxima de 900px. */
+@media (max-width: 900px) {
+
+  /* Altera a grade de publicações de três para duas colunas. */
+  .favoritos-post-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Aplica os ajustes responsivos para celulares e telas com largura máxima de 640px. */
+@media (max-width: 640px) {
+
+  /* Reduz os espaçamentos externos da página de favoritos em dispositivos móveis. */
+  .favoritos-page {
+    padding: 20px 10px 70px;
+  }
+
+  /* Ajusta altura e espaçamento interno do banner principal para celulares. */
+  .favoritos-hero {
+    min-height: 250px;
+    padding: 25px 22px;
+  }
+
+  /* Oculta o elemento decorativo do banner em telas pequenas para liberar espaço. */
+  .favoritos-hero-art {
+    display: none;
+  }
+
+  /* Reduz espaçamentos e arredondamento do painel de filtros no celular. */
+  .favoritos-filter-panel {
+    padding: 18px 14px;
+    border-radius: 18px;
+  }
+
+  /* Reorganiza os cabeçalhos de filtros e publicações verticalmente em dispositivos móveis. */
+  .favoritos-filter-heading,
+  .favoritos-feed-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  /* Reduz o tamanho dos títulos das seções em telas menores. */
+  .favoritos-filter-heading h2,
+  .favoritos-feed-heading h2 {
+    font-size: 24px;
+  }
+
+  /* Coloca os controles de filtro em uma única coluna no celular. */
+  .favoritos-filter-controls {
+    grid-template-columns: 1fr;
+  }
+
+  /* Exibe apenas um card de publicação por linha em telas pequenas. */
+  .favoritos-post-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Aumenta a altura das imagens das publicações quando exibidas em uma única coluna. */
+  .favoritos-post-image,
+  .favoritos-post-no-image {
+    height: 280px;
+  }
 }

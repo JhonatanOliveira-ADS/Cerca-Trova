@@ -1,4 +1,5 @@
 /* fundo com patinhas e bordas nos textos , pensei em o compartilhar encaminhar  para chat e whats*/
+/* Define os estilos gerais do corpo da página, incluindo margem, altura mínima, fundo, fonte e posicionamento. */
 body {
     margin: 0;
 
@@ -21,6 +22,7 @@ body {
     position: relative;
 }
 
+/* Cria uma camada decorativa fixa com patinhas ao fundo da página sem interferir nos cliques. */
 body::before {
     content: "🐾    🐾      🐾     🐾        🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾";
 
@@ -47,11 +49,13 @@ body::before {
     z-index: 0;
 }
 
+/* Define o contêiner principal da Home para ocupar toda a largura e, no mínimo, toda a altura da tela. */
 .home-container {
     width: 100%;
     min-height: 100vh;
 }
 
+/* Define a largura, centralização e espaçamento principal da área do feed. */
 .feed {
     width: 100%;
     max-width: 680px;
@@ -59,21 +63,25 @@ body::before {
     padding: 0 16px;
 }
 
+/* Controla o espaçamento inferior da área de título localizada no topo do feed. */
 .feed-topo {
     margin-bottom: 24px;
 }
 
+/* Estiliza o título principal exibido no topo do feed. */
 .feed-topo h2 {
     margin: 0;
     color: #1e293b;
     font-size: 28px;
 }
 
+/* Estiliza o texto complementar exibido abaixo do título do feed. */
 .feed-topo p {
     color: #64748b;
     margin-top: 6px;
 }
 
+/* Define a aparência geral dos cards do feed, incluindo fundo, borda, arredondamento, espaçamento e sombra. */
 .feed-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
@@ -85,6 +93,7 @@ body::before {
         0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
+/* Organiza o cabeçalho de cada card do feed utilizando alinhamento flexível e espaçamento interno. */
 .feed-card-header {
     display: flex;
     align-items: center;
@@ -93,6 +102,7 @@ body::before {
     padding: 16px;
 }
 
+/* Estiliza o avatar apresentado no cabeçalho dos cards. */
 .feed-avatar {
     width: 44px;
     height: 44px;
@@ -108,6 +118,7 @@ body::before {
     font-size: 22px;
 }
 
+/* Estiliza o nome ou título apresentado no cabeçalho do card. */
 .feed-card-header h3 {
     margin: 0;
 
@@ -116,6 +127,7 @@ body::before {
     font-size: 17px;
 }
 
+/* Estiliza as informações secundárias exibidas no cabeçalho do card. */
 .feed-card-header span {
     display: block;
 
@@ -126,10 +138,12 @@ body::before {
     font-size: 13px;
 }
 
+/* Define o espaçamento interno da área de texto dos cards. */
 .feed-card-texto {
     padding: 0 16px 14px;
 }
 
+/* Estiliza os parágrafos localizados dentro da área de texto dos cards. */
 .feed-card-texto p {
     margin: 0 0 8px;
 
@@ -138,6 +152,7 @@ body::before {
     line-height: 1.5;
 }
 
+/* Estiliza os textos em span presentes na área textual dos cards. */
 .feed-card-texto span {
     color: #6366f1;
 
@@ -145,6 +160,7 @@ body::before {
     font-weight: 600;
 }
 
+/* Define tamanho, exibição e enquadramento das imagens dos cards. */
 .feed-card-img {
     width: 100%;
     height: 400px;
@@ -157,6 +173,7 @@ body::before {
    AÇÕES DOS CARDS
 ========================================== */
 
+/* Organiza a área que contém os botões de ação localizados na parte inferior dos cards. */
 .feed-card-acoes {
     display: flex;
 
@@ -175,6 +192,7 @@ body::before {
    BOTÕES DOS CARDS
 ========================================== */
 
+/* Define a aparência principal dos botões de ação dos cards, incluindo cores, espaçamento e transições. */
 .feed-card-acoes button {
     border: none;
 
@@ -202,6 +220,7 @@ body::before {
    HOVER
 ========================================== */
 
+/* Aplica o efeito visual aos botões de ação quando o usuário passa o mouse sobre eles. */
 .feed-card-acoes button:hover {
     color: #163147;
 
@@ -213,6 +232,7 @@ body::before {
 
     transform: translateY(-2px);
 }
+/* Define outra configuração visual para os botões de ação dos cards. */
 .feed-card-acoes button {
     border: none;
     background: transparent;
@@ -230,6 +250,7 @@ body::before {
     transition: background 0.2s ease;
 }
 
+/* Aplica o efeito de hover correspondente à configuração dos botões definida anteriormente. */
 .feed-card-acoes button:hover {
     background: linear-gradient(
         135deg,
@@ -241,17 +262,21 @@ body::before {
     color: white
 }
 
+/* Aplica ajustes responsivos para telas com largura máxima de 600px. */
 @media (max-width: 600px) {
 
+    /* Reduz os espaçamentos do feed em telas de até 600px. */
     .feed {
         padding: 0 8px;
         margin-top: 20px;
     }
 
+    /* Ajusta o arredondamento dos cards em telas de até 600px. */
     .feed-card {
         border-radius: 10px;
     }
 
+    /* Reduz o tamanho da fonte dos botões de ação em telas de até 600px. */
     .feed-card-acoes button {
         font-size: 12px;
     }
@@ -263,6 +288,7 @@ body::before {
 /* Css header para o topo ficar maais interessante , conforme vcs queiram algo diferente por favor me falem /*
 */
 
+/* Estiliza o cabeçalho principal, mantendo-o fixado no topo e organizando sua aparência e posicionamento. */
 header {
     position: sticky;
     top: 0;
@@ -284,6 +310,7 @@ header {
         0 4px 18px rgba(15, 23, 42, 0.06);
 }
 
+/* Organiza os elementos de navegação dentro do cabeçalho. */
 header nav {
     display: flex;
     align-items: center;
@@ -292,6 +319,7 @@ header nav {
     gap: 8px;
 }
 
+/* Define a aparência padrão dos links presentes no cabeçalho. */
 header a {
     position: relative;
 
@@ -313,6 +341,7 @@ header a {
     transition: 0.2s ease;
 }
 
+/* Aplica efeitos visuais aos links do cabeçalho quando o usuário passa o mouse sobre eles. */
 header a:hover {
     color: #6d28d9;
     background: #f3e8ff;
@@ -320,6 +349,7 @@ header a:hover {
     transform: translateY(-1px);
 }
 
+/* Cria o elemento decorativo exibido abaixo dos links do cabeçalho. */
 header a::after {
     content: "";
 
@@ -341,6 +371,7 @@ header a::after {
     transition: width 0.2s ease;
 }
 
+/* Expande o elemento decorativo inferior dos links quando ocorre o hover. */
 header a:hover::after {
     width: 55%;
 }
@@ -348,6 +379,7 @@ header a:hover::after {
 
 
 
+/* Define novamente as dimensões gerais do contêiner principal da Home. */
 .home-container {
     width: 100%;
     min-height: 100vh;
@@ -355,6 +387,7 @@ header a:hover::after {
 
 
 /* banner encontre seu melhor amigo.*/
+/* Posiciona e dimensiona a imagem dos pets exibida no banner principal da Home. */
 .home-banner-pets {
     position: absolute;
 
@@ -378,6 +411,7 @@ header a:hover::after {
         0 18px 20px rgba(0, 0, 0, 0.16)
     );
 }
+/* Define o layout e a aparência geral do banner principal da Home. */
 .home-banner {
     position: relative;
 
@@ -412,6 +446,7 @@ header a:hover::after {
 
 /* brilho grande */
 
+/* Cria um elemento circular decorativo de brilho no banner principal. */
 .home-banner::before {
     content: "";
 
@@ -431,6 +466,7 @@ header a:hover::after {
 
 /* outro brilho */
 
+/* Cria um segundo elemento circular decorativo de brilho no banner principal. */
 .home-banner::after {
     content: "";
 
@@ -450,6 +486,7 @@ header a:hover::after {
 
 /* texto do banner */
 
+/* Controla o posicionamento e a largura máxima da área de texto do banner. */
 .home-banner-texto {
     position: relative;
 
@@ -459,6 +496,7 @@ header a:hover::after {
 }
 
 
+/* Estiliza a etiqueta exibida acima do conteúdo principal do banner. */
 .home-banner-tag {
     display: inline-flex;
     align-items: center;
@@ -482,6 +520,7 @@ header a:hover::after {
 }
 
 
+/* Estiliza o título principal exibido dentro do banner. */
 .home-banner h1 {
     margin: 0;
 
@@ -499,11 +538,13 @@ header a:hover::after {
 }
 
 
+/* Destaca visualmente a parte do título do banner envolvida pela tag strong. */
 .home-banner h1 strong {
     color: #fde68a;
 }
 
 
+/* Estiliza o parágrafo descritivo apresentado dentro do banner. */
 .home-banner p {
     margin: 20px 0 0;
 
@@ -521,6 +562,7 @@ header a:hover::after {
    patinhas
  */
 
+/* Posiciona e estiliza as patinhas decorativas presentes no banner. */
 .home-banner-patas {
     position: absolute;
 
@@ -540,6 +582,7 @@ header a:hover::after {
 
 /* FEED */
 
+/* Define novamente a largura, centralização e espaçamento da área do feed. */
 .feed {
     width: 100%;
     max-width: 680px;
@@ -550,11 +593,13 @@ header a:hover::after {
 }
 
 
+/* Define o espaçamento inferior do topo do feed. */
 .feed-topo {
     margin-bottom: 25px;
 }
 
 
+/* Estiliza o pequeno rótulo apresentado acima do título do feed. */
 .feed-label {
     display: inline-block;
 
@@ -571,6 +616,7 @@ header a:hover::after {
 }
 
 
+/* Define a aparência do título principal do feed. */
 .feed-topo h2 {
     margin: 0;
 
@@ -584,6 +630,7 @@ header a:hover::after {
 }
 
 
+/* Define a aparência do texto complementar localizado no topo do feed. */
 .feed-topo p {
     margin: 7px 0 0;
 
@@ -597,8 +644,10 @@ header a:hover::after {
    MOBILE
 */
 
+/* Aplica ajustes responsivos para dispositivos com largura máxima de 700px. */
 @media (max-width: 700px) {
 
+    /* Ajusta tamanho, margens, espaçamento e arredondamento do banner em telas de até 700px. */
     .home-banner {
         width: calc(100% - 20px);
 
@@ -612,11 +661,13 @@ header a:hover::after {
     }
 
 
+    /* Reduz o tamanho do título do banner em telas menores. */
     .home-banner h1 {
         font-size: 34px;
     }
 
 
+    /* Ajusta o tamanho e a largura máxima do texto do banner em telas menores. */
     .home-banner p {
         font-size: 15px;
 
@@ -624,6 +675,7 @@ header a:hover::after {
     }
 
 
+    /* Reposiciona e redimensiona as patinhas decorativas do banner em telas menores. */
     .home-banner-patas {
         right: -15px;
 
@@ -631,11 +683,13 @@ header a:hover::after {
     }
 
 
+    /* Reduz o espaçamento lateral do feed em telas menores. */
     .feed {
         padding: 0 10px;
     }
 
 
+    /* Reduz o tamanho do título do feed em telas menores. */
     .feed-topo h2 {
         font-size: 25px;
     }
@@ -647,6 +701,7 @@ header a:hover::after {
    TÍTULO DO FEED
  */
 
+/* Configura o posicionamento e os espaçamentos do bloco de título do feed. */
 .feed-topo {
     position: relative;
 
@@ -654,6 +709,7 @@ header a:hover::after {
     padding: 0 4px 14px;
 }
 
+/* Estiliza novamente o título localizado no topo do feed. */
 .feed-topo h2 {
     margin: 0;
 
@@ -665,6 +721,7 @@ header a:hover::after {
     letter-spacing: -0.5px;
 }
 
+/* Estiliza novamente o texto complementar localizado no topo do feed. */
 .feed-topo p {
     margin: 7px 0 0;
 
@@ -673,6 +730,7 @@ header a:hover::after {
     font-size: 15px;
 }
 
+/* Cria a linha decorativa exibida abaixo do título do feed. */
 .feed-topo::after {
     content: "";
 
@@ -695,26 +753,31 @@ header a:hover::after {
    MOBILE
 ========================= */
 
+/* Aplica outro conjunto de ajustes responsivos para telas com largura máxima de 700px. */
 @media (max-width: 700px) {
 
+    /* Ajusta o cabeçalho para permitir melhor navegação horizontal em telas menores. */
     header {
         padding: 0 8px;
 
         overflow-x: auto;
     }
 
+    /* Alinha a navegação do cabeçalho ao início e preserva a largura necessária para seus itens. */
     header nav {
         justify-content: flex-start;
 
         min-width: max-content;
     }
 
+    /* Reduz o espaçamento e o tamanho da fonte dos links do cabeçalho em telas menores. */
     header a {
         padding: 10px 9px;
 
         font-size: 13px;
     }
 
+    /* Ajusta largura, margem, espaçamento e arredondamento do elemento com a classe banner em telas menores. */
     .banner {
         width: calc(100% - 20px);
 
@@ -724,8 +787,99 @@ header a:hover::after {
         border-radius: 18px;
     }
 
+    /* Reduz o tamanho da fonte dos parágrafos do elemento com a classe banner em telas menores. */
     .banner p {
         font-size: 15px;
     }
 
+}
+
+
+/* ==========================================
+   BOTÃO DE FAVORITOS DOS CARDS
+   Bloco acrescentado para integrar Home e Favoritos.
+========================================== */
+/* Define o cabeçalho dos cards como referência de posicionamento para os elementos internos. */
+.feed-card-header {
+    position: relative;
+}
+
+/* Permite que a área de identidade do card se adapte ao espaço disponível. */
+.feed-card-identidade {
+    min-width: 0;
+}
+
+/* Organiza as ações localizadas no cabeçalho do card e as posiciona ao lado direito. */
+.feed-card-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+/* Estiliza a etiqueta exibida no cabeçalho dos cards. */
+.feed-card-tag {
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    padding: 0 10px;
+    border-radius: 999px;
+    color: #ffffff !important;
+    background: #68a6c5;
+    font-size: 11px !important;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+/* Estiliza o botão utilizado para favoritar uma publicação. */
+.feed-card-favorito {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid #e1eaee;
+    border-radius: 50%;
+    color: #bd5f91;
+    background: #ffffff;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.18s ease, background 0.18s ease, transform 0.18s ease, border-color 0.18s ease;
+}
+
+/* Define os efeitos visuais do botão de favorito quando ele está em hover ou marcado como ativo. */
+.feed-card-favorito:hover,
+.feed-card-favorito.ativo {
+    color: #ffffff;
+    border-color: #bd5f91;
+    background: #bd5f91;
+    transform: scale(1.06);
+}
+
+/* Aplica o efeito de clique ao botão de favorito. */
+.feed-card-favorito:active {
+    transform: scale(0.96);
+}
+
+/* Aplica ajustes responsivos ao cabeçalho e ao botão de favoritos em telas de até 600px. */
+@media (max-width: 600px) {
+    /* Reduz o espaço entre as ações do cabeçalho do card em telas menores. */
+    .feed-card-header-actions {
+        gap: 5px;
+    }
+
+    /* Limita a largura da etiqueta do card e aplica reticências quando o texto ultrapassa o espaço disponível. */
+    .feed-card-tag {
+        max-width: 90px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Reduz as dimensões e o tamanho do ícone do botão de favorito em telas menores. */
+    .feed-card-favorito {
+        width: 32px;
+        height: 32px;
+        font-size: 21px;
+    }
 }
