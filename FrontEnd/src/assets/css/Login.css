@@ -6,7 +6,7 @@
   --color-orange: #e29e4b;
   --color-pink: #d95e78;
   --color-text-gray: #8fa0ae;
-  
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,7 +14,7 @@
   min-height: 100vh;
   background-color: var(--bg-primary);
   color: #ffffff;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
@@ -33,12 +33,38 @@
   position: absolute;
   font-size: 1.5rem;
 }
-.paw.p1 { top: 10%; left: 8%; transform: rotate(-15deg); }
-.paw.p2 { top: 25%; left: 15%; transform: rotate(20deg); font-size: 1.2rem; }
-.paw.p3 { top: 45%; left: 6%; transform: rotate(-35deg); }
-.paw.p4 { top: 65%; left: 12%; transform: rotate(10deg); }
-.paw.p5 { bottom: 15%; left: 5%; transform: rotate(-20deg); }
-.paw.p6 { bottom: 5%; left: 14%; transform: rotate(45deg); font-size: 1.1rem; }
+.paw.p1 {
+  top: 10%;
+  left: 8%;
+  transform: rotate(-15deg);
+}
+.paw.p2 {
+  top: 25%;
+  left: 15%;
+  transform: rotate(20deg);
+  font-size: 1.2rem;
+}
+.paw.p3 {
+  top: 45%;
+  left: 6%;
+  transform: rotate(-35deg);
+}
+.paw.p4 {
+  top: 65%;
+  left: 12%;
+  transform: rotate(10deg);
+}
+.paw.p5 {
+  bottom: 15%;
+  left: 5%;
+  transform: rotate(-20deg);
+}
+.paw.p6 {
+  bottom: 5%;
+  left: 14%;
+  transform: rotate(45deg);
+  font-size: 1.1rem;
+}
 
 /* Cabeçalho - Centralizado com Slogan embaixo */
 .login-header {
@@ -167,7 +193,7 @@
 
 /* Remove a cor branca do preenchimento automático (Autofill) do Chrome/Edge/Safari */
 .input-group input:-webkit-autofill,
-.input-group input:-webkit-autofill:hover, 
+.input-group input:-webkit-autofill:hover,
 .input-group input:-webkit-autofill:focus {
   -webkit-text-fill-color: #ffffff !important;
   -webkit-box-shadow: 0 0 0px 1000px var(--bg-input) inset !important;
@@ -253,4 +279,191 @@
 .text-pink {
   color: var(--color-pink);
   font-weight: 600;
+}
+
+/* ==========================================
+   AJUSTES DE UX/UI DO LOGIN
+   Blocos acrescentados sem remover os estilos
+   originais da interface.
+========================================== */
+
+/* Diferencia o modo administrativo por meio do azul institucional e dourado. */
+.login-page.admin-mode {
+  --color-orange: #68a6c5;
+  --color-pink: #e2a14f;
+}
+
+/* Aviso contextual que orienta o usuário sobre o acesso restrito. */
+.admin-notice {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+  padding: 11px 12px;
+  border-left: 3px solid #e2a14f;
+  border-radius: 8px;
+  color: #c4d4dc;
+  background: rgba(226, 161, 79, 0.1);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+/* Destaca o título do aviso sem transformar o acesso em um botão. */
+.admin-notice strong {
+  color: #e2a14f;
+  font-size: 0.8rem;
+}
+
+/* Link textual de acesso administrativo com baixo peso visual. */
+.admin-access-link {
+  margin: 15px 0 0;
+  color: var(--color-text-gray);
+  text-align: center;
+  font-size: 0.75rem;
+}
+
+.admin-access-link .highlight-link {
+  font-weight: 700;
+}
+
+/* Feedback de erro com linguagem genérica para não expor credenciais. */
+.login-error {
+  margin: -2px 0 0;
+  padding: 9px 10px;
+  border-radius: 8px;
+  color: #ffd7df;
+  background: rgba(217, 94, 120, 0.16);
+  font-size: 0.75rem;
+}
+
+/* O botão continua textual, mas recebe foco visível para acessibilidade. */
+.btn-reveal:focus-visible,
+.highlight-link:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 3px;
+}
+
+/* Texto contextual do modo administrativo. */
+.admin-footer {
+  color: #bdcfd7;
+}
+
+/* ==========================================
+   CORREÇÕES DE INTERAÇÃO DOS CAMPOS
+   Garante digitação, seleção de texto e espaço
+   adequado para o controle de senha.
+========================================== */
+
+/* Mantém os campos acima de camadas decorativas e sempre interativos. */
+.login-card,
+.login-form,
+.input-group {
+  position: relative;
+  z-index: 3;
+}
+
+/* Garante que o usuário possa clicar, digitar e selecionar o conteúdo. */
+.input-group input {
+  position: relative;
+  z-index: 4;
+  pointer-events: auto;
+  user-select: text;
+  padding-right: 70px;
+  caret-color: #ffffff;
+}
+
+/* Espaço reservado para o texto clicável ver ou ocultar. */
+.btn-reveal {
+  z-index: 5;
+  min-width: 48px;
+  padding: 5px 2px;
+  text-transform: lowercase;
+}
+
+/* ==========================================
+   AÇÕES TEXTUAIS DE UX/UI
+   Links com aparência textual substituem
+   botões destacados no fluxo público.
+========================================== */
+
+/* Remove a aparência nativa do botão sem perder foco e acessibilidade. */
+.text-action {
+  display: inline;
+  padding: 0;
+  border: 0;
+  color: var(--color-orange);
+  background: transparent;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Feedback visual do teclado e do mouse nas ações textuais. */
+.text-action:hover,
+.text-action:focus-visible {
+  text-decoration: underline;
+}
+
+.text-action:focus-visible,
+.btn-reveal:focus-visible,
+.forgot-password:focus-visible,
+.highlight-link:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 3px;
+}
+
+/* ==========================================
+   MENSAGENS DO FORMULÁRIO
+   Estados visuais para erro, sucesso e orientação.
+========================================== */
+
+/* Bloco comum de feedback sem deslocar o layout de forma brusca. */
+.login-message {
+  margin: -2px 0 0;
+  padding: 10px 11px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+/* Mensagem de erro para credenciais ou validação de cadastro. */
+.login-message.erro {
+  color: #ffd7df;
+  background: rgba(217, 94, 120, 0.16);
+}
+
+/* Mensagem de sucesso após o envio do formulário. */
+.login-message.sucesso {
+  color: #c9f1d7;
+  background: rgba(74, 158, 103, 0.18);
+}
+
+/* Mensagem informativa para recuperação de senha. */
+.login-message.informacao {
+  color: #c8e7f4;
+  background: rgba(104, 166, 197, 0.16);
+}
+
+/* Ajuste de contraste no rodapé do modo administrativo. */
+.admin-footer {
+  color: #bdcfd7;
+}
+
+/* ==========================================
+   RESPONSIVIDADE DO LOGIN
+========================================== */
+
+/* Ajusta o card para dispositivos com pouca largura. */
+@media (max-width: 430px) {
+  .login-card {
+    padding: 24px 16px;
+  }
+
+  .card-wrapper {
+    width: calc(100% - 24px);
+  }
+
+  .tab-btn {
+    font-size: 0.8rem;
+  }
 }
