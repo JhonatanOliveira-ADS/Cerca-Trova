@@ -1,0 +1,347 @@
+/* ==========================================
+   PÁGINA DO USUÁRIO
+   Estilos acrescentados para perfil, dados
+   pessoais e publicações próprias.
+========================================== */
+
+/* Container principal da área de usuário. */
+.perfil-page {
+  width: min(100% - 32px, 980px);
+  margin: 42px auto 90px;
+  color: #163147;
+}
+
+/* Cabeçalho visual da página do usuário. */
+.perfil-cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 26px;
+}
+
+/* Avatar decorativo do usuário. */
+.perfil-avatar {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  flex: 0 0 76px;
+  border: 5px solid #68a6c5;
+  border-radius: 50%;
+  background: #dcecf3;
+  font-size: 34px;
+}
+
+/* Etiqueta que identifica a finalidade da página. */
+.perfil-etiqueta {
+  display: inline-block;
+  margin-bottom: 5px;
+  color: #bd5f91;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Título principal da página. */
+.perfil-cabecalho h1 {
+  margin: 0;
+  color: #123f57;
+  font-size: clamp(30px, 5vw, 42px);
+}
+
+/* Texto auxiliar do cabeçalho. */
+.perfil-cabecalho p {
+  margin: 6px 0 0;
+  color: #6b8da0;
+}
+
+/* Card compartilhado entre dados pessoais e publicações. */
+.perfil-card {
+  margin-bottom: 24px;
+  padding: 26px;
+  border: 1px solid #e4ebee;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 10px 28px rgba(18, 63, 87, 0.08);
+}
+
+/* Títulos internos das seções do perfil. */
+.perfil-secao-titulo {
+  margin-bottom: 20px;
+}
+
+.perfil-secao-titulo h2 {
+  margin: 0;
+  color: #123f57;
+  font-size: 24px;
+}
+
+.perfil-secao-titulo p {
+  margin: 6px 0 0;
+  color: #6b8da0;
+}
+
+/* Grid dos campos de email, telefone e senha. */
+.perfil-formulario {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+/* Grupo de label e controle de formulário. */
+.perfil-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+/* Texto que identifica cada campo. */
+.perfil-campo > span {
+  color: #123f57;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* Campos de texto, senha, telefone e seleção. */
+.perfil-campo input,
+.perfil-campo select,
+.perfil-campo textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 46px;
+  padding: 10px 13px;
+  border: 1px solid #d5e1e6;
+  border-radius: 11px;
+  outline: none;
+  color: #123f57;
+  background: #fbfaf7;
+  font:
+    15px Arial,
+    Helvetica,
+    sans-serif;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+/* Textarea recebe altura adequada para editar uma publicação. */
+.perfil-campo textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+/* Destaque de acessibilidade durante a edição dos campos. */
+.perfil-campo input:focus,
+.perfil-campo select:focus,
+.perfil-campo textarea:focus {
+  border-color: #68a6c5;
+  box-shadow: 0 0 0 3px rgba(104, 166, 197, 0.18);
+}
+
+/* Rodapé do formulário de dados pessoais. */
+.perfil-formulario-rodape {
+  display: flex;
+  align-items: center;
+  grid-column: 1 / -1;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* Botão principal usado para salvar alterações. */
+.perfil-botao-principal,
+.perfil-botao-secundario {
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 10px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease;
+}
+
+/* Aparência do botão principal. */
+.perfil-botao-principal {
+  border: 0;
+  color: #ffffff;
+  background: #123f57;
+}
+
+/* Aparência do botão secundário usado nos posts. */
+.perfil-botao-secundario {
+  border: 1px solid #68a6c5;
+  color: #123f57;
+  background: #ffffff;
+}
+
+/* Estados de interação dos botões do perfil. */
+.perfil-botao-principal:hover,
+.perfil-botao-secundario:hover {
+  background: #bd5f91;
+  transform: translateY(-1px);
+}
+
+.perfil-botao-principal:active,
+.perfil-botao-secundario:active {
+  transform: scale(0.97);
+}
+
+/* Mensagem de confirmação das operações realizadas. */
+.perfil-mensagem {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.perfil-mensagem.sucesso {
+  color: #3b7d59;
+}
+
+/* Lista vertical das publicações próprias. */
+.perfil-lista-posts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Card resumido de uma publicação criada pelo usuário. */
+.perfil-post {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px;
+  border: 1px solid #e4ebee;
+  border-radius: 15px;
+  background: #fbfaf7;
+}
+
+/* Conteúdo textual do post próprio. */
+.perfil-post-conteudo {
+  min-width: 0;
+}
+
+/* Linha superior com categoria e autor. */
+.perfil-post-topo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.perfil-post-topo strong {
+  padding: 5px 9px;
+  border-radius: 999px;
+  color: #ffffff;
+  background: #68a6c5;
+  font-size: 11px;
+}
+
+.perfil-post-topo span {
+  color: #6b8da0;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Texto da publicação resumida. */
+.perfil-post p {
+  margin: 0;
+  overflow: hidden;
+  color: #334155;
+  line-height: 1.45;
+  text-overflow: ellipsis;
+}
+
+/* Estado vazio quando o usuário ainda não tem posts. */
+.perfil-vazio {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 7px;
+  padding: 28px 16px;
+  border: 1px dashed #c8dbe3;
+  border-radius: 14px;
+  color: #6b8da0;
+  text-align: center;
+}
+
+.perfil-vazio > span {
+  color: #68a6c5;
+  font-size: 30px;
+}
+
+.perfil-vazio strong {
+  color: #123f57;
+}
+
+.perfil-vazio p {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* Área aberta para editar uma publicação selecionada. */
+.perfil-edicao-post {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 22px;
+  padding: 18px;
+  border: 1px solid #f0d6e3;
+  border-radius: 15px;
+  background: #fff9fc;
+}
+
+/* Cabeçalho do formulário de edição do post. */
+.perfil-edicao-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.perfil-edicao-cabecalho h3 {
+  margin: 0;
+  color: #713653;
+}
+
+.perfil-edicao-cabecalho button {
+  border: 0;
+  color: #96617b;
+  background: transparent;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+/* Ajustes responsivos para telas menores. */
+@media (max-width: 700px) {
+  .perfil-page {
+    width: min(100% - 20px, 980px);
+    margin-top: 25px;
+  }
+
+  .perfil-card {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .perfil-formulario {
+    grid-template-columns: 1fr;
+  }
+
+  .perfil-formulario-rodape {
+    grid-column: auto;
+  }
+
+  .perfil-botao-principal {
+    width: 100%;
+  }
+
+  .perfil-post {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .perfil-botao-secundario {
+    width: 100%;
+  }
+}

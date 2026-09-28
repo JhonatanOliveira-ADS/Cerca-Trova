@@ -64,6 +64,15 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
     };
 
     onPublicar(novoPost);
+
+    // Mantém uma cópia dos posts criados para a área "Minhas publicações".
+    const postsSalvos =
+      JSON.parse(localStorage.getItem("cercaTrovaMeusPosts")) || [];
+    localStorage.setItem(
+      "cercaTrovaMeusPosts",
+      JSON.stringify([novoPost, ...postsSalvos]),
+    );
+
     setTexto("");
     setCategoria("Adoção");
     setImagem("");

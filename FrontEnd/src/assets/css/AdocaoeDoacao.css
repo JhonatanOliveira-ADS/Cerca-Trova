@@ -4,39 +4,6 @@
   Todos os elementos usam classes próprias para evitar conflitos com a Home.
 */
 
-@keyframes fundoCercaTrova {
-
-    0% {
-        background-position:
-            0% 50%;
-    }
-
-    20% {
-        background-position:
-            35% 20%;
-    }
-
-    40% {
-        background-position:
-            70% 50%;
-    }
-
-    60% {
-        background-position:
-            100% 80%;
-    }
-
-    80% {
-        background-position:
-            55% 100%;
-    }
-
-    100% {
-        background-position:
-            0% 50%;
-    }
-}
-
 .adocao-page {
   --adocao-navy: #163147;
   --adocao-blue: #68a6c5;
@@ -48,6 +15,8 @@
   --adocao-line: #e1eaee;
   min-height: 100vh;
   padding: 38px 24px 90px;
+  color: var(--adocao-navy);
+  background: var(--adocao-cream);
   font-family: "Trebuchet MS", Arial, sans-serif;
 }
 

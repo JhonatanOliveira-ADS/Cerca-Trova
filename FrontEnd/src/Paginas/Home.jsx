@@ -7,9 +7,19 @@ import "../assets/css/Home.css";
 
 import petsbanner from "../assets/petsbanner.png";
 
+/* Recupera os posts criados pelo usuário sem modificar os posts originais da Home. */
+function carregarPostsDoUsuario() {
+  try {
+    return JSON.parse(localStorage.getItem("cercaTrovaMeusPosts")) || [];
+  } catch {
+    return [];
+  }
+}
+
 export default function Home() {
-  // Estado do feed: começa com os posts existentes e recebe novas publicações.
-  const [pets, setPets] = useState([
+  // Estado do feed: posts próprios entram antes dos posts demonstrativos existentes.
+  const [pets, setPets] = useState(() => [
+    ...carregarPostsDoUsuario(),
     {
       id: "1",
       nome: "Thor",
