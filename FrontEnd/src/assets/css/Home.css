@@ -1188,3 +1188,171 @@ header a:hover::after {
     text-align: center;
   }
 }
+
+/* ==========================================
+   REFINAMENTO UX/UI DO COMPOSITOR
+   Bloco final de apresentação para melhorar
+   hierarquia, leitura, foco e responsividade.
+========================================== */
+
+/* Cartão social com separação visual clara entre perfil e publicação. */
+.criar-post-social {
+  padding: 22px;
+  border: 1px solid #dce8ed;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdfe 100%);
+  box-shadow: 0 8px 22px rgba(22, 49, 71, 0.1);
+}
+
+/* Cabeçalho social mantém avatar, nome e contexto alinhados. */
+.criar-post-social .criar-post-usuario {
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #edf2f4;
+}
+
+/* Avatar com destaque sutil para orientar quem está publicando. */
+.criar-post-social .criar-post-usuario-avatar {
+  border: 3px solid #ffffff;
+  box-shadow: 0 3px 9px rgba(22, 49, 71, 0.12);
+}
+
+/* Formulário com espaçamento vertical consistente entre grupos. */
+.criar-post-social .criar-post-formulario {
+  gap: 17px;
+}
+
+/* Campo principal com aparência de área de composição social. */
+.criar-post-social .criar-post-mensagem textarea {
+  min-height: 92px;
+  padding: 14px 15px;
+  border: 1px solid #d5e3e8;
+  border-radius: 14px;
+  background: #f8fbfc;
+  font-size: 16px;
+}
+
+/* Campos de raça e idade formam um grupo visual único. */
+.criar-post-dados-pet {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(150px, 0.65fr);
+  gap: 14px;
+}
+
+/* Controles de raça e idade seguem o mesmo padrão do campo principal. */
+.criar-post-dados-pet input {
+  width: 100%;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 0 13px;
+  border: 1px solid #d5e3e8;
+  border-radius: 11px;
+  outline: none;
+  color: #163147;
+  background: #ffffff;
+  font:
+    14px Arial,
+    Helvetica,
+    sans-serif;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+/* Foco visível para facilitar a navegação por teclado. */
+.criar-post-dados-pet input:focus {
+  border-color: #68a6c5;
+  box-shadow: 0 0 0 3px rgba(104, 166, 197, 0.18);
+}
+
+/* Barra de ações separada do conteúdo por uma linha leve. */
+.criar-post-social .criar-post-barra-acoes {
+  align-items: center;
+  padding-top: 15px;
+  border-top: 1px solid #edf2f4;
+}
+
+/* Upload com área de toque confortável e indicação de ação. */
+.criar-post-social .criar-post-upload {
+  min-height: 38px;
+  padding: 0 13px;
+  border-style: solid;
+  background: #edf6f8;
+}
+
+/* Categorias ficam agrupadas e com leitura rápida. */
+.criar-post-social .criar-post-categorias {
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+/* Botões de categoria com estados facilmente identificáveis. */
+.criar-post-social .criar-post-categoria-botao {
+  min-height: 32px;
+  padding: 0 11px;
+  border-color: #d5e3e8;
+  color: #526a78;
+  font-weight: 700;
+}
+
+/* Categoria selecionada usa a cor azul principal da interface. */
+.criar-post-social .criar-post-categoria-botao.selecionada {
+  border-color: #68a6c5;
+  background: #68a6c5;
+  box-shadow: 0 3px 8px rgba(104, 166, 197, 0.22);
+}
+
+/* Rodapé separa o contexto escolhido da ação principal. */
+.criar-post-social .criar-post-rodape {
+  padding-top: 15px;
+  border-top: 1px solid #edf2f4;
+}
+
+/* Botão publicar recebe maior peso visual e área de toque. */
+.criar-post-social .criar-post-publicar {
+  min-width: 104px;
+  min-height: 44px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(18, 63, 87, 0.16);
+}
+
+/* Estado desabilitado evita envio visualmente confuso quando não há texto. */
+.criar-post-social .criar-post-publicar:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* Ajustes para telas pequenas, mantendo os grupos fáceis de usar. */
+@media (max-width: 640px) {
+  .criar-post-social {
+    padding: 17px;
+    border-radius: 16px;
+  }
+
+  .criar-post-dados-pet {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .criar-post-social .criar-post-barra-acoes {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .criar-post-social .criar-post-upload {
+    justify-content: center;
+  }
+
+  .criar-post-social .criar-post-categorias {
+    justify-content: flex-start;
+  }
+
+  .criar-post-social .criar-post-rodape {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .criar-post-social .criar-post-publicar {
+    width: 100%;
+  }
+}

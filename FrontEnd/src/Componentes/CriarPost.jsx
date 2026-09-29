@@ -11,8 +11,10 @@ const categoriasPost = ["Adoção", "Perdido", "TinderPet", "Achado"];
   A Home fornece a função onPublicar para inserir o post no feed.
 */
 export default function CriarPost({ onPublicar, imagemPadrao }) {
-  /* Estados controlados do texto, categoria e imagem escolhidos pelo usuário. */
+  /* Estados controlados do texto, identificação do pet, categoria e imagem. */
   const [texto, setTexto] = useState("");
+  const [raca, setRaca] = useState("");
+  const [idade, setIdade] = useState("");
   const [categoria, setCategoria] = useState("Adoção");
   const [imagem, setImagem] = useState("");
   const [nomeArquivo, setNomeArquivo] = useState("");
@@ -39,13 +41,15 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
   }
 
   /*
-    Cria um objeto compatível com CardAnimais e envia o resultado para a Home.
-    Depois da publicação, o compositor volta ao estado inicial.
+    Cria um objeto compatível com CardAnimais e com os filtros avançados.
+    Raça e idade são salvas com nomes próprios para busca posterior.
   */
   function publicarPost(event) {
     event.preventDefault();
 
     const descricao = texto.trim();
+    const racaInformada = raca.trim() || "Raça não informada";
+    const idadeInformada = idade.trim() || "Idade não informada";
 
     if (!descricao) {
       return;
@@ -55,7 +59,8 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
       id: `post-${Date.now()}`,
       nome: "Você",
       especie: "Pet",
-      idade: "Não informado",
+      raca: racaInformada,
+      idade: idadeInformada,
       cidade: "Minha localização",
       status: categoria,
       tag: categoria,
@@ -65,7 +70,7 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
 
     onPublicar(novoPost);
 
-    // Mantém uma cópia dos posts criados para a área "Minhas publicações".
+    /* Mantém uma cópia dos posts criados para a área Minhas publicações. */
     const postsSalvos =
       JSON.parse(localStorage.getItem("cercaTrovaMeusPosts")) || [];
     localStorage.setItem(
@@ -73,7 +78,10 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
       JSON.stringify([novoPost, ...postsSalvos]),
     );
 
+    /* Limpa o compositor depois que o post foi enviado ao feed. */
     setTexto("");
+    setRaca("");
+    setIdade("");
     setCategoria("Adoção");
     setImagem("");
     setNomeArquivo("");
@@ -94,7 +102,7 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
         </div>
       </div>
 
-      {/* Formulário social com campo principal, ações e botão de publicação. */}
+      {/* Formulário social com descrição, dados do pet, ações e publicação. */}
       <form className="criar-post-formulario" onSubmit={publicarPost}>
         {/* Campo semelhante ao compositor de redes sociais. */}
         <label className="criar-post-campo criar-post-mensagem">
@@ -107,6 +115,31 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
             required
           />
         </label>
+
+        {/* Campos complementares para registrar raça e idade do pet. */}
+        <div className="criar-post-dados-pet">
+          {/* Campo de texto para informar a raça. */}
+          <label className="criar-post-campo">
+            <span>Raça</span>
+            <input
+              type="text"
+              value={raca}
+              onChange={(event) => setRaca(event.target.value)}
+              placeholder="Ex.: SRD, Beagle ou Siamês"
+            />
+          </label>
+
+          {/* Campo de texto para aceitar formatos como 2 anos ou 6 meses. */}
+          <label className="criar-post-campo">
+            <span>Idade</span>
+            <input
+              type="text"
+              value={idade}
+              onChange={(event) => setIdade(event.target.value)}
+              placeholder="Ex.: 2 anos"
+            />
+          </label>
+        </div>
 
         {/* Barra de ações para escolher imagem e categoria do post. */}
         <div className="criar-post-barra-acoes">
@@ -151,7 +184,12 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
             Publicando em: <strong>{categoria}</strong>
           </span>
 
-          <button className="criar-post-publicar" type="submit">
+          {/* O botão só fica ativo quando existe conteúdo para publicar. */}
+          <button
+            className="criar-post-publicar"
+            type="submit"
+            disabled={!texto.trim()}
+          >
             Publicar
           </button>
         </div>

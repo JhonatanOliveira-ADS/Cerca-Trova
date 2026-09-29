@@ -1,122 +1,103 @@
-
- 
 /* ==========================================
    PATINHAS
 ========================================== */
- 
+
 .app-container::before {
-    content: "";
- 
-    position: fixed;
-    inset: 0;
- 
-    background-image:
-        url("./assets/imagens/patinhas.png");
- 
-    background-repeat: repeat;
- 
-    background-size:
-        720px auto;
- 
-    background-position:
-        center top;
- 
-    opacity: 0.28;
- 
-    /*
+  content: "";
+
+  position: fixed;
+  inset: 0;
+
+  background-image: url("./assets/imagens/patinhas.png");
+
+  background-repeat: repeat;
+
+  background-size: 720px auto;
+
+  background-position: center top;
+
+  opacity: 0.28;
+
+  /*
        Tirei o multiply por enquanto
        para garantir que a imagem apareça.
     */
-    pointer-events: none;
- 
-    z-index: 0;
+  pointer-events: none;
+
+  z-index: 0;
 }
 /* ==========================================
    CONTEÚDO ACIMA DAS PATINHAS
 ========================================== */
- 
+
 .app-conteudo {
-    position: relative;
- 
-    z-index: 1;
- 
-    width: 100%;
- 
-    min-height:
-        calc(100vh - 64px);
- 
-    background: transparent;
+  position: relative;
+
+  z-index: 1;
+
+  width: 100%;
+
+  min-height: calc(100vh - 64px);
+
+  background: transparent;
 }
- 
- 
+
 /* ==========================================
    MENU ACIMA DAS PATINHAS
 ========================================== */
- 
+
 .app-container > header,
 .app-container > nav {
-    position: relative;
- 
-    z-index: 10;
+  position: relative;
+
+  z-index: 10;
 }
- 
- 
+
 /* ==========================================
    ANIMAÇÃO DO DEGRADÊ
 ========================================== */
- 
+
 @keyframes fundoCercaTrova {
- 
-    0% {
-        background-position:
-            0% 50%;
-    }
- 
-    20% {
-        background-position:
-            35% 20%;
-    }
- 
-    40% {
-        background-position:
-            70% 50%;
-    }
- 
-    60% {
-        background-position:
-            100% 80%;
-    }
- 
-    80% {
-        background-position:
-            55% 100%;
-    }
- 
-    100% {
-        background-position:
-            0% 50%;
-    }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  20% {
+    background-position: 35% 20%;
+  }
+
+  40% {
+    background-position: 70% 50%;
+  }
+
+  60% {
+    background-position: 100% 80%;
+  }
+
+  80% {
+    background-position: 55% 100%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
- 
- 
+
 /* ==========================================
    MOBILE
 ========================================== */
- 
+
 @media (max-width: 600px) {
- 
-    .app-container::before {
-        /*
+  .app-container::before {
+    /*
            Patinhas um pouco menores
            no celular.
         */
-        background-size:
-            400px auto;
- 
-        opacity: 0.18;
-    }
-}
+    background-size: 400px auto;
 
+    opacity: 0.18;
+  }
+}
 
 /* ==========================================
    PÁGINA DE FAVORITOS
@@ -157,7 +138,12 @@
   padding: 34px 46px;
   overflow: hidden;
   border-radius: 30px;
-  background: linear-gradient(115deg, var(--favoritos-pink), #d17ca4 55%, var(--favoritos-orange));
+  background: linear-gradient(
+    115deg,
+    var(--favoritos-pink),
+    #d17ca4 55%,
+    var(--favoritos-orange)
+  );
   box-shadow: 0 14px 34px rgba(22, 49, 71, 0.15);
 }
 
@@ -270,7 +256,10 @@
   outline: 0;
   color: var(--favoritos-navy);
   background: transparent;
-  font: 600 14px "Trebuchet MS", Arial, sans-serif;
+  font:
+    600 14px "Trebuchet MS",
+    Arial,
+    sans-serif;
 }
 
 .favoritos-select-field {
@@ -303,9 +292,14 @@
   border-radius: 15px;
   color: #ffffff;
   background: var(--favoritos-navy);
-  font: 800 14px "Trebuchet MS", Arial, sans-serif;
+  font:
+    800 14px "Trebuchet MS",
+    Arial,
+    sans-serif;
   cursor: pointer;
-  transition: transform 0.18s ease, background 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease;
 }
 
 .favoritos-clear-button:hover,
@@ -330,7 +324,10 @@
   font-size: 13px;
   font-weight: 800;
   cursor: pointer;
-  transition: color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    transform 0.18s ease;
 }
 
 .favoritos-filter-tag:hover,
@@ -372,7 +369,9 @@
   border-radius: 20px;
   background: #ffffff;
   box-shadow: 0 7px 20px rgba(22, 49, 71, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .favoritos-post-card:hover {
@@ -438,10 +437,19 @@
   white-space: nowrap;
 }
 
-.favoritos-post-tag.tag-adoção { background: var(--favoritos-pink); }
-.favoritos-post-tag.tag-perdido { background: var(--favoritos-navy); }
-.favoritos-post-tag.tag-encontra { background: var(--favoritos-blue); }
-.favoritos-post-tag.tag-em-busca-de-um-cãopanheiro { color: var(--favoritos-navy); background: var(--favoritos-orange); }
+.favoritos-post-tag.tag-adoção {
+  background: var(--favoritos-pink);
+}
+.favoritos-post-tag.tag-perdido {
+  background: var(--favoritos-navy);
+}
+.favoritos-post-tag.tag-encontra {
+  background: var(--favoritos-blue);
+}
+.favoritos-post-tag.tag-em-busca-de-um-cãopanheiro {
+  color: var(--favoritos-navy);
+  background: var(--favoritos-orange);
+}
 
 .favoritos-post-content {
   min-height: 137px;
@@ -487,7 +495,11 @@
   display: grid;
   place-items: center;
   color: #ffffff;
-  background: linear-gradient(135deg, var(--favoritos-blue), var(--favoritos-pink));
+  background: linear-gradient(
+    135deg,
+    var(--favoritos-blue),
+    var(--favoritos-pink)
+  );
   font-size: 70px;
 }
 
@@ -507,9 +519,14 @@
   border-radius: 9px;
   color: var(--favoritos-navy);
   background: transparent;
-  font: 700 12px "Trebuchet MS", Arial, sans-serif;
+  font:
+    700 12px "Trebuchet MS",
+    Arial,
+    sans-serif;
   cursor: pointer;
-  transition: color 0.18s ease, background 0.18s ease;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease;
 }
 
 .favoritos-post-actions button:hover {
@@ -590,5 +607,54 @@
   .favoritos-post-image,
   .favoritos-post-no-image {
     height: 280px;
+  }
+}
+
+/* ==========================================
+   FILTROS DE RAÇA E IDADE
+   Bloco acrescentado para filtrar os dados
+   registrados nos favoritos.
+========================================== */
+
+/* Aumenta a grade para acomodar busca, espécie, raça, idade e limpeza. */
+.favoritos-filter-controls {
+  grid-template-columns: minmax(240px, 1fr) 150px 170px 150px auto;
+}
+
+/* Campo de idade reutiliza o mesmo acabamento dos selects existentes. */
+.favoritos-age-field input {
+  width: 100%;
+  height: 34px;
+  min-width: 0;
+  padding-top: 11px;
+  border: 0;
+  outline: 0;
+  color: var(--favoritos-navy);
+  background: transparent;
+  font:
+    600 13px "Trebuchet MS",
+    Arial,
+    sans-serif;
+}
+
+/* Reorganiza os filtros em duas colunas em telas intermediárias. */
+@media (max-width: 1050px) {
+  .favoritos-filter-controls {
+    grid-template-columns: minmax(220px, 1fr) 1fr 1fr;
+  }
+
+  .favoritos-clear-button {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Empilha todos os filtros em telas pequenas. */
+@media (max-width: 640px) {
+  .favoritos-filter-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .favoritos-clear-button {
+    grid-column: auto;
   }
 }

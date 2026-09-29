@@ -15,7 +15,11 @@ function carregarFavoritos() {
   }
 }
 
-export default function CardAnimais({ pet, isFavorito = false, onToggleFavorito }) {
+export default function CardAnimais({
+  pet,
+  isFavorito = false,
+  onToggleFavorito,
+}) {
   /*
     Inicializa o botão consultando o LocalStorage.
     A função lazy evita uma leitura desnecessária a cada renderização.
@@ -34,7 +38,9 @@ export default function CardAnimais({ pet, isFavorito = false, onToggleFavorito 
     const jaExiste = favoritosAtuais.some((favorito) => favorito.id === pet.id);
 
     if (jaExiste) {
-      const listaAtualizada = favoritosAtuais.filter((favorito) => favorito.id !== pet.id);
+      const listaAtualizada = favoritosAtuais.filter(
+        (favorito) => favorito.id !== pet.id,
+      );
       localStorage.setItem(CHAVE_FAVORITOS, JSON.stringify(listaAtualizada));
       setFavoritado(false);
 
@@ -47,7 +53,10 @@ export default function CardAnimais({ pet, isFavorito = false, onToggleFavorito 
       tag: pet.tag || pet.status || "Adoção",
     };
 
-    localStorage.setItem(CHAVE_FAVORITOS, JSON.stringify([...favoritosAtuais, petParaSalvar]));
+    localStorage.setItem(
+      CHAVE_FAVORITOS,
+      JSON.stringify([...favoritosAtuais, petParaSalvar]),
+    );
     setFavoritado(true);
   }
 
@@ -58,7 +67,9 @@ export default function CardAnimais({ pet, isFavorito = false, onToggleFavorito 
 
         <div className="feed-card-identidade">
           <h3>{pet.nome}</h3>
-          <span>{pet.cidade} • {pet.status}</span>
+          <span>
+            {pet.cidade} • {pet.status}
+          </span>
         </div>
 
         {/* O botão permanece no canto superior direito do card. */}
@@ -68,9 +79,15 @@ export default function CardAnimais({ pet, isFavorito = false, onToggleFavorito 
             className={`feed-card-favorito ${favoritado ? "ativo" : ""}`}
             type="button"
             onClick={alternarFavorito}
-            aria-label={favoritado ? `Remover ${pet.nome} dos favoritos` : `Adicionar ${pet.nome} aos favoritos`}
+            aria-label={
+              favoritado
+                ? `Remover ${pet.nome} dos favoritos`
+                : `Adicionar ${pet.nome} aos favoritos`
+            }
             aria-pressed={favoritado}
-            title={favoritado ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+            title={
+              favoritado ? "Remover dos favoritos" : "Adicionar aos favoritos"
+            }
           >
             {favoritado ? "♥" : "♡"}
           </button>
@@ -79,7 +96,9 @@ export default function CardAnimais({ pet, isFavorito = false, onToggleFavorito 
 
       <div className="feed-card-texto">
         <p>{pet.descricao}</p>
-        <span>{pet.especie} • {pet.idade}</span>
+        <span>
+          {pet.especie} • {pet.raca || "Raça não informada"} • {pet.idade}
+        </span>
       </div>
 
       <img className="feed-card-img" src={pet.imagem} alt={pet.nome} />

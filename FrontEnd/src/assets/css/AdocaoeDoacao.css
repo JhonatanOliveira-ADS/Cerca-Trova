@@ -37,7 +37,12 @@
   padding: 34px 46px;
   overflow: hidden;
   border-radius: 30px;
-  background: linear-gradient(115deg, var(--adocao-blue) 0%, #86bfd4 53%, var(--adocao-orange) 100%);
+  background: linear-gradient(
+    115deg,
+    var(--adocao-blue) 0%,
+    #86bfd4 53%,
+    var(--adocao-orange) 100%
+  );
   box-shadow: 0 14px 34px rgba(22, 49, 71, 0.15);
 }
 
@@ -53,6 +58,23 @@
   font-weight: 900;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+
+.adocao-feed-heading{
+  border-radius: 24px;
+  
+
+}
+
+.adocao-eyebrow {
+  margin-top: 15px;
+}
+
+.adocao-feed .adocao-feed-heading h2 {
+  margin-top: 5px;
+  margin-bottom: 15px;
+ 
 }
 
 .adocao-hero .adocao-eyebrow {
@@ -160,7 +182,10 @@
   outline: 0;
   color: var(--adocao-navy);
   background: transparent;
-  font: 600 14px "Trebuchet MS", Arial, sans-serif;
+  font:
+    600 14px "Trebuchet MS",
+    Arial,
+    sans-serif;
 }
 
 .adocao-select-field {
@@ -193,9 +218,14 @@
   border-radius: 15px;
   color: #ffffff;
   background: var(--adocao-navy);
-  font: 800 14px "Trebuchet MS", Arial, sans-serif;
+  font:
+    800 14px "Trebuchet MS",
+    Arial,
+    sans-serif;
   cursor: pointer;
-  transition: transform 0.18s ease, background 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease;
 }
 
 .adocao-clear-button:hover,
@@ -224,7 +254,11 @@
   background: #ffffff;
   font-size: 13px;
   cursor: pointer;
-  transition: color 0.18s ease, background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
 }
 
 .adocao-filter-tag:hover,
@@ -266,7 +300,9 @@
   border-radius: 20px;
   background: #ffffff;
   box-shadow: 0 7px 20px rgba(22, 49, 71, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .adocao-post-card:hover {
@@ -330,10 +366,19 @@
   white-space: nowrap;
 }
 
-.adocao-post-tag.tag-adoção { background: var(--adocao-pink); }
-.adocao-post-tag.tag-perdido { background: var(--adocao-navy); }
-.adocao-post-tag.tag-encontra { background: var(--adocao-blue); }
-.adocao-post-tag.tag-em-busca-de-um-cãopanheiro { color: var(--adocao-navy); background: var(--adocao-orange); }
+.adocao-post-tag.tag-adoção {
+  background: var(--adocao-pink);
+}
+.adocao-post-tag.tag-perdido {
+  background: var(--adocao-navy);
+}
+.adocao-post-tag.tag-encontra {
+  background: var(--adocao-blue);
+}
+.adocao-post-tag.tag-em-busca-de-um-cãopanheiro {
+  color: var(--adocao-navy);
+  background: var(--adocao-orange);
+}
 
 .adocao-post-content {
   min-height: 137px;
@@ -387,9 +432,14 @@
   border-radius: 9px;
   color: var(--adocao-navy);
   background: transparent;
-  font: 700 12px "Trebuchet MS", Arial, sans-serif;
+  font:
+    700 12px "Trebuchet MS",
+    Arial,
+    sans-serif;
   cursor: pointer;
-  transition: color 0.18s ease, background 0.18s ease;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease;
 }
 
 .adocao-post-actions button:hover {
@@ -469,5 +519,54 @@
 
   .adocao-post-image {
     height: 280px;
+  }
+}
+
+/* ==========================================
+   FILTROS DE RAÇA E IDADE
+   Bloco acrescentado para filtrar os dados
+   informados no compositor da Home.
+========================================== */
+
+/* Aumenta a grade para acomodar busca, espécie, raça, idade e limpeza. */
+.adocao-filter-controls {
+  grid-template-columns: minmax(240px, 1fr) 150px 170px 150px auto;
+}
+
+/* Campo de idade reutiliza o mesmo acabamento dos selects existentes. */
+.adocao-age-field input {
+  width: 100%;
+  height: 34px;
+  min-width: 0;
+  padding-top: 11px;
+  border: 0;
+  outline: 0;
+  color: var(--adocao-navy);
+  background: transparent;
+  font:
+    600 13px "Trebuchet MS",
+    Arial,
+    sans-serif;
+}
+
+/* Reorganiza os filtros em duas colunas em telas intermediárias. */
+@media (max-width: 1050px) {
+  .adocao-filter-controls {
+    grid-template-columns: minmax(220px, 1fr) 1fr 1fr;
+  }
+
+  .adocao-clear-button {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Empilha todos os filtros em telas pequenas. */
+@media (max-width: 640px) {
+  .adocao-filter-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .adocao-clear-button {
+    grid-column: auto;
   }
 }
