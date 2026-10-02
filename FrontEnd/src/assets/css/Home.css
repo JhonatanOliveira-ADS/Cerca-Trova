@@ -1,591 +1,807 @@
 /* fundo com patinhas e bordas nos textos , pensei em o compartilhar encaminhar  para chat e whats*/
+
 body {
+
   margin: 0;
+
+
 
   min-height: 100vh;
 
+
+
   background:
-    radial-gradient(
-      circle at 20% 20%,
+
+    radial-gradient(circle at 20% 20%,
+
       rgba(167, 139, 250, 0.18),
-      transparent 35%
-    ),
-    radial-gradient(
-      circle at 80% 30%,
+
+      transparent 35%),
+
+    radial-gradient(circle at 80% 30%,
+
       rgba(96, 165, 250, 0.16),
-      transparent 40%
-    ),
+
+      transparent 40%),
+
     linear-gradient(135deg, #f8fafc 0%, #eef2ff 45%, #fdf4ff 100%);
+
+
 
   font-family: Arial, Helvetica, sans-serif;
 
+
+
   position: relative;
+
 }
 
+
+
 body::before {
+
   content: "🐾    🐾      🐾     🐾        🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾    🐾";
+
+
 
   position: fixed;
 
+
+
   top: 90px;
+
   left: 0;
 
+
+
   width: 100%;
+
   height: 100%;
+
+
 
   font-size: 42px;
 
+
+
   color: rgba(99, 102, 241, 0.08);
+
+
 
   word-spacing: 80px;
 
+
+
   line-height: 180px;
+
+
 
   transform: rotate(-12deg);
 
+
+
   pointer-events: none;
 
+
+
   z-index: 0;
+
 }
+
+
 
 .home-container {
+
   width: 100%;
+
   min-height: 100vh;
+
 }
+
+
 
 .feed {
+
   width: 100%;
+
   max-width: 680px;
+
   margin: 40px auto 80px;
+
   padding: 0 16px;
+
 }
+
+
 
 .feed-topo {
+
   margin-bottom: 24px;
+
 }
+
+
 
 .feed-topo h2 {
+
   margin: 0;
+
   color: #1e293b;
+
   font-size: 28px;
+
 }
+
+
 
 .feed-topo p {
+
   color: #64748b;
+
   margin-top: 6px;
+
 }
+
+
 
 .feed-card {
+
   background: #ffffff;
+
   border: 1px solid #e2e8f0;
+
   border-radius: 14px;
+
   margin-bottom: 24px;
+
   overflow: hidden;
 
+
+
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
 }
+
+
 
 .feed-card-header {
+
   display: flex;
+
   align-items: center;
+
   gap: 12px;
 
+
+
   padding: 16px;
+
 }
 
+
+
 .feed-avatar {
+
   width: 44px;
+
   height: 44px;
+
+
 
   border-radius: 50%;
 
+
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
+
 
   background: #eef2ff;
 
+
+
   font-size: 22px;
+
 }
 
+
+
 .feed-card-header h3 {
+
   margin: 0;
+
+
 
   color: #1e293b;
 
+
+
   font-size: 17px;
+
 }
 
+
+
 .feed-card-header span {
+
   display: block;
+
+
 
   margin-top: 3px;
 
+
+
   color: #64748b;
 
+
+
   font-size: 13px;
+
 }
+
+
 
 .feed-card-texto {
+
   padding: 0 16px 14px;
+
 }
 
+
+
 .feed-card-texto p {
+
   margin: 0 0 8px;
+
+
 
   color: #334155;
 
+
+
   line-height: 1.5;
+
 }
+
+
 
 .feed-card-texto span {
+
   color: #6366f1;
 
+
+
   font-size: 14px;
+
   font-weight: 600;
+
 }
+
+
 
 .feed-card-img {
+
   width: 100%;
+
   height: 400px;
+
   display: block;
+
   object-fit: cover;
+
   object-position: center;
+
 }
 
+
+
 /* ==========================================
+
    AÇÕES DOS CARDS
+
 ========================================== */
 
+
+
 .feed-card-acoes {
+
   display: flex;
 
+
+
   align-items: center;
+
   justify-content: space-between;
 
+
+
   width: 100%;
+
+
 
   padding: 10px 28px;
 
+
+
   border-top: 1px solid #e2e8f0;
+
 }
 
+
+
 /* ==========================================
+
    BOTÕES DOS CARDS
+
 ========================================== */
 
+
+
 .feed-card-acoes button {
+
   border: none;
 
+
+
   background: transparent;
+
+
 
   padding: 10px 14px;
 
+
+
   color: #163147;
 
+
+
   font-weight: 600;
+
   font-size: 14px;
+
+
 
   cursor: pointer;
 
+
+
   border-radius: 10px;
 
+
+
   transition:
+
     background 0.2s ease,
+
     color 0.2s ease,
+
     transform 0.2s ease;
+
 }
 
+
+
 /* ==========================================
+
    HOVER
+
 ========================================== */
 
+
+
 .feed-card-acoes button:hover {
+
   color: #163147;
+
+
 
   background: linear-gradient(135deg, #163147 0%, #a95e94 100%);
 
+
+
   transform: translateY(-2px);
+
 }
+
 .feed-card-acoes button {
+
   border: none;
+
   background: transparent;
+
+
 
   padding: 10px 6px;
 
+
+
   color: #475569;
+
+
 
   font-weight: 400;
 
+
+
   cursor: pointer;
+
+
 
   border-radius: 8px;
 
+
+
   transition: background 0.2s ease;
+
 }
+
+
 
 .feed-card-acoes button:hover {
-  background: linear-gradient(135deg, #a95e94 0% #163147 100%);
+
+  background: linear-gradient(135deg, #a95e94 0%, #163147 100%);
+
   color: white;
+
 }
+
+
 
 @media (max-width: 600px) {
+
   .feed {
+
     padding: 0 8px;
+
     margin-top: 20px;
+
   }
+
+
 
   .feed-card {
+
     border-radius: 10px;
+
   }
+
+
 
   .feed-card-acoes button {
+
     font-size: 12px;
+
   }
+
 }
 
-/* Css individual , exceto os cards /*
 
-/* Css header para o topo ficar maais interessante , conforme vcs queiram algo diferente por favor me falem /*
-*/
+
+/* Css individual, exceto os cards */
+
+
+
+/* CSS do header para o topo. */
+
+
 
 header {
+
   position: sticky;
+
   top: 0;
+
   z-index: 1000;
 
+
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
+
+
   min-height: 64px;
+
   padding: 0 24px;
 
+
+
   background: rgba(255, 255, 255, 0.88);
+
   backdrop-filter: blur(12px);
+
+
 
   border-bottom: 1px solid rgba(99, 102, 241, 0.1);
 
+
+
   box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
+
 }
+
+
 
 header nav {
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
+
 
   gap: 8px;
+
 }
 
+
+
 header a {
+
   position: relative;
 
+
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
+
 
   padding: 10px 16px;
 
+
+
   text-decoration: none;
+
+
 
   color: #475569;
 
+
+
   font-size: 15px;
+
   font-weight: 600;
+
+
 
   border-radius: 12px;
 
+
+
   transition: 0.2s ease;
+
 }
+
+
 
 header a:hover {
+
   color: #6d28d9;
+
   background: #f3e8ff;
 
+
+
   transform: translateY(-1px);
+
 }
 
+
+
 header a::after {
+
   content: "";
 
+
+
   position: absolute;
+
   left: 50%;
+
   bottom: 3px;
 
+
+
   width: 0;
+
   height: 3px;
+
+
 
   border-radius: 10px;
 
+
+
   background: linear-gradient(90deg, #7c3aed, #6366f1);
+
+
 
   transform: translateX(-50%);
 
+
+
   transition: width 0.2s ease;
+
 }
+
+
 
 header a:hover::after {
+
   width: 55%;
+
 }
+
+
 
 .home-container {
+
   width: 100%;
+
   min-height: 100vh;
+
 }
 
-/* banner encontre seu melhor amigo.*/
-.home-banner-pets {
-  position: absolute;
 
-  /* traz os animais mais perto do texto */
-  right: 260px;
 
-  /* mantém apoiados no fundo */
-  bottom: -10px;
+/* ==========================================
+   BANNER HOME - SOMENTE A IMAGEM
+========================================== */
 
-  /* aumenta um pouco */
-  width: 630px;
-
-  max-height: 105%;
-  object-fit: contain;
-
-  z-index: 2;
-
-  pointer-events: none;
-
-  filter: drop-shadow(0 18px 20px rgba(0, 0, 0, 0.16));
-}
 .home-banner {
-  position: relative;
-
-  width: calc(100% - 40px);
-  max-width: 1450px;
-  min-height: 280px;
-
-  margin: 30px auto 40px;
-
-  padding: 50px 60px;
-
-  display: flex;
-  align-items: center;
-
+  width: min(1180px, calc(100% - 40px));
+  margin: 30px auto 55px;
+  padding: 0;
   overflow: hidden;
-
-  border-radius: 30px;
-
-  background:
-    radial-gradient(
-      circle at 80% 20%,
-      rgba(255, 255, 255, 0.2),
-      transparent 28%
-    ),
-    linear-gradient(135deg, #7c3aed 0%, #6366f1 50%, #3b82f6 100%);
-
-  box-shadow: 0 20px 50px rgba(99, 102, 241, 0.25);
+  border-radius: 24px;
+  background: transparent;
+  box-shadow: 0 15px 35px rgba(22, 49, 71, 0.12);
 }
 
-/* brilho grande */
-
-.home-banner::before {
-  content: "";
-
-  position: absolute;
-
-  width: 300px;
-  height: 300px;
-
-  right: -100px;
-  top: -140px;
-
-  border-radius: 50%;
-
-  background: rgba(255, 255, 255, 0.1);
-}
-
-/* outro brilho */
-
-.home-banner::after {
-  content: "";
-
-  position: absolute;
-
-  width: 230px;
-  height: 230px;
-
-  right: 150px;
-  bottom: -180px;
-
-  border-radius: 50%;
-
-  background: rgba(255, 255, 255, 0.08);
-}
-
-/* texto do banner */
-
-.home-banner-texto {
-  position: relative;
-
-  z-index: 2;
-
-  max-width: 680px;
-}
-
-.home-banner-tag {
-  display: inline-flex;
-  align-items: center;
-
-  margin-bottom: 18px;
-
-  padding: 7px 14px;
-
-  border: 1px solid rgba(255, 255, 255, 0.25);
-
-  border-radius: 50px;
-
-  background: rgba(255, 255, 255, 0.14);
-
-  color: #ffffff;
-
-  font-size: 13px;
-  font-weight: 700;
-
-  backdrop-filter: blur(10px);
-}
-
-.home-banner h1 {
-  margin: 0;
-
-  max-width: 650px;
-
-  color: #ffffff;
-
-  font-size: clamp(36px, 5vw, 56px);
-
-  font-weight: 800;
-
-  line-height: 1.05;
-
-  letter-spacing: -1.5px;
-}
-
-.home-banner h1 strong {
-  color: #fde68a;
-}
-
-.home-banner p {
-  margin: 20px 0 0;
-
-  max-width: 570px;
-
-  color: rgba(255, 255, 255, 0.88);
-
-  font-size: 18px;
-
-  line-height: 1.6;
-}
-
-/* 
-   patinhas
- */
-
-.home-banner-patas {
-  position: absolute;
-
-  right: 80px;
-  top: 50%;
-
-  transform: translateY(-50%) rotate(-18deg);
-
-  font-size: 150px;
-
-  opacity: 0.13;
-
-  pointer-events: none;
-}
-
-/* FEED */
-
-.feed {
+.home-banner-pets {
+  position: static;
+  display: block;
   width: 100%;
-  max-width: 680px;
-
-  margin: 0 auto 80px;
-
-  padding: 0 16px;
+  max-width: none;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
 }
-
-.feed-topo {
-  margin-bottom: 25px;
-}
-
-.feed-label {
-  display: inline-block;
-
-  margin-bottom: 27px;
-
-  color: #7c3aed;
-
-  font-size: 13px;
-  font-weight: 700;
-
-  text-transform: uppercase;
-
-  letter-spacing: 1px;
-}
-
-.feed-topo h2 {
-  margin: 0;
-
-  color: #1e293b;
-
-  font-size: 30px;
-
-  font-weight: 800;
-
-  letter-spacing: -0.5px;
-}
-
-.feed-topo p {
-  margin: 7px 0 0;
-
-  color: #64748b;
-
-  font-size: 15px;
-}
-
-/* 
-   MOBILE
-*/
 
 @media (max-width: 700px) {
   .home-banner {
     width: calc(100% - 20px);
-
-    min-height: 240px;
-
     margin: 15px auto 30px;
-
-    padding: 35px 25px;
-
-    border-radius: 22px;
+    border-radius: 16px;
   }
 
-  .home-banner h1 {
-    font-size: 34px;
+  .home-banner-pets {
+    width: 100%;
+    height: auto;
+    border-radius: 24px;
   }
 
-  .home-banner p {
-    font-size: 15px;
+}
 
-    max-width: 90%;
-  }
+/* FEED */
 
-  .home-banner-patas {
-    right: -15px;
 
-    font-size: 110px;
-  }
 
+.feed {
+
+  width: 100%;
+
+  max-width: 680px;
+
+
+
+  margin: 0 auto 80px;
+
+
+
+  padding: 0 16px;
+
+}
+
+
+
+.feed-topo {
+
+  margin-bottom: 25px;
+
+}
+
+
+
+.feed-label {
+
+  display: inline-block;
+
+
+
+  margin-bottom: 27px;
+
+
+
+  color: #7c3aed;
+
+
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+
+
+  text-transform: uppercase;
+
+
+
+  letter-spacing: 1px;
+
+}
+
+
+
+.feed-topo h2 {
+
+  margin: 0;
+
+
+
+  color: #1e293b;
+
+
+
+  font-size: 30px;
+
+
+
+  font-weight: 800;
+
+
+
+  letter-spacing: -0.5px;
+
+}
+
+
+
+.feed-topo p {
+
+  margin: 7px 0 0;
+
+
+
+  color: #64748b;
+
+
+
+  font-size: 15px;
+
+}
+
+
+
+/* ==========================================
+   FEED - MOBILE
+========================================== */
+
+@media (max-width: 700px) {
   .feed {
     padding: 0 10px;
   }
@@ -596,763 +812,1523 @@ header a:hover::after {
 }
 
 /* =========================
+
    TÍTULO DO FEED
+
  */
 
+
+
 .feed-topo {
+
   position: relative;
 
+
+
   margin-bottom: 24px;
+
   padding: 0 4px 14px;
+
 }
 
+
+
 .feed-topo h2 {
+
   margin: 0;
+
+
 
   color: #1e293b;
 
+
+
   font-size: 29px;
+
   font-weight: 800;
 
+
+
   letter-spacing: -0.5px;
+
 }
 
+
+
 .feed-topo p {
+
   margin: 7px 0 0;
+
+
 
   color: #64748b;
 
+
+
   font-size: 15px;
+
 }
 
+
+
 .feed-topo::after {
+
   content: "";
+
+
 
   display: block;
 
+
+
   width: 70px;
+
   height: 4px;
+
+
 
   margin-top: 13px;
 
+
+
   border-radius: 10px;
+
+
 
   background: linear-gradient(90deg, #7c3aed, #6366f1);
+
 }
+
+
 
 /* =========================
+
    MOBILE
+
 ========================= */
 
+
+
 @media (max-width: 700px) {
+
   header {
+
     padding: 0 8px;
 
+
+
     overflow-x: auto;
+
   }
+
+
 
   header nav {
+
     justify-content: flex-start;
+
+
 
     min-width: max-content;
+
   }
+
+
 
   header a {
+
     padding: 10px 9px;
 
+
+
     font-size: 13px;
+
   }
+
+
 
   .banner {
+
     width: calc(100% - 20px);
 
+
+
     margin-top: 18px;
+
     padding: 28px 22px;
 
+
+
     border-radius: 18px;
+
   }
+
+
 
   .banner p {
+
     font-size: 15px;
+
   }
+
 }
 
+
+
 /* ==========================================
+
    BOTÃO DE FAVORITOS DOS CARDS
+
    Bloco acrescentado para integrar Home e Favoritos.
+
 ========================================== */
+
 .feed-card-header {
+
   position: relative;
+
 }
+
+
 
 .feed-card-identidade {
+
   min-width: 0;
+
 }
+
+
 
 .feed-card-header-actions {
+
   display: flex;
+
   align-items: center;
+
   gap: 8px;
+
   margin-left: auto;
+
 }
+
+
 
 .feed-card-tag {
+
   display: inline-flex;
+
   align-items: center;
+
   min-height: 26px;
+
   padding: 0 10px;
+
   border-radius: 999px;
+
   color: #ffffff !important;
+
   background: #68a6c5;
+
   font-size: 11px !important;
+
   font-weight: 800;
+
   white-space: nowrap;
+
 }
+
+
 
 .feed-card-favorito {
+
   display: grid;
+
   place-items: center;
+
   width: 36px;
+
   height: 36px;
+
   padding: 0;
+
   border: 1px solid #e1eaee;
+
   border-radius: 50%;
+
   color: #bd5f91;
+
   background: #ffffff;
+
   font-size: 24px;
+
   line-height: 1;
+
   cursor: pointer;
+
   transition:
+
     color 0.18s ease,
+
     background 0.18s ease,
+
     transform 0.18s ease,
+
     border-color 0.18s ease;
+
 }
+
+
 
 .feed-card-favorito:hover,
+
 .feed-card-favorito.ativo {
+
   color: #ffffff;
+
   border-color: #bd5f91;
+
   background: #bd5f91;
+
   transform: scale(1.06);
+
 }
+
+
 
 .feed-card-favorito:active {
+
   transform: scale(0.96);
+
 }
 
+
+
 @media (max-width: 600px) {
+
   .feed-card-header-actions {
+
     gap: 5px;
+
   }
+
+
 
   .feed-card-tag {
+
     max-width: 90px;
+
     overflow: hidden;
+
     text-overflow: ellipsis;
+
   }
+
+
 
   .feed-card-favorito {
+
     width: 32px;
+
     height: 32px;
+
     font-size: 21px;
+
   }
+
 }
 
+
+
 /* ==========================================
+
    COMPONENTE DE CRIAÇÃO DE POSTS
+
    Bloco acrescentado à Home para permitir
+
    texto, categoria, imagem e publicação.
+
 ========================================== */
+
+
 
 /* Cartão visual que envolve o formulário completo. */
+
 .criar-post {
+
   margin: 0 0 28px;
+
   padding: 20px;
+
   border: 1px solid #e2e8f0;
+
   border-radius: 16px;
+
   background: #ffffff;
+
   box-shadow: 0 4px 14px rgba(22, 49, 71, 0.08);
+
 }
+
+
 
 /* Cabeçalho do formulário com ícone e texto de orientação. */
+
 .criar-post-cabecalho {
+
   display: flex;
+
   align-items: center;
+
   gap: 12px;
+
   margin-bottom: 18px;
+
 }
+
+
 
 /* Ícone circular que identifica a ação de criar publicação. */
+
 .criar-post-icone {
+
   display: grid;
+
   place-items: center;
+
   width: 42px;
+
   height: 42px;
+
   border-radius: 50%;
+
   color: #ffffff;
+
   background: #163147;
+
   font-size: 24px;
+
   font-weight: 700;
+
 }
+
+
 
 /* Título principal do componente. */
+
 .criar-post-cabecalho h3 {
+
   margin: 0;
+
   color: #1e293b;
+
   font-size: 20px;
+
 }
+
+
 
 /* Texto auxiliar apresentado abaixo do título. */
+
 .criar-post-cabecalho p {
+
   margin: 4px 0 0;
+
   color: #64748b;
+
   font-size: 13px;
+
 }
+
+
 
 /* Estrutura vertical dos campos e ações do formulário. */
+
 .criar-post-formulario {
+
   display: flex;
+
   flex-direction: column;
+
   gap: 14px;
+
 }
+
+
 
 /* Grupo reutilizado para texto, select e seus respectivos títulos. */
+
 .criar-post-campo {
+
   display: flex;
+
   flex-direction: column;
+
   gap: 7px;
+
 }
+
+
 
 /* Texto que identifica cada campo do formulário. */
-.criar-post-campo > span {
+
+.criar-post-campo>span {
+
   color: #334155;
+
   font-size: 13px;
+
   font-weight: 700;
+
 }
+
+
 
 /* Área de digitação da descrição do post. */
+
 .criar-post-campo textarea {
+
   width: 100%;
+
   min-height: 98px;
+
   box-sizing: border-box;
+
   resize: vertical;
+
   padding: 12px 14px;
+
   border: 1px solid #cbd5e1;
+
   border-radius: 12px;
+
   outline: none;
+
   color: #1e293b;
+
   background: #f8fafc;
+
   font:
+
     15px Arial,
+
     Helvetica,
+
     sans-serif;
+
   line-height: 1.45;
+
   transition:
+
     border-color 0.18s ease,
+
     box-shadow 0.18s ease;
+
 }
+
+
 
 /* Destaque acessível quando o usuário entra no campo de texto. */
+
 .criar-post-campo textarea:focus,
+
 .criar-post-campo select:focus {
+
   border-color: #68a6c5;
+
   box-shadow: 0 0 0 3px rgba(104, 166, 197, 0.18);
+
 }
+
+
 
 /* Linha que agrupa categoria e upload em telas maiores. */
+
 .criar-post-controles {
+
   display: grid;
+
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+
   gap: 12px;
+
 }
+
+
 
 /* Select com a categoria que será exibida no novo card. */
+
 .criar-post-campo select {
+
   min-height: 44px;
+
   padding: 0 12px;
+
   border: 1px solid #cbd5e1;
+
   border-radius: 10px;
+
   outline: none;
+
   color: #1e293b;
+
   background: #f8fafc;
+
   font:
+
     14px Arial,
+
     Helvetica,
+
     sans-serif;
+
 }
+
+
 
 /* Label visual que funciona como botão para selecionar uma imagem. */
+
 .criar-post-upload {
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
   gap: 8px;
+
   min-height: 44px;
+
   box-sizing: border-box;
+
   padding: 8px 12px;
+
   border: 1px dashed #68a6c5;
+
   border-radius: 10px;
+
   color: #163147;
+
   background: #edf3f6;
+
   cursor: pointer;
+
   transition:
+
     background 0.18s ease,
+
     transform 0.18s ease;
+
 }
+
+
 
 /* Estado de interação do botão de upload. */
+
 .criar-post-upload:hover {
+
   background: #dcecf3;
+
   transform: translateY(-1px);
+
 }
+
+
 
 /* Ícone do controle de upload. */
-.criar-post-upload > span {
+
+.criar-post-upload>span {
+
   color: #68a6c5;
+
   font-size: 22px;
+
 }
+
+
 
 /* Texto do controle de upload. */
+
 .criar-post-upload strong {
+
   font-size: 13px;
+
 }
+
+
 
 /* Input nativo fica invisível, mantendo a área inteira clicável pelo label. */
+
 .criar-post-upload input {
+
   position: absolute;
+
   width: 1px;
+
   height: 1px;
+
   overflow: hidden;
+
   clip: rect(0, 0, 0, 0);
+
   white-space: nowrap;
+
 }
+
+
 
 /* Mensagem que informa o nome da imagem selecionada. */
+
 .criar-post-arquivo {
+
   margin: -4px 0 0;
+
   overflow: hidden;
+
   color: #64748b;
+
   font-size: 12px;
+
   text-overflow: ellipsis;
+
   white-space: nowrap;
+
 }
+
+
 
 /* Ação principal para concluir a publicação do novo post. */
+
 .criar-post-publicar {
+
   align-self: flex-end;
+
   min-height: 42px;
+
   padding: 0 20px;
+
   border: 0;
+
   border-radius: 10px;
+
   color: #ffffff;
+
   background: #163147;
+
   font-size: 14px;
+
   font-weight: 700;
+
   cursor: pointer;
+
   transition:
+
     background 0.18s ease,
+
     transform 0.18s ease;
+
 }
+
+
 
 /* Feedback visual do botão de publicação. */
+
 .criar-post-publicar:hover {
+
   background: #a95e94;
+
   transform: translateY(-1px);
+
 }
+
+
 
 /* Feedback visual durante o clique no botão. */
+
 .criar-post-publicar:active {
+
   transform: scale(0.97);
+
 }
+
+
 
 /* Ajustes do formulário para telas estreitas. */
+
 @media (max-width: 600px) {
+
   .criar-post {
+
     padding: 15px;
+
     border-radius: 12px;
+
   }
+
+
 
   .criar-post-controles {
+
     grid-template-columns: 1fr;
+
   }
+
+
 
   .criar-post-publicar {
+
     width: 100%;
+
   }
+
 }
 
+
+
 /* ==========================================
+
    COMPOSITOR EM ESTILO DE REDE SOCIAL
+
    Ajustes acrescentados para aproximar a
+
    publicação do padrão Twitter/Facebook.
+
 ========================================== */
+
+
 
 /* Identificação do usuário no topo do compositor. */
+
 .criar-post-usuario {
+
   display: flex;
+
   align-items: center;
+
   gap: 12px;
+
   margin-bottom: 16px;
+
 }
+
+
 
 /* Avatar circular usado para representar o usuário atual. */
+
 .criar-post-usuario-avatar {
+
   display: grid;
+
   place-items: center;
+
   width: 44px;
+
   height: 44px;
+
   border-radius: 50%;
+
   color: #163147;
+
   background: #dcecf3;
+
   font-size: 22px;
+
 }
+
+
 
 /* Bloco de nome e descrição da audiência da publicação. */
+
 .criar-post-usuario-dados {
+
   display: flex;
+
   flex-direction: column;
+
   gap: 3px;
+
 }
+
+
 
 /* Nome do usuário que publica. */
+
 .criar-post-usuario-dados strong {
+
   color: #1e293b;
+
   font-size: 16px;
+
 }
+
+
 
 /* Descrição auxiliar da comunidade que receberá o post. */
+
 .criar-post-usuario-dados small {
+
   color: #64748b;
+
   font-size: 12px;
+
 }
+
+
 
 /* Campo de mensagem sem título visual, mantendo acessibilidade pelo label. */
+
 .criar-post-mensagem textarea {
+
   min-height: 78px;
+
   border: 0;
+
   border-bottom: 1px solid #e2e8f0;
+
   border-radius: 0;
+
   background: #ffffff;
+
   font-size: 16px;
+
 }
+
+
 
 /* Remove o contorno padrão do campo social sem perder foco visual. */
+
 .criar-post-mensagem textarea:focus {
+
   border-color: #68a6c5;
+
   box-shadow: none;
+
 }
+
+
 
 /* Barra que reúne os recursos complementares do compositor. */
+
 .criar-post-barra-acoes {
+
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
+
   gap: 12px;
+
   flex-wrap: wrap;
+
 }
+
+
 
 /* Ação de anexar foto apresentada como botão social. */
+
 .criar-post-acao {
+
   display: inline-flex;
+
   align-items: center;
+
   gap: 7px;
+
   min-height: 34px;
+
   padding: 0 11px;
+
   border-radius: 8px;
+
   color: #163147;
+
   background: #edf3f6;
+
   cursor: pointer;
+
   transition:
+
     background 0.18s ease,
+
     transform 0.18s ease;
+
 }
+
+
 
 /* Interação visual da ação de foto. */
+
 .criar-post-acao:hover {
+
   background: #dcecf3;
+
   transform: translateY(-1px);
+
 }
+
+
 
 /* Ícone da ação de foto. */
-.criar-post-acao > span {
+
+.criar-post-acao>span {
+
   color: #68a6c5;
+
   font-size: 19px;
+
 }
+
+
 
 /* Texto da ação de foto. */
+
 .criar-post-acao strong {
+
   font-size: 12px;
+
 }
+
+
 
 /* Input nativo escondido para manter o label como área clicável. */
+
 .criar-post-acao input {
+
   position: absolute;
+
   width: 1px;
+
   height: 1px;
+
   overflow: hidden;
+
   clip: rect(0, 0, 0, 0);
+
   white-space: nowrap;
+
 }
+
+
 
 /* Grupo horizontal das categorias disponíveis. */
+
 .criar-post-categorias {
+
   display: flex;
+
   align-items: center;
+
   justify-content: flex-end;
+
   gap: 5px;
+
   flex-wrap: wrap;
+
 }
+
+
 
 /* Texto que explica a função dos botões de categoria. */
+
 .criar-post-categorias-titulo {
+
   color: #64748b;
+
   font-size: 11px;
+
   font-weight: 700;
+
 }
+
+
 
 /* Botão individual de seleção de categoria. */
+
 .criar-post-categoria-botao {
+
   min-height: 28px;
+
   padding: 0 8px;
+
   border: 1px solid #cbd5e1;
+
   border-radius: 999px;
+
   color: #475569;
+
   background: #ffffff;
+
   font-size: 11px;
+
   cursor: pointer;
+
   transition:
+
     color 0.18s ease,
+
     background 0.18s ease,
+
     border-color 0.18s ease;
+
 }
+
+
 
 /* Categoria ativa com destaque visual. */
+
 .criar-post-categoria-botao.selecionada {
+
   border-color: #68a6c5;
+
   color: #ffffff;
+
   background: #68a6c5;
+
 }
+
+
 
 /* Área inferior com status e botão de publicação. */
+
 .criar-post-rodape {
+
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
+
   gap: 12px;
+
   padding-top: 4px;
+
 }
+
+
 
 /* Indica a categoria selecionada antes do envio. */
+
 .criar-post-status {
+
   color: #64748b;
+
   font-size: 12px;
+
 }
+
+
 
 /* Destaque do valor da categoria escolhida. */
+
 .criar-post-status strong {
+
   color: #163147;
+
 }
+
+
 
 /* Classe utilizada para manter labels acessíveis sem ocupar espaço visual. */
+
 .visualmente-oculto {
+
   position: absolute;
+
   width: 1px;
+
   height: 1px;
+
   overflow: hidden;
+
   clip: rect(0, 0, 0, 0);
+
   white-space: nowrap;
+
 }
+
+
 
 /* Organização mobile do compositor social. */
+
 @media (max-width: 600px) {
+
   .criar-post-barra-acoes {
+
     align-items: stretch;
+
     flex-direction: column;
+
   }
+
+
 
   .criar-post-acao {
+
     justify-content: center;
+
   }
+
+
 
   .criar-post-categorias {
+
     justify-content: flex-start;
+
   }
+
+
 
   .criar-post-rodape {
+
     align-items: stretch;
+
     flex-direction: column;
+
   }
+
+
 
   .criar-post-status {
+
     text-align: center;
+
   }
+
 }
+
+
 
 /* ==========================================
+
    REFINAMENTO UX/UI DO COMPOSITOR
+
    Bloco final de apresentação para melhorar
+
    hierarquia, leitura, foco e responsividade.
+
 ========================================== */
 
+
+
 /* Cartão social com separação visual clara entre perfil e publicação. */
+
 .criar-post-social {
+
   padding: 22px;
+
   border: 1px solid #dce8ed;
+
   border-radius: 20px;
+
   background: linear-gradient(180deg, #ffffff 0%, #fbfdfe 100%);
+
   box-shadow: 0 8px 22px rgba(22, 49, 71, 0.1);
+
 }
+
+
 
 /* Cabeçalho social mantém avatar, nome e contexto alinhados. */
+
 .criar-post-social .criar-post-usuario {
+
   margin-bottom: 18px;
+
   padding-bottom: 16px;
+
   border-bottom: 1px solid #edf2f4;
+
 }
+
+
 
 /* Avatar com destaque sutil para orientar quem está publicando. */
+
 .criar-post-social .criar-post-usuario-avatar {
+
   border: 3px solid #ffffff;
+
   box-shadow: 0 3px 9px rgba(22, 49, 71, 0.12);
+
 }
+
+
 
 /* Formulário com espaçamento vertical consistente entre grupos. */
+
 .criar-post-social .criar-post-formulario {
+
   gap: 17px;
+
 }
+
+
 
 /* Campo principal com aparência de área de composição social. */
+
 .criar-post-social .criar-post-mensagem textarea {
+
   min-height: 92px;
+
   padding: 14px 15px;
+
   border: 1px solid #d5e3e8;
+
   border-radius: 14px;
+
   background: #f8fbfc;
+
   font-size: 16px;
+
 }
+
+
 
 /* Campos de raça e idade formam um grupo visual único. */
+
 .criar-post-dados-pet {
+
   display: grid;
+
   grid-template-columns: minmax(0, 1.35fr) minmax(150px, 0.65fr);
+
   gap: 14px;
+
 }
+
+
 
 /* Controles de raça e idade seguem o mesmo padrão do campo principal. */
+
 .criar-post-dados-pet input {
+
   width: 100%;
+
   min-height: 44px;
+
   box-sizing: border-box;
+
   padding: 0 13px;
+
   border: 1px solid #d5e3e8;
+
   border-radius: 11px;
+
   outline: none;
+
   color: #163147;
+
   background: #ffffff;
+
   font:
+
     14px Arial,
+
     Helvetica,
+
     sans-serif;
+
   transition:
+
     border-color 0.18s ease,
+
     box-shadow 0.18s ease;
+
 }
+
+
 
 /* Foco visível para facilitar a navegação por teclado. */
+
 .criar-post-dados-pet input:focus {
+
   border-color: #68a6c5;
+
   box-shadow: 0 0 0 3px rgba(104, 166, 197, 0.18);
+
 }
+
+
 
 /* Barra de ações separada do conteúdo por uma linha leve. */
+
 .criar-post-social .criar-post-barra-acoes {
+
   align-items: center;
+
   padding-top: 15px;
+
   border-top: 1px solid #edf2f4;
+
 }
+
+
 
 /* Upload com área de toque confortável e indicação de ação. */
+
 .criar-post-social .criar-post-upload {
+
   min-height: 38px;
+
   padding: 0 13px;
+
   border-style: solid;
+
   background: #edf6f8;
+
 }
+
+
 
 /* Categorias ficam agrupadas e com leitura rápida. */
+
 .criar-post-social .criar-post-categorias {
+
   justify-content: flex-end;
+
   gap: 6px;
+
 }
+
+
 
 /* Botões de categoria com estados facilmente identificáveis. */
+
 .criar-post-social .criar-post-categoria-botao {
+
   min-height: 32px;
+
   padding: 0 11px;
+
   border-color: #d5e3e8;
+
   color: #526a78;
+
   font-weight: 700;
+
 }
+
+
 
 /* Categoria selecionada usa a cor azul principal da interface. */
+
 .criar-post-social .criar-post-categoria-botao.selecionada {
+
   border-color: #68a6c5;
+
   background: #68a6c5;
+
   box-shadow: 0 3px 8px rgba(104, 166, 197, 0.22);
+
 }
+
+
 
 /* Rodapé separa o contexto escolhido da ação principal. */
+
 .criar-post-social .criar-post-rodape {
+
   padding-top: 15px;
+
   border-top: 1px solid #edf2f4;
+
 }
+
+
 
 /* Botão publicar recebe maior peso visual e área de toque. */
+
 .criar-post-social .criar-post-publicar {
+
   min-width: 104px;
+
   min-height: 44px;
+
   border-radius: 12px;
+
   box-shadow: 0 4px 10px rgba(18, 63, 87, 0.16);
+
 }
+
+
 
 /* Estado desabilitado evita envio visualmente confuso quando não há texto. */
+
 .criar-post-social .criar-post-publicar:disabled {
+
   cursor: not-allowed;
+
   opacity: 0.55;
+
 }
 
+
+
 /* Ajustes para telas pequenas, mantendo os grupos fáceis de usar. */
+
 @media (max-width: 640px) {
+
   .criar-post-social {
+
     padding: 17px;
+
     border-radius: 16px;
+
   }
+
+
 
   .criar-post-dados-pet {
+
     grid-template-columns: 1fr;
+
     gap: 12px;
+
   }
+
+
 
   .criar-post-social .criar-post-barra-acoes {
+
     align-items: stretch;
+
     flex-direction: column;
+
   }
+
+
 
   .criar-post-social .criar-post-upload {
+
     justify-content: center;
+
   }
+
+
 
   .criar-post-social .criar-post-categorias {
+
     justify-content: flex-start;
+
   }
+
+
 
   .criar-post-social .criar-post-rodape {
+
     align-items: stretch;
+
     flex-direction: column;
+
   }
 
+
+
   .criar-post-social .criar-post-publicar {
+
     width: 100%;
+
   }
+
 }

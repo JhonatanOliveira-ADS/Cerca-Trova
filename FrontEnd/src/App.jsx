@@ -1,11 +1,24 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+} from "react-router-dom";
 
 import "./App.css";
 
-// Componentes
-import Menu from "./Componentes/Menu";
+/* ==========================================
+   COMPONENTES
+========================================== */
 
-// Páginas
+import Menu from "./Componentes/Menu";
+import ProtecaoAdmin from "./Componentes/ProtecaoAdmin";
+
+
+/* ==========================================
+   PÁGINAS
+========================================== */
+
 import Home from "./Paginas/Home";
 import Login from "./Paginas/Login";
 import AdocaoDoacao from "./Paginas/AdocaoDoacao";
@@ -15,26 +28,98 @@ import MeuPerfil from "./Paginas/MeuPerfil";
 import Painel from "./Paginas/Painel";
 import TinderPet from "./Paginas/Tinder-pet";
 import Configuracoes from "./Paginas/Configuracoes";
-// Acrescentado: página de chat inspirada na referência visual fornecida.
 import Chat from "./Paginas/Chat";
-// Acrescentado: proteção visual da área administrativa.
-import ProtecaoAdmin from "./Componentes/ProtecaoAdmin";
+
+
+/* ==========================================
+   APP
+========================================== */
 
 export default function App() {
   return (
     <BrowserRouter>
+
       <div className="app-container">
+
+        {/* MENU PRINCIPAL */}
         <Menu />
 
+
+        {/* ==================================
+            CONTEÚDO DAS PÁGINAS
+        ================================== */}
+
         <div className="app-conteudo">
+
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/adocao" element={<AdocaoDoacao />} />
-            <Route path="/achados-perdidos" element={<AchadosPerdidos />} />
-            <Route path="/favoritos" element={<Favoritos />} />
-            <Route path="/perfil" element={<MeuPerfil />} />
-            {/* A rota antiga do painel permanece disponível, agora protegida. */}
+
+            {/* HOME */}
+            <Route
+              path="/"
+              element={<Home />}
+            />
+
+
+            {/* LOGIN */}
+            <Route
+              path="/login"
+              element={<Login />}
+            />
+
+
+            {/* ADOÇÃO */}
+            <Route
+              path="/adocao"
+              element={<AdocaoDoacao />}
+            />
+
+
+            {/* ACHADOS E PERDIDOS / MAPA */}
+            <Route
+              path="/achados-perdidos"
+              element={<AchadosPerdidos />}
+            />
+
+
+            {/* FAVORITOS */}
+            <Route
+              path="/favoritos"
+              element={<Favoritos />}
+            />
+
+
+            {/* PERFIL */}
+            <Route
+              path="/perfil"
+              element={<MeuPerfil />}
+            />
+
+
+            {/* TINDER PET */}
+            <Route
+              path="/tinder-pet"
+              element={<TinderPet />}
+            />
+
+
+            {/* CONFIGURAÇÕES */}
+            <Route
+              path="/configuracoes"
+              element={<Configuracoes />}
+            />
+
+
+            {/* CHAT */}
+            <Route
+              path="/chat"
+              element={<Chat />}
+            />
+
+
+            {/* ==================================
+                ADMINISTRAÇÃO
+            ================================== */}
+
             <Route
               path="/painel"
               element={
@@ -43,7 +128,7 @@ export default function App() {
                 </ProtecaoAdmin>
               }
             />
-            {/* Nova rota semântica para o acesso administrativo. */}
+
             <Route
               path="/admin"
               element={
@@ -52,24 +137,33 @@ export default function App() {
                 </ProtecaoAdmin>
               }
             />
-            <Route path="/tinder-pet" element={<TinderPet />} />
-            <Route path="/configuracoes" element={<Configuracoes />} />
-            {/* Acrescentado: rota reutilizável para a tela de conversas. */}
-            <Route path="/chat" element={<Chat />} />
+
           </Routes>
+
         </div>
 
-        {/* Acrescentado: botão fixo que permanece no canto inferior direito em qualquer página. */}
+
+        {/* ==================================
+            BOTÃO FLUTUANTE DO CHAT
+        ================================== */}
+
         <Link
           className="chat-floating-button"
           to="/chat"
           aria-label="Abrir chat"
           title="Abrir chat"
         >
-          <span aria-hidden="true">◌</span>
-          <strong>Chat</strong>
+          <span aria-hidden="true">
+            ◌
+          </span>
+
+          <strong>
+            Chat
+          </strong>
         </Link>
+
       </div>
+
     </BrowserRouter>
   );
 }
