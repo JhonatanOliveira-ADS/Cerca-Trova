@@ -8,26 +8,27 @@ datasource db {
 }
 
 model Usuarios {
-  id               String      @id @default(uuid())
+  id               String         @id @default(uuid())
   nome             String
-  email            String      @unique
+  email            String         @unique
   senha            String
-  telefone         String
+  telefone         String         @default("")
   foto_perfil      String?
-  tipo             String @default("USUARIO")
-  verificado       Boolean     @default(false)
-  data_criacao     DateTime    @default(now())
-  data_atualizacao DateTime    @updatedAt
-
-  publicacoes Publicacoes[]
-  favoritos   Favoritos[]
-  ongsId      String?
+  tipo             String         @default("USUARIO")
+  verificado       Boolean        @default(false)
+  data_criacao     DateTime       @default(now())
+  data_atualizacao DateTime       @updatedAt
+  publicacoes      Publicacoes[]
+  favoritos        Favoritos[]
+  petsTinder       PetsTinder[]
+  
+  ongsId           String?
 
   @@map("usuarios")
 }
 
 model Ongs {
-  id        String     @id @default(uuid())
+  id        String  @id @default(uuid())
   nome      String
   email     String
   senha     String
@@ -43,49 +44,59 @@ model Ongs {
 }
 
 model Publicacoes {
-  id         String         @id @default(uuid())
-  tipo       tipoPublicacao
-  status     Boolean        @default(true)
-  nome_pet   String
-  especie    String
-  raca       String
-  idade_pet  String
-  sexo       String
-  porte      String
-  descricao  String
-  foto       String
-  cidade     String
-  estado     String
-  id_usuario String
-
-  usuario   Usuarios    @relation(fields: [id_usuario], references: [id])
-  favoritos Favoritos[]
-
-  data_criacao     DateTime @default(now())
-  data_atualizacao DateTime @updatedAt
+  id               String         @id @default(uuid())
+               
+  status           Boolean        @default(true)
+  nome_pet         String
+  especie          String
+  raca             String
+  idade_pet        String
+  sexo             String
+  porte            String
+  descricao        String
+  foto             String
+  cidade           String
+  estado           String
+  id_usuario       String
+  usuario          Usuarios       @relation(fields: [id_usuario], references: [id])
+  favoritos        Favoritos[]
+  data_criacao     DateTime       @default(now())
+  data_atualizacao DateTime       @updatedAt
 
   @@map("publicacoes")
 }
 
 model Favoritos {
-  id         String         @id @default(uuid())
-  id_usuarios    String
-  id_publicacoes String
+  id              String       @id @default(uuid())
+  id_usuarios     String
+  id_publicacoes  String
+  usuario         Usuarios     @relation(fields: [id_usuarios], references: [id])
+  publicacao      Publicacoes  @relation(fields: [id_publicacoes], references: [id])
 
-  usuario    Usuarios    @relation(fields: [id_usuarios], references: [id])
-  publicacao Publicacoes @relation(fields: [id_publicacoes], references: [id])
-
-  
   @@map("favoritos")
 }
 
-enum tipoUsuario {
-  USUARIO
-  ONG
+// Pet cadastrado pelo usuário para participar do catálogo TinderPet.
+model PetsTinder {
+  id              String      @id @default(uuid())
+  nome            String
+  especie         String
+  raca            String      @default("")
+  idade           String
+  sexo            String
+  porte           String
+  cidade          String
+  descricao       String      @db.Text
+  foto            String      @db.LongText
+  personalidade   String      @default("")
+  ativo           Boolean     @default(true)
+  id_usuario      String
+  usuario         Usuarios    @relation(fields: [id_usuario], references: [id], onDelete: Cascade)
+
+  data_criacao    DateTime    @default(now())
+  data_atualizacao DateTime   @updatedAt
+
+  @@index([id_usuario, ativo])
+  @@map("pets_tinder")
 }
 
-enum tipoPublicacao {
-  ADOCAO
-  ENCONTRADO
-  PERDIDO
-}

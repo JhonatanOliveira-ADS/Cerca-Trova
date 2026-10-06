@@ -74,6 +74,7 @@ body:has(.chat-page) {
   display: flex;
   align-items: center;
   justify-content: center;
+ 
 
   width: 100%;
   max-width: none;
@@ -87,6 +88,8 @@ body:has(.chat-page) {
   transition:
     transform 0.18s ease,
     opacity 0.18s ease;
+
+    height: 235px;
 }
 
 .chat-brand:hover {
@@ -96,7 +99,7 @@ body:has(.chat-page) {
 
 .chat-brand-logo {
   display: block;
-  width: 185px;
+  width: 300px;
   max-width: 85%;
   height: auto;
   margin: 0 auto;
