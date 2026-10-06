@@ -137,6 +137,25 @@
   background: #edf3f5;
 }
 
+/* Botão transparente que mantém a foto original e permite abrir os detalhes completos. */
+.detalhe-foto-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.detalhe-foto-button:focus-visible {
+  outline: 3px solid #e9a34a;
+  outline-offset: -3px;
+}
+
+.detalhe-foto-button:hover .detalhe-foto {
+  filter: brightness(0.94);
+}
+
 .detalhe-conteudo {
   padding: 22px;
 }

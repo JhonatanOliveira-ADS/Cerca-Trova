@@ -153,32 +153,38 @@ export default function Login() {
 
         {/* Card central que contém todas as interações da autenticação. */}
         <div className="login-card">
-          {/* Abas principais do fluxo comum de entrar e cadastrar. */}
-          <div
-            className="tab-container"
-            role="tablist"
-            aria-label="Acesso à conta"
-          >
-            <button
-              type="button"
-              role="tab"
-              aria-selected={abaAtiva === "entrar"}
-              className={`tab-btn ${abaAtiva === "entrar" ? "active" : ""}`}
-              onClick={() => trocarAba("entrar")}
+          {/*
+            As abas Entrar e Cadastrar continuam disponíveis no login comum.
+            No modo administrativo elas não são renderizadas, pois não possuem
+            função nesse fluxo restrito.
+          */}
+          {!modoAdmin && (
+            <div
+              className="tab-container"
+              role="tablist"
+              aria-label="Acesso à conta"
             >
-              Entrar
-            </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={abaAtiva === "entrar"}
+                className={`tab-btn ${abaAtiva === "entrar" ? "active" : ""}`}
+                onClick={() => trocarAba("entrar")}
+              >
+                Entrar
+              </button>
 
-            <button
-              type="button"
-              role="tab"
-              aria-selected={abaAtiva === "cadastrar"}
-              className={`tab-btn ${abaAtiva === "cadastrar" ? "active" : ""}`}
-              onClick={() => trocarAba("cadastrar")}
-            >
-              Cadastrar
-            </button>
-          </div>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={abaAtiva === "cadastrar"}
+                className={`tab-btn ${abaAtiva === "cadastrar" ? "active" : ""}`}
+                onClick={() => trocarAba("cadastrar")}
+              >
+                Cadastrar
+              </button>
+            </div>
+          )}
 
           {/* Aviso contextual do modo administrativo. */}
           {modoAdmin && (

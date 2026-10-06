@@ -1,0 +1,350 @@
+/* Fundo escurecido que destaca o modal e permite fechar ao clicar fora do conteúdo. */
+.pet-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(13, 43, 62, 0.74);
+  backdrop-filter: blur(5px);
+}
+
+/*
+  Remove a aparência padrão do botão que envolve a foto do card.
+  Dessa forma, o novo clique não altera dimensões, bordas ou espaçamentos existentes.
+*/
+.feed-card-image-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.feed-card-image-button:focus-visible {
+  outline: 3px solid #f4b25e;
+  outline-offset: -3px;
+}
+
+.feed-card-image-button .feed-card-img {
+  transition: filter 160ms ease;
+}
+
+.feed-card-image-button:hover .feed-card-img {
+  filter: brightness(0.94);
+}
+
+/* Equivalente visual para as imagens dos cards da página de Adoção e Doação. */
+.adocao-post-image-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.adocao-post-image-button:focus-visible {
+  outline: 3px solid #f4b25e;
+  outline-offset: -3px;
+}
+
+.adocao-post-image-button:hover .adocao-post-image {
+  filter: brightness(0.94);
+}
+
+/*
+  O modal ocupa no máximo 80% da largura e da altura da tela,
+  preservando espaço visual para o usuário em telas grandes.
+*/
+.pet-modal {
+  width: min(80vw, 1080px);
+  max-height: 80vh;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+  animation: pet-modal-entrada 180ms ease-out;
+}
+
+/* Entrada curta usando apenas opacidade e transformação para manter fluidez. */
+@keyframes pet-modal-entrada {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Cabeçalho com o nome do pet e uma ação de fechamento sempre visível. */
+.pet-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 24px 26px 18px;
+  border-bottom: 1px solid #e5edf1;
+}
+
+.pet-modal-eyebrow {
+  display: block;
+  margin-bottom: 5px;
+  color: #bd5f91;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pet-modal-header h2 {
+  margin: 0;
+  color: #163147;
+  font-size: clamp(1.55rem, 3vw, 2.2rem);
+}
+
+.pet-modal-close {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  color: #163147;
+  background: #e4f1f6;
+  font-size: 1.7rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease;
+}
+
+.pet-modal-close:hover {
+  background: #f4b25e;
+  transform: scale(1.04);
+}
+
+/* Corpo em duas colunas: imagem e dados do pet. */
+.pet-modal-content {
+  padding: 24px 26px 28px;
+}
+
+.pet-modal-main-info {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.95fr) minmax(260px, 1.05fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.pet-modal-image {
+  display: block;
+  width: 100%;
+  max-height: 390px;
+  min-height: 230px;
+  border-radius: 18px;
+  background: #e4f1f6;
+  object-fit: cover;
+}
+
+.pet-modal-details {
+  min-width: 0;
+}
+
+.pet-modal-description {
+  margin: 0 0 20px;
+  color: #4d6472;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+/* Grade de dados para mostrar todas as informações disponíveis sem poluir o layout. */
+.pet-modal-meta {
+  display: grid;
+  gap: 10px;
+}
+
+.pet-modal-meta span {
+  padding: 11px 13px;
+  border-radius: 11px;
+  color: #163147;
+  background: #f5f9fa;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+/* Área específica do mapa para anúncios de animais perdidos. */
+.pet-modal-map-section {
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid #e5edf1;
+}
+
+.pet-modal-map-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.pet-modal-map-heading span {
+  color: #bd5f91;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pet-modal-map-heading h3 {
+  margin: 3px 0 0;
+  color: #163147;
+  font-size: 1.35rem;
+}
+
+.pet-modal-map-heading strong {
+  padding: 7px 10px;
+  border-radius: 999px;
+  color: #163147;
+  background: #f4b25e;
+  font-size: 0.78rem;
+}
+
+.pet-modal-map {
+  width: 100%;
+  height: 270px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #dbe8ec;
+}
+
+/* Remove o contêiner padrão do Leaflet para deixar o pin com aparência de patinha. */
+.pet-modal-marker-shell {
+  border: 0 !important;
+  background: transparent !important;
+}
+
+/* Pin clicável inspirado nos marcadores visuais utilizados na página Mapa. */
+.pet-modal-marker {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 3px solid #ffffff;
+  border-radius: 50% 50% 50% 10%;
+  color: #ffffff;
+  background: #bd5f91;
+  box-shadow: 0 5px 13px rgba(13, 43, 62, 0.3);
+  font-size: 19px;
+  cursor: pointer;
+  transform: rotate(-45deg);
+}
+
+.pet-modal-marker span {
+  display: block;
+  transform: rotate(45deg);
+}
+
+.pet-modal-marker-local {
+  background: #e9a34a;
+}
+
+.pet-modal-marker-comunidade {
+  background: #38a169;
+}
+
+/* Cartão de confirmação exibido após a marcação de uma nova localização. */
+.pet-modal-location-card {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 12px;
+  padding: 13px;
+  border: 1px solid #f0d08d;
+  border-radius: 14px;
+  background: #fff5dc;
+}
+
+.pet-modal-location-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f4b25e;
+}
+
+.pet-modal-location-copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.pet-modal-location-copy strong {
+  color: #163147;
+  font-size: 0.9rem;
+}
+
+.pet-modal-location-copy span,
+.pet-modal-location-copy small {
+  color: #6b8291;
+  font-size: 0.78rem;
+}
+
+/* Orientação curta exibida abaixo do mapa para indicar como criar um novo pin. */
+.pet-modal-map-instruction {
+  margin: 9px 0 0;
+  color: #bd5f91;
+  font-size: 0.86rem;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.pet-modal-map-empty {
+  margin: 9px 0 0;
+  color: #6b8291;
+  font-size: 0.86rem;
+}
+
+/* Ajustes para telas menores sem ultrapassar a área útil do dispositivo. */
+@media (max-width: 760px) {
+  .pet-modal-backdrop {
+    padding: 10px;
+  }
+
+  .pet-modal {
+    width: 100%;
+    max-height: 90vh;
+    border-radius: 18px;
+  }
+
+  .pet-modal-header,
+  .pet-modal-content {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .pet-modal-main-info {
+    grid-template-columns: 1fr;
+  }
+
+  .pet-modal-image {
+    max-height: 300px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pet-modal {
+    animation: none;
+  }
+
+  .pet-modal-close {
+    transition: none;
+  }
+}

@@ -8,8 +8,12 @@ const CHAVE_POSTS = "cercaTrovaMeusPosts";
 
 /* Valores iniciais exibidos quando o usuário ainda não configurou o perfil. */
 const perfilInicial = {
+  nome: "Usuário Cerca Trova",
+  biografia: "Compartilhando cuidado e carinho pelos animais.",
   email: "usuario@cercatrova.com",
   telefone: "(00) 00000-0000",
+  avatar: "",
+  capa: "",
 };
 
 /* Faz a leitura segura do perfil salvo no LocalStorage. */
@@ -33,6 +37,27 @@ function carregarPosts() {
   }
 }
 
+/* Mantém a publicação mais recente no topo da lista do perfil. */
+function ordenarPosts(lista) {
+  return [...lista].sort((postA, postB) => {
+    const dataA = new Date(postA.criadoEm || postA.createdAt || 0).getTime();
+    const dataB = new Date(postB.criadoEm || postB.createdAt || 0).getTime();
+
+    return dataB - dataA;
+  });
+}
+
+/* Converte um arquivo de imagem para uma URL local usada pelo perfil. */
+function lerImagem(arquivo, aoCarregar) {
+  if (!arquivo) {
+    return;
+  }
+
+  const leitor = new FileReader();
+  leitor.onload = () => aoCarregar(leitor.result);
+  leitor.readAsDataURL(arquivo);
+}
+
 export default function MeuPerfil() {
   /* Estados dos dados pessoais editáveis. */
   const [perfil, setPerfil] = useState(carregarPerfil);
@@ -40,7 +65,7 @@ export default function MeuPerfil() {
   const [mensagemPerfil, setMensagemPerfil] = useState("");
 
   /* Estados da seção de publicações próprias. */
-  const [posts, setPosts] = useState(carregarPosts);
+  const [posts, setPosts] = useState(() => ordenarPosts(carregarPosts()));
   const [postEditando, setPostEditando] = useState(null);
   const [mensagemPost, setMensagemPost] = useState("");
 
@@ -57,8 +82,12 @@ export default function MeuPerfil() {
     event.preventDefault();
 
     const perfilParaSalvar = {
+      nome: perfil.nome,
+      biografia: perfil.biografia,
       email: perfil.email,
       telefone: perfil.telefone,
+      avatar: perfil.avatar,
+      capa: perfil.capa,
     };
 
     localStorage.setItem(CHAVE_PERFIL, JSON.stringify(perfilParaSalvar));
@@ -88,18 +117,52 @@ export default function MeuPerfil() {
     }));
   }
 
-  /* Salva a publicação editada e atualiza a lista imediatamente. */
+  /* Salva a publicação editada, marca o post e atualiza a lista imediatamente. */
   function salvarEdicaoPost(event) {
     event.preventDefault();
 
-    const postsAtualizados = posts.map((post) =>
-      post.id === postEditando.id ? postEditando : post,
+    const postAtualizado = {
+      ...postEditando,
+      editado: true,
+      editadoEm: new Date().toISOString(),
+    };
+
+    const postsAtualizados = ordenarPosts(
+      posts.map((post) =>
+        post.id === postEditando.id ? postAtualizado : post,
+      ),
     );
 
     setPosts(postsAtualizados);
     localStorage.setItem(CHAVE_POSTS, JSON.stringify(postsAtualizados));
     setPostEditando(null);
     setMensagemPost("Publicação atualizada com sucesso.");
+  }
+
+  /* Exclui uma publicação somente depois da confirmação do usuário. */
+  function excluirPost(id) {
+    if (!window.confirm("Deseja excluir esta publicação?")) {
+      return;
+    }
+
+    const postsAtualizados = posts.filter((post) => post.id !== id);
+    setPosts(postsAtualizados);
+    localStorage.setItem(CHAVE_POSTS, JSON.stringify(postsAtualizados));
+    setMensagemPost("Publicação excluída com sucesso.");
+  }
+
+  /* Atualiza a foto do post que está sendo editado. */
+  function atualizarImagemPost(event) {
+    lerImagem(event.target.files[0], (imagem) => {
+      atualizarPost("imagem", imagem);
+    });
+  }
+
+  /* Atualiza a foto de perfil ou a capa selecionada pelo usuário. */
+  function atualizarImagemPerfil(campo, event) {
+    lerImagem(event.target.files[0], (imagem) => {
+      atualizarPerfil(campo, imagem);
+    });
   }
 
   /* Cancela a edição e retorna à lista original de publicações. */
@@ -114,7 +177,7 @@ export default function MeuPerfil() {
   */
   useEffect(() => {
     function atualizarPostsAoVoltar() {
-      setPosts(carregarPosts());
+      setPosts(ordenarPosts(carregarPosts()));
     }
 
     window.addEventListener("focus", atualizarPostsAoVoltar);
@@ -126,18 +189,53 @@ export default function MeuPerfil() {
 
   return (
     <main className="perfil-page">
-      {/* Cabeçalho da área exclusiva do usuário. */}
-      <header className="perfil-cabecalho">
-        <div className="perfil-avatar" aria-hidden="true">
-          🐾
+      {/* Cabeçalho inspirado na referência, com capa, avatar e identificação do usuário. */}
+      <section className="perfil-hero">
+        <div
+          className="perfil-capa"
+          style={perfil.capa ? { backgroundImage: `url(${perfil.capa})` } : undefined}
+          aria-label="Capa do perfil"
+        >
+          {!perfil.capa && <span aria-hidden="true">🐾</span>}
         </div>
 
-        <div>
-          <span className="perfil-etiqueta">Área do usuário</span>
-          <h1>Meu perfil</h1>
-          <p>Gerencie seus dados e suas publicações.</p>
+        <header className="perfil-cabecalho">
+          <div className="perfil-avatar">
+            {perfil.avatar ? (
+              <img src={perfil.avatar} alt="Foto do perfil" />
+            ) : (
+              <span aria-hidden="true">🐾</span>
+            )}
+          </div>
+
+          <div className="perfil-identidade">
+            <span className="perfil-etiqueta">Área do usuário</span>
+            <h1>{perfil.nome}</h1>
+            <p>{perfil.biografia}</p>
+          </div>
+        </header>
+
+        {/* Seletores independentes para trocar a foto e a capa no dispositivo. */}
+        <div className="perfil-imagens-acoes">
+          <label className="perfil-upload">
+            <span>Escolher foto</span>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(event) => atualizarImagemPerfil("avatar", event)}
+            />
+          </label>
+
+          <label className="perfil-upload">
+            <span>Escolher capa</span>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(event) => atualizarImagemPerfil("capa", event)}
+            />
+          </label>
         </div>
-      </header>
+      </section>
 
       {/* Formulário de edição de email, telefone e senha. */}
       <section className="perfil-card">
@@ -147,6 +245,27 @@ export default function MeuPerfil() {
         </div>
 
         <form className="perfil-formulario" onSubmit={salvarPerfil}>
+          {/* Campos de identificação pública exibidos no cabeçalho do perfil. */}
+          <label className="perfil-campo">
+            <span>Nome exibido</span>
+            <input
+              type="text"
+              value={perfil.nome}
+              onChange={(event) => atualizarPerfil("nome", event.target.value)}
+              required
+            />
+          </label>
+
+          <label className="perfil-campo">
+            <span>Biografia</span>
+            <input
+              type="text"
+              value={perfil.biografia}
+              onChange={(event) => atualizarPerfil("biografia", event.target.value)}
+              placeholder="Conte um pouco sobre você"
+            />
+          </label>
+
           {/* Campo controlado para alterar o email. */}
           <label className="perfil-campo">
             <span>Email</span>
@@ -219,6 +338,11 @@ export default function MeuPerfil() {
         <div className="perfil-lista-posts">
           {posts.map((post) => (
             <article className="perfil-post" key={post.id}>
+              {/* Imagem do post para aproximar a organização visual da referência. */}
+              <div className="perfil-post-imagem">
+                <img src={post.imagem} alt={`Foto de ${post.nome || "pet"}`} />
+              </div>
+
               {/* Conteúdo resumido da publicação antes da edição. */}
               <div className="perfil-post-conteudo">
                 <div className="perfil-post-topo">
@@ -226,17 +350,40 @@ export default function MeuPerfil() {
                   <span>{post.nome}</span>
                 </div>
 
+                <small className="perfil-post-data">
+                  {post.criadoEm
+                    ? new Intl.DateTimeFormat("pt-BR", {
+                        dateStyle: "short",
+                        timeStyle: "short",
+                      }).format(new Date(post.criadoEm))
+                    : "Data não informada"}
+                </small>
+
                 <p>{post.descricao}</p>
+
+                {post.editado && (
+                  <span className="perfil-post-editado">Editado</span>
+                )}
               </div>
 
-              {/* Ação que abre o formulário de edição do post selecionado. */}
-              <button
-                className="perfil-botao-secundario"
-                type="button"
-                onClick={() => iniciarEdicao(post)}
-              >
-                Editar publicação
-              </button>
+              {/* Ações separadas para editar ou excluir somente este post. */}
+              <div className="perfil-post-acoes">
+                <button
+                  className="perfil-botao-secundario"
+                  type="button"
+                  onClick={() => iniciarEdicao(post)}
+                >
+                  Editar
+                </button>
+
+                <button
+                  className="perfil-botao-excluir"
+                  type="button"
+                  onClick={() => excluirPost(post.id)}
+                >
+                  Excluir
+                </button>
+              </div>
             </article>
           ))}
         </div>
@@ -260,7 +407,17 @@ export default function MeuPerfil() {
                   atualizarPost("descricao", event.target.value)
                 }
                 rows="4"
-                required
+              required
+            />
+            </label>
+
+            {/* Permite substituir a foto somente durante a edição do post. */}
+            <label className="perfil-campo">
+              <span>Trocar foto da publicação</span>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={atualizarImagemPost}
               />
             </label>
 

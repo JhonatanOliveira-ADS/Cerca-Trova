@@ -74,7 +74,6 @@ body:has(.chat-page) {
   display: flex;
   align-items: center;
   justify-content: center;
- 
 
   width: 100%;
   max-width: none;
@@ -89,7 +88,7 @@ body:has(.chat-page) {
     transform 0.18s ease,
     opacity 0.18s ease;
 
-    height: 235px;
+  height: 235px;
 }
 
 .chat-brand:hover {
@@ -161,7 +160,9 @@ body:has(.chat-page) {
   outline: 0;
   background: transparent;
   color: var(--chat-navy);
-  font: 600 16px "Trebuchet MS", sans-serif;
+  font:
+    600 16px "Trebuchet MS",
+    sans-serif;
 }
 
 .chat-search input::placeholder {
@@ -540,7 +541,9 @@ body:has(.chat-page) {
   outline: 0;
   color: var(--chat-navy);
   background: transparent;
-  font: 16px "Trebuchet MS", sans-serif;
+  font:
+    16px "Trebuchet MS",
+    sans-serif;
 }
 
 .message-composer input::placeholder {
@@ -809,5 +812,168 @@ body:has(.chat-page) {
   .conversation-item,
   .send-button {
     transition: none;
+  }
+}
+
+/* ======================================================
+   CONTROLE DA BARRA DE CONVERSAS
+====================================================== */
+
+/* Botão discreto para alternar o estado fixo da barra, inspirado no VS Code. */
+.chat-sidebar-toggle {
+  position: absolute;
+  z-index: 2;
+  top: 18px;
+  right: -13px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 42px;
+  border: 1px solid var(--chat-line);
+  border-radius: 0 10px 10px 0;
+  color: var(--chat-navy);
+  background: #ffffff;
+  box-shadow: 2px 3px 8px rgba(18, 63, 87, 0.12);
+  font-size: 25px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease;
+}
+
+.chat-sidebar-toggle:hover,
+.chat-sidebar-toggle:focus-visible {
+  color: #ffffff;
+  background: var(--chat-blue);
+  outline: none;
+}
+
+/* A coluna estreita preserva os avatares e libera mais espaço para a conversa. */
+.chat-page.chat-sidebar-collapsed {
+  grid-template-columns: 86px minmax(0, 1fr);
+}
+
+.chat-page.chat-sidebar-collapsed .chat-sidebar {
+  align-items: center;
+  padding: 24px 10px 72px;
+  overflow: visible;
+}
+
+/* A própria página Chat não precisa do atalho flutuante que leva ao Chat. */
+.app-container:has(.chat-page) .chat-floating-button {
+  display: none;
+}
+
+/* Área relativa para posicionar a paleta acima do botão de emoji. */
+.emoji-picker-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Indica visualmente quando a paleta de emojis está aberta. */
+.composer-icon.active {
+  color: var(--chat-pink);
+}
+
+/* Paleta compacta e responsiva com os emojis prontos para inserção. */
+.chat-emoji-picker {
+  position: absolute;
+  z-index: 20;
+  bottom: calc(100% + 10px);
+  left: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 42px);
+  gap: 5px;
+  padding: 9px;
+  border: 1px solid var(--chat-line);
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 10px 25px rgba(18, 63, 87, 0.18);
+}
+
+.chat-emoji-picker button {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  font-size: 22px;
+  cursor: pointer;
+  transition: background 0.16s ease, transform 0.16s ease;
+}
+
+.chat-emoji-picker button:hover,
+.chat-emoji-picker button:focus-visible {
+  background: var(--chat-blue-soft);
+  outline: none;
+  transform: scale(1.08);
+}
+
+.chat-page.chat-sidebar-collapsed .chat-brand {
+  width: 58px;
+  height: 58px;
+  margin: 0 0 24px;
+}
+
+.chat-page.chat-sidebar-collapsed .chat-brand-logo {
+  width: 58px;
+}
+
+.chat-page.chat-sidebar-collapsed .chat-sidebar-title,
+.chat-page.chat-sidebar-collapsed .chat-search,
+.chat-page.chat-sidebar-collapsed .conversation-copy,
+.chat-page.chat-sidebar-collapsed .conversation-meta {
+  display: none;
+}
+
+.chat-page.chat-sidebar-collapsed .conversation-list {
+  width: 100%;
+  overflow: visible;
+}
+
+.chat-page.chat-sidebar-collapsed .conversation-item {
+  display: flex;
+  justify-content: center;
+  width: 66px;
+  padding: 8px 4px;
+}
+
+.chat-page.chat-sidebar-collapsed .conversation-item:hover {
+  transform: none;
+}
+
+.chat-page.chat-sidebar-collapsed .chat-settings {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* ======================================================
+   RESPONSIVIDADE DA BARRA
+====================================================== */
+
+@media (max-width: 760px) {
+  .chat-page,
+  .chat-page.chat-sidebar-collapsed {
+    grid-template-columns: 1fr;
+  }
+
+  .chat-sidebar,
+  .chat-page.chat-sidebar-collapsed .chat-sidebar {
+    min-height: auto;
+  }
+
+  .chat-page.chat-sidebar-collapsed .chat-sidebar {
+    position: absolute;
+    z-index: 5;
+    width: 86px;
+    height: 100vh;
+  }
+
+  .chat-sidebar-toggle {
+    right: 10px;
   }
 }

@@ -12,6 +12,7 @@ const categoriasPost = ["Adoção", "Perdido", "TinderPet", "Achado"];
 */
 export default function CriarPost({ onPublicar, imagemPadrao }) {
   /* Estados controlados do texto, identificação do pet, categoria e imagem. */
+  const [nomePet, setNomePet] = useState("");
   const [texto, setTexto] = useState("");
   const [raca, setRaca] = useState("");
   const [idade, setIdade] = useState("");
@@ -48,6 +49,7 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
     event.preventDefault();
 
     const descricao = texto.trim();
+    const nomeInformado = nomePet.trim() || "Pet da comunidade";
     const racaInformada = raca.trim() || "Raça não informada";
     const idadeInformada = idade.trim() || "Idade não informada";
 
@@ -57,7 +59,8 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
 
     const novoPost = {
       id: `post-${Date.now()}`,
-      nome: "Você",
+      /* O nome informado identifica o animal no card e no Meu Perfil. */
+      nome: nomeInformado,
       especie: "Pet",
       raca: racaInformada,
       idade: idadeInformada,
@@ -66,6 +69,8 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
       tag: categoria,
       descricao,
       imagem: imagem || imagemPadrao,
+      /* Registra o momento de criação para ordenar posts no perfil. */
+      criadoEm: new Date().toISOString(),
     };
 
     onPublicar(novoPost);
@@ -80,6 +85,7 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
 
     /* Limpa o compositor depois que o post foi enviado ao feed. */
     setTexto("");
+    setNomePet("");
     setRaca("");
     setIdade("");
     setCategoria("Adoção");
@@ -102,6 +108,18 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
         </div>
       </div>
 
+      <label className="criar-post-campo criar-post-nome-pet">
+        <span>Nome do pet</span>
+        <input
+          type="text"
+          value={nomePet}
+          onChange={(event) => setNomePet(event.target.value)}
+          placeholder="nome do pet"
+          aria-label="Nome do pet"
+        />
+        <small>Informe como o animal é chamado.</small>
+      </label>
+
       {/* Formulário social com descrição, dados do pet, ações e publicação. */}
       <form className="criar-post-formulario" onSubmit={publicarPost}>
         {/* Campo semelhante ao compositor de redes sociais. */}
@@ -110,11 +128,14 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
           <textarea
             value={texto}
             onChange={(event) => setTexto(event.target.value)}
-            placeholder="No que você está pensando sobre um pet?"
+            placeholder="mais informações"
             rows="3"
             required
           />
         </label>
+
+        {/* Campo adicional para identificar o pet apresentado na publicação. */}
+
 
         {/* Campos complementares para registrar raça e idade do pet. */}
         <div className="criar-post-dados-pet">

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import L from "leaflet";  
 import "leaflet/dist/leaflet.css";
 
+import PetDetalhesModal from "../Componentes/PetDetalhesModal";
 import "../assets/css/AchadosPerdidos.css";
 
 const API_URL = "http://localhost:3333";
@@ -184,6 +185,9 @@ export default function AchadosPerdidos() {
     modalAberto,
     setModalAberto,
   ] = useState(false);
+
+  /* Controla o modal de informações aberto pela foto do pet selecionado no mapa. */
+  const [petDetalhesModalAberto, setPetDetalhesModalAberto] = useState(false);
 
   const [
     cameraAberta,
@@ -1078,6 +1082,28 @@ export default function AchadosPerdidos() {
      INTERFACE
   ======================================== */
 
+  /*
+    Adapta o registro do backend ao formato comum do modal.
+    A lista completa de avistamentos alimenta os marcadores do mapa interno.
+  */
+  const petSelecionadoParaModal = selecionado
+    ? {
+        id: selecionado.id,
+        nome: selecionado.nome_pet || "Pet avistado",
+        especie: selecionado.especie || "Pet",
+        descricao: selecionado.descricao || "Sem observações adicionais.",
+        imagem: `${API_URL}/files/${encodeURIComponent(
+          selecionado.foto || "",
+        )}`,
+        tag: "Perdido",
+        status: "Perdido",
+        cidade: selecionado.local || "Localização registrada no mapa",
+        autor: selecionado.usuario?.nome || "Usuário Cerca Trova",
+        latitude: selecionado.latitude,
+        longitude: selecionado.longitude,
+      }
+    : null;
+
   return (
 
     <main className="achados-page">
@@ -1175,18 +1201,28 @@ export default function AchadosPerdidos() {
 
             <>
 
-              <img
-                className="detalhe-foto"
-                src={
-                  `${API_URL}/files/${encodeURIComponent(
-                    selecionado.foto || ""
-                  )}`
-                }
-                alt={
-                  selecionado.nome_pet ||
-                  "Pet avistado"
-                }
-              />
+              {/* A foto do painel abre uma visão ampliada com todos os dados e o mapa. */}
+              <button
+                className="detalhe-foto-button"
+                type="button"
+                onClick={() => setPetDetalhesModalAberto(true)}
+                aria-label={`Ver informações completas de ${
+                  selecionado.nome_pet || "pet avistado"
+                }`}
+              >
+                <img
+                  className="detalhe-foto"
+                  src={
+                    `${API_URL}/files/${encodeURIComponent(
+                      selecionado.foto || ""
+                    )}`
+                  }
+                  alt={
+                    selecionado.nome_pet ||
+                    "Pet avistado"
+                  }
+                />
+              </button>
 
 
               <div className="detalhe-conteudo">
@@ -1496,6 +1532,18 @@ export default function AchadosPerdidos() {
         </aside>
 
       </section>
+
+
+      {/*
+        Modal aberto pela foto do pet selecionado.
+        Os avistamentos existentes são enviados para formar os marcos no mapa.
+      */}
+      <PetDetalhesModal
+        pet={petSelecionadoParaModal}
+        aberto={petDetalhesModalAberto}
+        aoFechar={() => setPetDetalhesModalAberto(false)}
+        mapaAvistamentos={avistamentos}
+      />
 
 
       {/* ==================================

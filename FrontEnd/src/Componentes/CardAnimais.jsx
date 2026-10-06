@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PetDetalhesModal from "./PetDetalhesModal";
 
 /*
   Chave única usada para compartilhar favoritos entre Home e Favoritos.
@@ -19,6 +20,7 @@ export default function CardAnimais({
   pet,
   isFavorito = false,
   onToggleFavorito,
+  mapaAvistamentos = [],
 }) {
   /*
     Inicializa o botão consultando o LocalStorage.
@@ -28,6 +30,9 @@ export default function CardAnimais({
     if (isFavorito) return true;
     return carregarFavoritos().some((favorito) => favorito.id === pet.id);
   });
+
+  /* Controla a abertura do modal de detalhes acionada pela foto do card. */
+  const [modalAberto, setModalAberto] = useState(false);
 
   /*
     Salva ou remove o card dos favoritos e atualiza o botão imediatamente.
@@ -101,12 +106,30 @@ export default function CardAnimais({
         </span>
       </div>
 
-      <img className="feed-card-img" src={pet.imagem} alt={pet.nome} />
+      {/*
+        A foto tornou-se um controle acessível. O clique abre os dados completos
+        sem alterar as ações já existentes no rodapé do card.
+      */}
+      <button
+        className="feed-card-image-button"
+        type="button"
+        onClick={() => setModalAberto(true)}
+        aria-label={`Ver informações completas de ${pet.nome}`}
+      >
+        <img className="feed-card-img" src={pet.imagem} alt={pet.nome} />
+      </button>
 
       <div className="feed-card-acoes">
         <button type="button">❤️ Tenho interesse</button>
         <button type="button">↗ Compartilhar</button>
       </div>
+      {/* Modal compartilhado com o mapa opcional para pets perdidos. */}
+      <PetDetalhesModal
+        pet={pet}
+        aberto={modalAberto}
+        aoFechar={() => setModalAberto(false)}
+        mapaAvistamentos={mapaAvistamentos}
+      />
     </article>
   );
 }

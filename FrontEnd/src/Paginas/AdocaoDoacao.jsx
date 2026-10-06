@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import PetDetalhesModal from "../Componentes/PetDetalhesModal";
 import "../assets/css/AdocaoeDoacao.css";
 
 /*
@@ -106,6 +107,9 @@ const PUBLICACOES_INICIAIS = [
   Foi separado em um componente para manter o código organizado em blocos reutilizáveis.
 */
 function PostCard({ publicacao }) {
+  /* Controla o modal aberto pela interação com a foto da publicação. */
+  const [modalAberto, setModalAberto] = useState(false);
+
   return (
     <article className="adocao-post-card">
       <header className="adocao-post-header">
@@ -132,16 +136,30 @@ function PostCard({ publicacao }) {
         </span>
       </div>
 
-      <img
-        className="adocao-post-image"
-        src={publicacao.imagem}
-        alt={`Foto de ${publicacao.nome}`}
-      />
+      {/* A imagem funciona como botão para consultar todas as informações do pet. */}
+      <button
+        className="adocao-post-image-button"
+        type="button"
+        onClick={() => setModalAberto(true)}
+        aria-label={`Ver informações completas de ${publicacao.nome}`}
+      >
+        <img
+          className="adocao-post-image"
+          src={publicacao.imagem}
+          alt={`Foto de ${publicacao.nome}`}
+        />
+      </button>
 
       <footer className="adocao-post-actions">
         <button type="button">❤️ Tenho interesse</button>
         <button type="button">↗ Compartilhar</button>
       </footer>
+      {/* O mapa é ativado automaticamente pelo modal quando a tag é Perdido. */}
+      <PetDetalhesModal
+        pet={publicacao}
+        aberto={modalAberto}
+        aoFechar={() => setModalAberto(false)}
+      />
     </article>
   );
 }

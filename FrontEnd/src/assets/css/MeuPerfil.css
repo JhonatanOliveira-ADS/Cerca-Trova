@@ -345,3 +345,207 @@
     width: 100%;
   }
 }
+
+/* ======================================================
+   EXTENSÃO VISUAL DO PERFIL
+   Blocos adicionados para capa, avatar e cards de posts.
+====================================================== */
+
+/* Estrutura de cabeçalho inspirada na imagem de referência. */
+.perfil-hero {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 24px;
+  border: 1px solid #e4ebee;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(18, 63, 87, 0.08);
+}
+
+/* Capa selecionada pelo usuário ou fundo visual padrão do perfil. */
+.perfil-capa {
+  display: grid;
+  place-items: center;
+  height: 210px;
+  background-color: #dcecf3;
+  background-position: center;
+  background-size: cover;
+  color: rgba(18, 63, 87, 0.28);
+  font-size: 54px;
+}
+
+.perfil-cabecalho {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: -48px 26px 0;
+  padding-bottom: 22px;
+}
+
+/* Avatar sobreposto à capa, como na referência enviada. */
+.perfil-avatar {
+  overflow: hidden;
+  border: 5px solid #ffffff;
+  background: #dcecf3;
+  box-shadow: 0 5px 16px rgba(18, 63, 87, 0.16);
+}
+
+.perfil-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.perfil-identidade {
+  min-width: 0;
+  padding-top: 42px;
+}
+
+.perfil-imagens-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 0 26px 20px;
+}
+
+/* Cada input de arquivo fica visualmente representado por um botão discreto. */
+.perfil-upload {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 13px;
+  border: 1px solid #68a6c5;
+  border-radius: 9px;
+  color: #123f57;
+  background: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.perfil-upload:hover {
+  color: #ffffff;
+  background: #bd5f91;
+}
+
+.perfil-upload input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+}
+
+/* Card horizontal com imagem, informações e ações independentes. */
+.perfil-post {
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr) auto;
+  align-items: stretch;
+  gap: 16px;
+  min-height: 128px;
+  padding: 12px;
+}
+
+.perfil-post-imagem {
+  overflow: hidden;
+  min-height: 104px;
+  border-radius: 11px;
+  background: #dcecf3;
+}
+
+.perfil-post-imagem img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 104px;
+  object-fit: cover;
+}
+
+.perfil-post-conteudo {
+  position: relative;
+  padding: 4px 0;
+}
+
+.perfil-post-data {
+  display: block;
+  margin-bottom: 8px;
+  color: #8aa0ad;
+  font-size: 11px;
+}
+
+.perfil-post-editado {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 4px 7px;
+  border-radius: 6px;
+  color: #713653;
+  background: #f0d6e3;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.perfil-post-acoes {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.perfil-botao-excluir {
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid #e2a8b5;
+  border-radius: 10px;
+  color: #8c4051;
+  background: #ffffff;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+
+.perfil-botao-excluir:hover {
+  color: #ffffff;
+  background: #a94d62;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 700px) {
+  .perfil-capa {
+    height: 150px;
+  }
+
+  .perfil-cabecalho {
+    align-items: flex-start;
+    flex-direction: column;
+    margin: -42px 18px 0;
+  }
+
+  .perfil-identidade {
+    padding-top: 0;
+  }
+
+  .perfil-imagens-acoes {
+    justify-content: stretch;
+    flex-direction: column;
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .perfil-upload {
+    justify-content: center;
+  }
+
+  .perfil-post {
+    grid-template-columns: 86px minmax(0, 1fr);
+  }
+
+  .perfil-post-acoes {
+    grid-column: 1 / -1;
+  }
+
+  .perfil-post-acoes button {
+    flex: 1;
+  }
+}

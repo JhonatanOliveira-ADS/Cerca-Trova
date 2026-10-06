@@ -2332,3 +2332,84 @@ header a:hover::after {
   }
 
 }
+/* ======================================================
+   CAMPO DE NOME DO PET
+   Extensão visual adicionada para integrar o campo ao
+   mesmo padrão de UX/UI dos campos de raça e idade.
+====================================================== */
+
+/* Grupo visual próprio para destacar a identificação do animal. */
+.criar-post-nome-pet {
+  gap: 8px;
+  padding: 2px 0;
+}
+
+/* Rótulo do campo com hierarquia clara e leitura confortável. */
+.criar-post-nome-pet > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* Indicador visual de que o campo é recomendado, sem torná-lo obrigatório. */
+.criar-post-nome-pet > span::after {
+  content: "Opcional";
+  padding: 3px 6px;
+  border-radius: 999px;
+  color: #6b8291;
+  background: #eef5f7;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* Caixa de entrada com dimensões, contraste e espaçamento adequados. */
+.criar-post-nome-pet input {
+  width: 100%;
+  min-height: 46px;
+  box-sizing: border-box;
+  padding: 0 14px;
+  border: 1px solid #d5e3e8;
+  border-radius: 11px;
+  outline: none;
+  color: #123f57;
+  background: #f8fbfc;
+  font:
+    15px Arial,
+    Helvetica,
+    sans-serif;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+/* Placeholder discreto, mas legível, orientando o primeiro preenchimento. */
+.criar-post-nome-pet input::placeholder {
+  color: #8aa0ad;
+  opacity: 1;
+}
+
+/* Foco visível para mouse e teclado, reforçando onde o usuário está digitando. */
+.criar-post-nome-pet input:focus {
+  border-color: #68a6c5;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(104, 166, 197, 0.18);
+}
+
+/* Orientação auxiliar curta para reduzir dúvidas no preenchimento. */
+.criar-post-nome-pet small {
+  color: #8aa0ad;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+/* Garante área confortável de toque em dispositivos menores. */
+@media (max-width: 640px) {
+  .criar-post-nome-pet input {
+    min-height: 48px;
+    font-size: 16px;
+  }
+}

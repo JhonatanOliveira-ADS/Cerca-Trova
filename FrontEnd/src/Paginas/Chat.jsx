@@ -178,12 +178,31 @@ const mensagensPorAbaIniciais = {
   ],
 };
 
+/* Emojis mais usados no contexto de pets e conversas da plataforma. */
+const emojisDisponiveis = [
+  "🐾",
+  "🐶",
+  "🐱",
+  "❤️",
+  "😊",
+  "😂",
+  "😍",
+  "👍",
+  "🙏",
+  "🎉",
+  "😢",
+  "📍",
+];
+
 // ======================================================
 // COMPONENTE
 // ======================================================
 
 export default function Chat() {
   const [conversas, setConversas] = useState(conversasIniciais);
+
+  // Controla se a barra lateral permanece recolhida, como o painel lateral do VS Code.
+  const [barraRecolhida, setBarraRecolhida] = useState(false);
 
   const [conversaAtiva, setConversaAtiva] = useState(
     conversasIniciais[0]
@@ -198,6 +217,7 @@ export default function Chat() {
   const [texto, setTexto] = useState("");
   const [busca, setBusca] = useState("");
   const [anexoSelecionado, setAnexoSelecionado] = useState(false);
+  const [emojisAbertos, setEmojisAbertos] = useState(false);
 
   // ====================================================
   // PESQUISA
@@ -242,6 +262,7 @@ export default function Chat() {
 
     setTexto("");
     setAnexoSelecionado(false);
+    setEmojisAbertos(false);
   }
 
   // ====================================================
@@ -271,6 +292,18 @@ export default function Chat() {
     setAbaAtiva(aba);
     setTexto("");
     setAnexoSelecionado(false);
+    setEmojisAbertos(false);
+  }
+
+  /* Insere o emoji selecionado no final da mensagem em edição. */
+  function inserirEmoji(emoji) {
+    setTexto((textoAtual) => `${textoAtual}${emoji}`);
+    setEmojisAbertos(false);
+  }
+
+  // Alterna o estado fixo da barra lateral entre expandida e recolhida.
+  function alternarBarraLateral() {
+    setBarraRecolhida((estadoAtual) => !estadoAtual);
   }
 
   // ====================================================
@@ -278,12 +311,36 @@ export default function Chat() {
   // ====================================================
 
   return (
-    <main className={`chat-page chat-theme-${abaAtiva}`}>
+    <main
+      className={`chat-page chat-theme-${abaAtiva} ${
+        barraRecolhida ? "chat-sidebar-collapsed" : ""
+      }`}
+    >
       {/* =================================================
           PAINEL ESQUERDO
       ================================================= */}
 
       <aside className="chat-sidebar">
+        {/* CONTROLE DA BARRA LATERAL: alterna exclusivamente pelo clique no botão. */}
+        <button
+          className="chat-sidebar-toggle"
+          type="button"
+          onClick={alternarBarraLateral}
+          aria-label={
+            barraRecolhida
+              ? "Expandir barra de conversas"
+              : "Recolher barra de conversas"
+          }
+          aria-expanded={!barraRecolhida}
+          title={
+            barraRecolhida
+              ? "Expandir barra de conversas"
+              : "Recolher barra de conversas"
+          }
+        >
+          {barraRecolhida ? "›" : "‹"}
+        </button>
+
         {/* LOGO - CLICA E VOLTA PARA HOME */}
 
         <Link
@@ -594,13 +651,40 @@ export default function Chat() {
           className="message-composer"
           onSubmit={enviarMensagem}
         >
-          <button
-            type="button"
-            className="composer-icon"
-            aria-label="Adicionar emoji"
-          >
-            ☺
-          </button>
+          {/* Botão que abre e fecha a paleta de emojis do compositor. */}
+          <div className="emoji-picker-wrapper">
+            <button
+              type="button"
+              className={`composer-icon ${emojisAbertos ? "active" : ""}`}
+              onClick={() => setEmojisAbertos((estadoAtual) => !estadoAtual)}
+              aria-label="Adicionar emoji"
+              aria-expanded={emojisAbertos}
+              aria-controls="chat-emoji-picker"
+            >
+              ☺
+            </button>
+
+            {/* Paleta acessível com seleção rápida de emojis. */}
+            {emojisAbertos && (
+              <div
+                id="chat-emoji-picker"
+                className="chat-emoji-picker"
+                role="dialog"
+                aria-label="Selecionar emoji"
+              >
+                {emojisDisponiveis.map((emoji) => (
+                  <button
+                    key={emoji}
+                    type="button"
+                    onClick={() => inserirEmoji(emoji)}
+                    aria-label={`Inserir ${emoji}`}
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
           <input
             value={texto}
