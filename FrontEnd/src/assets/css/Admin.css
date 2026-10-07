@@ -1,0 +1,1184 @@
+/* src/assets/css/Admin.css */
+
+:root {
+  --ct-dark: #0d2b3e;
+  --ct-dark-2: #163a50;
+  --ct-orange: #e9a34a;
+  --ct-orange-light: #f4bd73;
+  --ct-pink: #d968a0;
+  --ct-purple: #8b5fa8;
+  --ct-white: #ffffff;
+  --ct-bg: #f4f7f9;
+  --ct-border: #dbe4ea;
+  --ct-text: #173042;
+  --ct-muted: #6d7d88;
+  --ct-success: #2f8f67;
+  --ct-danger: #c95757;
+  --ct-warning: #d79532;
+
+  --ct-shadow:
+    0 12px 35px
+    rgba(13, 43, 62, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.ct-admin {
+  min-height: 100vh;
+
+  display: grid;
+
+  grid-template-columns:
+    270px
+    minmax(0, 1fr);
+
+  background:
+    var(--ct-bg);
+
+  color:
+    var(--ct-text);
+}
+
+.ct-admin button,
+.ct-admin input {
+  font: inherit;
+}
+
+/* ==========================================
+   SIDEBAR
+========================================== */
+
+.ct-admin-sidebar {
+  position: sticky;
+
+  top: 0;
+
+  height: 100vh;
+
+  display: flex;
+
+  flex-direction: column;
+
+  padding: 24px 18px;
+
+  overflow-y: auto;
+
+  color:
+    var(--ct-white);
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--ct-dark),
+      var(--ct-dark-2)
+    );
+}
+
+/* ==========================================
+   LOGO ADMIN
+========================================== */
+
+.ct-admin-brand {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding:
+    4px
+    6px
+    24px;
+
+  border-bottom:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.12
+    );
+}
+
+.ct-admin-brand-mark {
+  width: 46px;
+
+  height: 46px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 14px;
+
+  font-size: 24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--ct-orange),
+      var(--ct-pink)
+    );
+}
+
+.ct-admin-brand strong,
+.ct-admin-brand span {
+  display: block;
+}
+
+.ct-admin-brand strong {
+  font-size: 18px;
+}
+
+.ct-admin-brand span {
+  margin-top: 2px;
+
+  font-size: 12px;
+
+  opacity: 0.72;
+}
+
+/* ==========================================
+   MENU
+========================================== */
+
+.ct-admin-nav {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+
+  margin-top: 20px;
+}
+
+.ct-admin-nav button {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  padding:
+    12px
+    13px;
+
+  border: 0;
+
+  border-radius: 12px;
+
+  background:
+    transparent;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.82
+    );
+
+  cursor: pointer;
+
+  text-align: left;
+
+  transition:
+    0.2s ease;
+}
+
+.ct-admin-nav button:hover {
+  color: white;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+
+  transform:
+    translateX(2px);
+}
+
+.ct-admin-nav button.active {
+  color: white;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.12
+    );
+
+  box-shadow:
+    inset
+    3px
+    0
+    0
+    var(--ct-orange);
+}
+
+/* ==========================================
+   SAIR
+========================================== */
+
+.ct-admin-logout {
+  margin-top: auto;
+
+  padding: 12px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.18
+    );
+
+  border-radius: 12px;
+
+  background:
+    rgba(
+      217,
+      104,
+      160,
+      0.12
+    );
+
+  color: white;
+
+  cursor: pointer;
+
+  transition:
+    0.2s ease;
+}
+
+.ct-admin-logout:hover {
+  background:
+    rgba(
+      217,
+      104,
+      160,
+      0.25
+    );
+}
+
+/* ==========================================
+   CONTEÚDO
+========================================== */
+
+.ct-admin-main {
+  min-width: 0;
+
+  padding: 28px;
+}
+
+/* ==========================================
+   CABEÇALHO
+========================================== */
+
+.ct-admin-header {
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items: center;
+
+  gap: 18px;
+
+  margin-bottom: 24px;
+}
+
+.ct-admin-header h1 {
+  margin:
+    4px
+    0;
+
+  font-size:
+    clamp(
+      26px,
+      3vw,
+      38px
+    );
+
+  color:
+    var(--ct-dark);
+}
+
+.ct-admin-header p {
+  margin: 0;
+
+  color:
+    var(--ct-muted);
+}
+
+.ct-admin-eyebrow {
+  font-size: 12px;
+
+  font-weight: 800;
+
+  letter-spacing:
+    0.15em;
+
+  color:
+    var(--ct-pink);
+}
+
+.ct-admin-header-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+.ct-admin-header-actions input {
+  width:
+    min(
+      360px,
+      40vw
+    );
+
+  padding:
+    12px
+    14px;
+
+  border:
+    1px solid
+    var(--ct-border);
+
+  border-radius: 12px;
+
+  outline: none;
+
+  background:
+    white;
+}
+
+.ct-admin-header-actions input:focus {
+  border-color:
+    var(--ct-purple);
+
+  box-shadow:
+    0
+    0
+    0
+    3px
+    rgba(
+      139,
+      95,
+      168,
+      0.12
+    );
+}
+
+/* ==========================================
+   AVATAR ADMIN
+========================================== */
+
+.ct-admin-avatar {
+  width: 44px;
+
+  height: 44px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 50%;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--ct-purple),
+      var(--ct-pink)
+    );
+}
+
+/* ==========================================
+   TOAST
+========================================== */
+
+.ct-admin-toast {
+  position: fixed;
+
+  top: 24px;
+
+  right: 26px;
+
+  z-index: 100;
+
+  padding:
+    13px
+    17px;
+
+  border-radius: 12px;
+
+  background:
+    var(--ct-dark);
+
+  color: white;
+
+  box-shadow:
+    var(--ct-shadow);
+}
+
+/* ==========================================
+   CARDS DE ESTATÍSTICA
+========================================== */
+
+.ct-admin-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 16px;
+
+  margin-bottom: 20px;
+}
+
+.ct-admin-stat,
+.ct-admin-report-card {
+  padding: 20px;
+
+  border:
+    1px solid
+    var(--ct-border);
+
+  border-radius: 18px;
+
+  background: white;
+
+  box-shadow:
+    var(--ct-shadow);
+}
+
+.ct-admin-stat span,
+.ct-admin-report-card span {
+  color:
+    var(--ct-muted);
+
+  font-size: 13px;
+}
+
+.ct-admin-stat strong,
+.ct-admin-report-card strong {
+  display: block;
+
+  margin:
+    6px
+    0;
+
+  font-size: 30px;
+
+  color:
+    var(--ct-dark);
+}
+
+.ct-admin-stat small {
+  color:
+    var(--ct-muted);
+}
+
+/* ==========================================
+   GRID DASHBOARD
+========================================== */
+
+.ct-admin-grid-2 {
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap: 20px;
+}
+
+/* ==========================================
+   CARDS
+========================================== */
+
+.ct-admin-card {
+  padding: 20px;
+
+  border:
+    1px solid
+    var(--ct-border);
+
+  border-radius: 20px;
+
+  background: white;
+
+  box-shadow:
+    var(--ct-shadow);
+}
+
+.ct-admin-card-header {
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  gap: 12px;
+
+  margin-bottom: 18px;
+}
+
+.ct-admin-card-header h2 {
+  margin:
+    0
+    0
+    5px;
+
+  font-size: 21px;
+
+  color:
+    var(--ct-dark);
+}
+
+.ct-admin-card-header p {
+  margin: 0;
+
+  color:
+    var(--ct-muted);
+
+  font-size: 14px;
+}
+
+/* ==========================================
+   AÇÕES RÁPIDAS
+========================================== */
+
+.ct-admin-quick {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 10px;
+}
+
+.ct-admin-quick button,
+.ct-admin-toolbar button,
+.ct-admin-settings button,
+.ct-admin-honor-grid button {
+  padding:
+    12px
+    14px;
+
+  border: 0;
+
+  border-radius: 12px;
+
+  background:
+    var(--ct-dark);
+
+  color: white;
+
+  cursor: pointer;
+
+  transition:
+    0.2s ease;
+}
+
+.ct-admin-quick button:hover,
+.ct-admin-toolbar button:hover,
+.ct-admin-settings button:hover,
+.ct-admin-honor-grid button:hover {
+  background:
+    var(--ct-dark-2);
+
+  transform:
+    translateY(-1px);
+}
+
+/* ==========================================
+   PENDÊNCIAS
+========================================== */
+
+.ct-admin-pendencias {
+  display: grid;
+
+  gap: 10px;
+}
+
+.ct-admin-pendencias p {
+  margin: 0;
+
+  padding:
+    13px
+    14px;
+
+  border-radius: 12px;
+
+  background:
+    var(--ct-bg);
+}
+
+/* ==========================================
+   TABELAS
+========================================== */
+
+.ct-admin-table-wrap {
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+.ct-admin-table {
+  width: 100%;
+
+  min-width: 760px;
+
+  border-collapse:
+    collapse;
+}
+
+.ct-admin-table th,
+.ct-admin-table td {
+  padding:
+    13px
+    12px;
+
+  border-bottom:
+    1px solid
+    var(--ct-border);
+
+  text-align: left;
+
+  vertical-align:
+    middle;
+}
+
+.ct-admin-table th {
+  font-size: 12px;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    0.05em;
+
+  color:
+    var(--ct-muted);
+}
+
+.ct-admin-table tbody tr {
+  transition:
+    background
+    0.2s ease;
+}
+
+.ct-admin-table tbody tr:hover {
+  background:
+    #f8fafb;
+}
+
+/* ==========================================
+   BOTÕES DE AÇÃO
+========================================== */
+
+.ct-admin-actions {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+}
+
+.ct-admin-actions button {
+  padding:
+    8px
+    11px;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  color: white;
+
+  cursor: pointer;
+
+  transition:
+    0.2s ease;
+}
+
+.ct-admin-actions button:hover {
+  opacity: 0.88;
+
+  transform:
+    translateY(-1px);
+}
+
+.ct-admin-actions .secondary {
+  background:
+    var(--ct-purple);
+}
+
+.ct-admin-actions .success {
+  background:
+    var(--ct-success);
+}
+
+.ct-admin-actions .danger {
+  background:
+    var(--ct-danger);
+}
+
+/* ==========================================
+   STATUS
+========================================== */
+
+.ct-admin-status {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding:
+    6px
+    9px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+
+  font-weight: 800;
+}
+
+.ct-admin-status.success {
+  color:
+    #21694c;
+
+  background:
+    #e5f5ed;
+}
+
+.ct-admin-status.warning {
+  color:
+    #875813;
+
+  background:
+    #fff2d8;
+}
+
+.ct-admin-status.danger {
+  color:
+    #8b3e3e;
+
+  background:
+    #fde9e9;
+}
+
+.ct-admin-status.neutral {
+  color:
+    #4d5d67;
+
+  background:
+    #edf1f4;
+}
+
+/* ==========================================
+   MATCH IA
+========================================== */
+
+.ct-admin-match-list {
+  display: grid;
+
+  gap: 14px;
+}
+
+.ct-admin-match-card {
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    180px
+    1fr
+    auto;
+
+  align-items: center;
+
+  gap: 18px;
+
+  padding: 16px;
+
+  border:
+    1px solid
+    var(--ct-border);
+
+  border-radius: 16px;
+
+  background:
+    #fbfcfd;
+}
+
+.ct-admin-match-card strong {
+  display: block;
+
+  color:
+    var(--ct-dark);
+}
+
+.ct-admin-match-label {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color:
+    var(--ct-muted);
+
+  font-size: 12px;
+}
+
+.ct-admin-match-score {
+  text-align: center;
+}
+
+.ct-admin-match-score strong {
+  font-size: 26px;
+
+  color:
+    var(--ct-pink);
+}
+
+.ct-admin-match-score span {
+  display: block;
+
+  font-size: 12px;
+
+  color:
+    var(--ct-muted);
+}
+
+.ct-admin-match-score input {
+  width: 100%;
+
+  margin-top: 8px;
+}
+
+/* ==========================================
+   TOOLBAR
+========================================== */
+
+.ct-admin-toolbar {
+  display: flex;
+
+  justify-content:
+    flex-end;
+
+  margin-bottom: 14px;
+}
+
+/* ==========================================
+   HONRARIAS
+========================================== */
+
+.ct-admin-honor-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 14px;
+}
+
+.ct-admin-honor-grid article {
+  padding: 18px;
+
+  border:
+    1px solid
+    var(--ct-border);
+
+  border-radius: 16px;
+
+  background:
+    #fbfcfd;
+}
+
+.ct-admin-honor-grid h3 {
+  margin:
+    8px
+    0
+    3px;
+}
+
+.ct-admin-honor-grid p {
+  color:
+    var(--ct-muted);
+}
+
+.ct-admin-honor-icon {
+  font-size: 36px;
+}
+
+.ct-admin-points-rules {
+  margin-top: 18px;
+
+  padding: 16px;
+
+  border-radius: 16px;
+
+  background:
+    #f8fafb;
+}
+
+.ct-admin-points-rules h3 {
+  margin-top: 0;
+}
+
+.ct-admin-points-rules p {
+  margin:
+    8px
+    0;
+
+  color:
+    var(--ct-muted);
+}
+
+/* ==========================================
+   RELATÓRIOS
+========================================== */
+
+.ct-admin-report-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 14px;
+
+  margin-bottom: 18px;
+}
+
+/* ==========================================
+   CONFIGURAÇÕES
+========================================== */
+
+.ct-admin-settings {
+  display: grid;
+
+  gap: 14px;
+
+  max-width: 720px;
+}
+
+.ct-admin-settings label {
+  display: grid;
+
+  gap: 7px;
+}
+
+.ct-admin-settings label > span {
+  font-size: 13px;
+
+  font-weight: 700;
+
+  color:
+    var(--ct-dark);
+}
+
+.ct-admin-settings input[type="text"],
+.ct-admin-settings input[type="email"],
+.ct-admin-settings input[type="number"],
+.ct-admin-settings input:not([type]) {
+  width: 100%;
+
+  padding:
+    12px
+    13px;
+
+  border:
+    1px solid
+    var(--ct-border);
+
+  border-radius: 11px;
+
+  outline: none;
+}
+
+.ct-admin-settings input:focus {
+  border-color:
+    var(--ct-purple);
+
+  box-shadow:
+    0
+    0
+    0
+    3px
+    rgba(
+      139,
+      95,
+      168,
+      0.1
+    );
+}
+
+.ct-admin-switch-row {
+  grid-template-columns:
+    1fr
+    auto;
+
+  align-items: center;
+
+  padding:
+    12px
+    0;
+
+  border-bottom:
+    1px solid
+    var(--ct-border);
+}
+
+/* ==========================================
+   RESPONSIVO
+========================================== */
+
+@media (max-width: 1180px) {
+
+  .ct-admin-stats {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+  .ct-admin-match-card {
+    grid-template-columns:
+      1fr
+      150px
+      1fr;
+  }
+
+  .ct-admin-match-card
+  .ct-admin-actions {
+    grid-column:
+      1 / -1;
+  }
+
+}
+
+@media (max-width: 900px) {
+
+  .ct-admin {
+    grid-template-columns:
+      1fr;
+  }
+
+  .ct-admin-sidebar {
+    position: relative;
+
+    height: auto;
+  }
+
+  .ct-admin-nav {
+    display: grid;
+
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+  .ct-admin-logout {
+    margin-top: 18px;
+  }
+
+  .ct-admin-grid-2,
+  .ct-admin-honor-grid,
+  .ct-admin-report-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+@media (max-width: 640px) {
+
+  .ct-admin-main {
+    padding: 18px;
+  }
+
+  .ct-admin-header {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+
+  .ct-admin-header-actions {
+    width: 100%;
+  }
+
+  .ct-admin-header-actions input {
+    width: 100%;
+  }
+
+  .ct-admin-stats {
+    grid-template-columns:
+      1fr;
+  }
+
+  .ct-admin-nav {
+    grid-template-columns:
+      1fr;
+  }
+
+  .ct-admin-quick {
+    grid-template-columns:
+      1fr;
+  }
+
+  .ct-admin-match-card {
+    grid-template-columns:
+      1fr;
+  }
+
+}

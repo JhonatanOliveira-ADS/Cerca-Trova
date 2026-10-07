@@ -3,6 +3,7 @@ import {
   Routes,
   Route,
   Link,
+  useLocation,
 } from "react-router-dom";
 
 import "./App.css";
@@ -12,8 +13,6 @@ import "./App.css";
 ========================================== */
 
 import Menu from "./Componentes/Menu";
-import ProtecaoAdmin from "./Componentes/ProtecaoAdmin";
-
 
 /* ==========================================
    PÁGINAS
@@ -25,128 +24,108 @@ import AdocaoDoacao from "./Paginas/AdocaoDoacao";
 import AchadosPerdidos from "./Paginas/AchadosPerdidos";
 import Favoritos from "./Paginas/Favoritos";
 import MeuPerfil from "./Paginas/MeuPerfil";
-import Painel from "./Paginas/Painel";
 import TinderPet from "./Paginas/Tinder-pet";
 import Configuracoes from "./Paginas/Configuracoes";
 import Chat from "./Paginas/Chat";
 
-
 /* ==========================================
-   APP
+   ADMIN
 ========================================== */
 
-export default function App() {
+import Admin from "./PaginasAdmin/Admin";
+
+/* ==========================================
+   CONTEÚDO PRINCIPAL
+========================================== */
+
+function ConteudoApp() {
+  const location = useLocation();
+
+  const paginaAdmin =
+    location.pathname === "/admin" ||
+    location.pathname.startsWith("/admin/");
+
   return (
-    <BrowserRouter>
+    <div className="app-container">
 
-      <div className="app-container">
+      {/* MENU PRINCIPAL */}
+      {!paginaAdmin && <Menu />}
 
-        {/* MENU PRINCIPAL */}
-        <Menu />
+      {/* CONTEÚDO */}
+      <div
+        className={
+          paginaAdmin
+            ? "app-conteudo app-conteudo-admin"
+            : "app-conteudo"
+        }
+      >
+        <Routes>
 
+          {/* HOME */}
+          <Route
+            path="/"
+            element={<Home />}
+          />
 
-        {/* ==================================
-            CONTEÚDO DAS PÁGINAS
-        ================================== */}
+          {/* LOGIN */}
+          <Route
+            path="/login"
+            element={<Login />}
+          />
 
-        <div className="app-conteudo">
+          {/* ADOÇÃO */}
+          <Route
+            path="/adocao"
+            element={<AdocaoDoacao />}
+          />
 
-          <Routes>
+          {/* ACHADOS E PERDIDOS */}
+          <Route
+            path="/achados-perdidos"
+            element={<AchadosPerdidos />}
+          />
 
-            {/* HOME */}
-            <Route
-              path="/"
-              element={<Home />}
-            />
+          {/* FAVORITOS */}
+          <Route
+            path="/favoritos"
+            element={<Favoritos />}
+          />
 
+          {/* PERFIL */}
+          <Route
+            path="/perfil"
+            element={<MeuPerfil />}
+          />
 
-            {/* LOGIN */}
-            <Route
-              path="/login"
-              element={<Login />}
-            />
+          {/* TINDER PET */}
+          <Route
+            path="/tinder-pet"
+            element={<TinderPet />}
+          />
 
+          {/* CONFIGURAÇÕES */}
+          <Route
+            path="/configuracoes"
+            element={<Configuracoes />}
+          />
 
-            {/* ADOÇÃO */}
-            <Route
-              path="/adocao"
-              element={<AdocaoDoacao />}
-            />
+          {/* CHAT */}
+          <Route
+            path="/chat"
+            element={<Chat />}
+          />
 
+          {/* ADMIN */}
+          <Route
+            path="/admin"
+            element={<Admin />}
+          />
 
-            {/* ACHADOS E PERDIDOS / MAPA */}
-            <Route
-              path="/achados-perdidos"
-              element={<AchadosPerdidos />}
-            />
+        </Routes>
+      </div>
 
-
-            {/* FAVORITOS */}
-            <Route
-              path="/favoritos"
-              element={<Favoritos />}
-            />
-
-
-            {/* PERFIL */}
-            <Route
-              path="/perfil"
-              element={<MeuPerfil />}
-            />
-
-
-            {/* TINDER PET */}
-            <Route
-              path="/tinder-pet"
-              element={<TinderPet />}
-            />
-
-
-            {/* CONFIGURAÇÕES */}
-            <Route
-              path="/configuracoes"
-              element={<Configuracoes />}
-            />
-
-
-            {/* CHAT */}
-            <Route
-              path="/chat"
-              element={<Chat />}
-            />
-
-
-            {/* ==================================
-                ADMINISTRAÇÃO
-            ================================== */}
-
-            <Route
-              path="/painel"
-              element={
-                <ProtecaoAdmin>
-                  <Painel />
-                </ProtecaoAdmin>
-              }
-            />
-
-            <Route
-              path="/admin"
-              element={
-                <ProtecaoAdmin>
-                  <Painel />
-                </ProtecaoAdmin>
-              }
-            />
-
-          </Routes>
-
-        </div>
-
-
-        {/* ==================================
-            BOTÃO FLUTUANTE DO CHAT
-        ================================== */}
-
+      {/* BOTÃO FLUTUANTE DO CHAT */}
+      {!paginaAdmin && (
         <Link
           className="chat-floating-button"
           to="/chat"
@@ -161,9 +140,22 @@ export default function App() {
             Chat
           </strong>
         </Link>
+      )}
 
-      </div>
+    </div>
+  );
+}
 
+/* ==========================================
+   APP
+========================================== */
+
+function App() {
+  return (
+    <BrowserRouter>
+      <ConteudoApp />
     </BrowserRouter>
   );
 }
+
+export default App;

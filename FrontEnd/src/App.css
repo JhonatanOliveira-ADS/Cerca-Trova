@@ -241,4 +241,10 @@ body {
         min-height: 48px;
         padding: 0 15px;
     }
+    .app-conteudo-admin {
+  width: 100%;
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+}
 }
