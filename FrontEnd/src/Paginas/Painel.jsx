@@ -1,6 +1,9 @@
+/* Hooks usados para estado local, efeitos de persistência e cálculos derivados. */
 import { useEffect, useMemo, useState } from "react";
+/* Hook de navegação usado para sair da área administrativa. */
 import { useNavigate } from "react-router-dom";
 
+/* Folha de estilos exclusiva do layout do painel administrativo. */
 import "../assets/css/Painel.css";
 
 /* Chave usada para persistir as páginas editadas no navegador durante a demonstração. */
@@ -56,17 +59,23 @@ function carregarPaginas() {
 
 export default function Painel() {
   /* Estados responsáveis pela lista, editor e mensagens do painel. */
+  /* A lista inicia com os dados persistidos ou com os registros de demonstração. */
   const [paginas, setPaginas] = useState(carregarPaginas);
+  /* Guarda a página atualmente aberta no formulário de criação ou edição. */
   const [paginaEditando, setPaginaEditando] = useState(null);
+  /* Exibe ao administrador o resultado da última operação realizada. */
   const [mensagem, setMensagem] = useState("");
+  /* Permite retornar ao login ao encerrar a sessão administrativa. */
   const navigate = useNavigate();
 
   /* Mantém os registros persistidos sempre que a lista sofre alterações. */
   useEffect(() => {
+    /* Sincroniza a lista atual com o armazenamento local do navegador. */
     localStorage.setItem(CHAVE_PAGINAS_ADMIN, JSON.stringify(paginas));
   }, [paginas]);
 
   /* Calcula o resumo de páginas publicadas para o card de indicadores. */
+  /* Deriva a quantidade de páginas que estão com status Publicada. */
   const totalPublicadas = useMemo(
     () => paginas.filter((pagina) => pagina.status === "Publicada").length,
     [paginas],
@@ -132,6 +141,7 @@ export default function Painel() {
     navigate("/login", { replace: true });
   }
 
+  /* Estrutura visual principal: navegação lateral e conteúdo administrativo. */
   return (
     <main className="admin-page">
       {/* Barra lateral exclusiva da área administrativa. */}
@@ -144,14 +154,21 @@ export default function Painel() {
           </div>
         </div>
 
-        {/* Navegação interna do painel sem expor o acesso no menu público. */}
-        <nav className="admin-nav" aria-label="Navegação administrativa">
+        {/*
+          Navegação interna do painel em uma div semântica para não herdar
+          os estilos globais aplicados ao elemento nav do menu público.
+        */}
+        <div
+          className="admin-navigation"
+          role="navigation"
+          aria-label="Navegação administrativa"
+        >
           <a className="active" href="#visao-geral">
             Visão geral
           </a>
           <a href="#paginas">Páginas e conteúdo</a>
           <a href="#configuracoes">Configurações</a>
-        </nav>
+        </div>
 
         {/* Botão para finalizar a sessão administrativa atual. */}
         <button className="admin-logout" type="button" onClick={sair}>
@@ -261,6 +278,7 @@ export default function Painel() {
         </section>
 
         {/* Editor exibido somente quando o administrador cria ou edita uma página. */}
+        {/* Card dedicado ao formulário ativo de criação ou edição. */}
         {paginaEditando && (
           <section className="admin-card admin-editor" id="configuracoes">
             <div className="admin-section-heading">
@@ -283,6 +301,7 @@ export default function Painel() {
 
             {/* Formulário dos dados que podem ser atualizados pelo administrador. */}
             <form className="admin-form" onSubmit={salvarPagina}>
+              {/* Campo que identifica o nome amigável exibido no painel. */}
               <label>
                 <span>Nome da página</span>
                 <input
@@ -294,6 +313,7 @@ export default function Painel() {
                 />
               </label>
 
+              {/* Campo que informa o caminho usado pela página no roteamento. */}
               <label>
                 <span>Rota</span>
                 <input
@@ -306,6 +326,7 @@ export default function Painel() {
                 />
               </label>
 
+              {/* Campo amplo para o título principal do conteúdo. */}
               <label className="campo-amplo">
                 <span>Título</span>
                 <input
@@ -317,6 +338,7 @@ export default function Painel() {
                 />
               </label>
 
+              {/* Campo amplo para a descrição administrativa da página. */}
               <label className="campo-amplo">
                 <span>Descrição</span>
                 <textarea
@@ -329,6 +351,7 @@ export default function Painel() {
                 />
               </label>
 
+              {/* Seletor que controla a situação editorial da página. */}
               <label>
                 <span>Status</span>
                 <select

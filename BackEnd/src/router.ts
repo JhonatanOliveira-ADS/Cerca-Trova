@@ -16,7 +16,8 @@ import publicacoesControllers from "./Controllers/publicacoesControllers"
 import favoritosControllers from "./Controllers/favoritosControllers";
 import loginUsuariosControllers from "./Controllers/loginUsuariosControllers/loginUsuariosControllers";
 import loginONGsControllers from "./Controllers/loginONGsControllers/loginONGsControllers";
-
+import adminControllers from "./Controllers/adminControllers/adminCotrollers";
+import loginAdminControllers from "./Controllers/loginAdminControllers/loginAdminControllers";
 
 //endpoints POST
 router.post('/CadastrarUsuarios', uploead.single('file'), new usuariosControllers().criarUsuarios)
@@ -25,7 +26,8 @@ router.post ('/CriarPublicacao', uploead.single('file'), estaAutenticado, new pu
 router.post ('/CriarFavorito', estaAutenticado, new favoritosControllers().criarFavorito)
 router.post('/logarUsuario', new loginUsuariosControllers().logarUsuario)
 router.post ('/logarONGs', new loginONGsControllers().logarONG)
-
+router.post('/criarAdmin', new adminControllers().criarAdmin )
+router.post('/loginAdmin', new adminControllers().criarAdmin)
 
 //endpoints GET
 router.get('/visualizarDadosUnico', estaAutenticado, new usuariosControllers().visualizarDadosUnico)

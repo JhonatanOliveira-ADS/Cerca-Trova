@@ -4,6 +4,8 @@
 ========================================== */
 
 /* Variáveis da área administrativa usando azul, dourado e rosa da identidade. */
+
+/* Container geral que organiza a sidebar e a área de conteúdo. */
 .admin-page {
   --admin-navy: #102b3d;
   --admin-blue: #3d8aa8;
@@ -36,6 +38,8 @@
   padding: 0 10px 30px;
 }
 
+
+/* Marca compacta que identifica visualmente a área administrativa. */
 .admin-brand-symbol {
   display: grid;
   place-items: center;
@@ -47,6 +51,8 @@
   font-weight: 900;
 }
 
+
+/* Nome e subtítulo da marca são empilhados na identidade lateral. */
 .admin-brand strong,
 .admin-brand small {
   display: block;
@@ -122,7 +128,11 @@
   text-transform: uppercase;
 }
 
+
+/* Títulos principais compartilham cor e remoção de margens padrão. */
 .admin-topbar h1,
+
+/* Tamanho dos títulos internos dos cards administrativos. */
 .admin-section-heading h2 {
   margin: 0;
   color: var(--admin-navy);
@@ -170,11 +180,15 @@
   box-shadow: 0 7px 18px rgba(16, 43, 61, 0.06);
 }
 
+
+/* Valor numérico ou textual destacado de cada indicador. */
 .admin-stat-card strong {
   color: var(--admin-navy);
   font-size: 24px;
 }
 
+
+/* Legenda que explica o indicador exibido no card. */
 .admin-stat-card span {
   color: #6b8291;
   font-size: 12px;
@@ -254,6 +268,8 @@
   overflow-x: auto;
 }
 
+
+/* Tabela que apresenta páginas, rotas, status e ações. */
 .admin-table {
   width: 100%;
   min-width: 650px;
@@ -261,6 +277,8 @@
   text-align: left;
 }
 
+
+/* Cabeçalho da tabela com tipografia compacta e hierarquia secundária. */
 .admin-table th {
   padding: 12px 10px;
   border-bottom: 1px solid var(--admin-line);
@@ -269,6 +287,8 @@
   text-transform: uppercase;
 }
 
+
+/* Células que exibem os dados de cada página cadastrada. */
 .admin-table td {
   padding: 15px 10px;
   border-bottom: 1px solid #edf2f4;
@@ -342,6 +362,8 @@
   margin-top: 22px;
 }
 
+
+/* Cada label organiza o título e o controle correspondente em coluna. */
 .admin-form label {
   display: flex;
   flex-direction: column;
@@ -359,6 +381,8 @@
   font-weight: 900;
 }
 
+
+/* Controles de entrada compartilham borda, fundo e tipografia. */
 .admin-form input,
 .admin-form select,
 .admin-form textarea {
@@ -401,6 +425,8 @@
 }
 
 /* Ajustes responsivos do painel para tablets e celulares. */
+
+/* Primeiro breakpoint: reduz a largura da sidebar e reorganiza indicadores. */
 @media (max-width: 900px) {
   .admin-sidebar {
     flex-basis: 205px;
@@ -411,6 +437,8 @@
   }
 }
 
+
+/* Segundo breakpoint: transforma o painel em fluxo vertical para celulares. */
 @media (max-width: 680px) {
   .admin-page {
     display: block;
@@ -468,4 +496,165 @@
   .admin-form-actions button {
     width: 100%;
   }
+}
+
+/* ======================================================
+   AJUSTE DE CONTRASTE DA SIDEBAR ADMINISTRATIVA
+   Remove o fundo branco da navegação e mantém todos os
+   textos legíveis sobre o fundo escuro institucional.
+====================================================== */
+
+/* Mantém a barra lateral com fundo escuro contínuo em toda a sua altura. */
+.admin-page .admin-sidebar {
+  color: #ffffff;
+  background: var(--admin-navy);
+}
+
+/* Retira qualquer fundo herdado ou aplicado globalmente ao bloco de navegação. */
+.admin-page .admin-nav {
+  background: transparent;
+}
+
+/* Garante contraste claro nos links quando estão em estado normal. */
+.admin-page .admin-nav a {
+  color: #eaf4f7;
+  background: transparent;
+}
+
+/* Preserva o destaque apenas no item ativo ou quando o cursor está sobre o link. */
+.admin-page .admin-nav a:hover,
+.admin-page .admin-nav a.active {
+  color: #ffffff;
+  background: rgba(104, 166, 197, 0.3);
+}
+
+/* ======================================================
+   SOBRESCRITA DO MENU GLOBAL NA ÁREA ADMINISTRATIVA
+   O Menu.css aplica estilos ao seletor global nav. Estes
+   overrides limitados ao painel impedem que o menu público
+   crie o retângulo branco na navegação administrativa.
+====================================================== */
+
+/* Remove o fundo, o espaçamento e os efeitos do nav global dentro da sidebar. */
+.admin-page .admin-sidebar nav.admin-nav {
+  position: static;
+  z-index: auto;
+  width: auto;
+  min-height: 0;
+  padding: 0;
+  background: var(--admin-navy) !important;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Impede que regras globais do Menu.css alterem a aparência dos links internos. */
+.admin-page .admin-sidebar nav.admin-nav a,
+.admin-page .admin-sidebar nav.admin-nav a:last-child {
+  min-height: 0;
+  margin-left: 0;
+  padding: 12px 13px;
+  border: 0;
+  color: #eaf4f7 !important;
+  background: transparent !important;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Mantém o destaque acessível somente no item ativo ou sob interação. */
+.admin-page .admin-sidebar nav.admin-nav a:hover,
+.admin-page .admin-sidebar nav.admin-nav a.active {
+  color: #ffffff !important;
+  background: rgba(104, 166, 197, 0.3) !important;
+  transform: translateX(2px);
+}
+
+/* Remove o sublinhado decorativo criado pelo menu público. */
+.admin-page .admin-sidebar nav.admin-nav a::after,
+.admin-page .admin-sidebar nav.admin-nav a:hover::after,
+.admin-page .admin-sidebar nav.admin-nav a:last-child::after {
+  display: none;
+}
+
+/* ======================================================
+   CORREÇÃO FINAL DO FUNDO DOS LINKS ADMINISTRATIVOS
+   A div de navegação deve ser transparente sobre a sidebar;
+   nenhum fundo branco pode ser herdado por ela ou pelos links.
+====================================================== */
+
+/* Fundo escuro explícito no container que envolve os links administrativos. */
+.admin-page > .admin-sidebar > .admin-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background-color: var(--admin-navy) !important;
+  background-image: none !important;
+}
+
+/* Links sem preenchimento branco, mantendo somente texto e estado ativo. */
+.admin-page > .admin-sidebar > .admin-nav > a {
+  color: #eaf4f7 !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* Destaque controlado para o link selecionado ou sob o cursor. */
+.admin-page > .admin-sidebar > .admin-nav > a.active,
+.admin-page > .admin-sidebar > .admin-nav > a:hover {
+  color: #ffffff !important;
+  background-color: rgba(104, 166, 197, 0.3) !important;
+  background-image: none !important;
+}
+
+/* ======================================================
+   NAVEGAÇÃO ADMINISTRATIVA ISOLADA
+   Classe exclusiva para impedir qualquer herança do menu
+   público ou de regras antigas da navegação.
+====================================================== */
+
+/* Container dos links com fundo escuro definido diretamente. */
+.admin-navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  padding: 0;
+  background: #102b3d !important;
+  background-image: none !important;
+}
+
+/* Links claros e transparentes para leitura sobre o fundo escuro. */
+.admin-navigation > a {
+  display: block;
+  min-height: 0;
+  box-sizing: border-box;
+  padding: 12px 13px;
+  border: 0;
+  border-radius: 10px;
+  color: #eaf4f7 !important;
+  background: transparent !important;
+  background-image: none !important;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transform: none;
+}
+
+/* Destaque visível apenas no item ativo ou durante a interação. */
+.admin-navigation > a.active,
+.admin-navigation > a:hover,
+.admin-navigation > a:focus-visible {
+  color: #ffffff !important;
+  background: #3d8aa8 !important;
+  background-image: none !important;
+  outline: none;
+  transform: translateX(2px);
+}
+
+/* Remove qualquer decoração criada por estilos globais de links. */
+.admin-navigation > a::after,
+.admin-navigation > a:hover::after,
+.admin-navigation > a:last-child::after {
+  display: none !important;
 }

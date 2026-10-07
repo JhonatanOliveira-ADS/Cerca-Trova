@@ -29,6 +29,14 @@ const usuariosMock = [
     tipo: "Usuário",
     pontos: 20,
   },
+
+  {
+    id:123,
+    nome:"samuel",
+    email:"sam@admin.com",
+    senha:"123",
+    tipo:"admin"
+  }
 ];
 
 const petsMock = [
