@@ -18,6 +18,8 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
   const [idade, setIdade] = useState("");
   const [categoria, setCategoria] = useState("Adoção");
   const [imagem, setImagem] = useState("");
+  /* Mantém o File original para envio multipart ao backend. */
+  const [arquivo, setArquivo] = useState(null);
   const [nomeArquivo, setNomeArquivo] = useState("");
 
   /*
@@ -30,6 +32,8 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
     if (!arquivo) {
       return;
     }
+
+    setArquivo(arquivo);
 
     const leitor = new FileReader();
 
@@ -45,7 +49,7 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
     Cria um objeto compatível com CardAnimais e com os filtros avançados.
     Raça e idade são salvas com nomes próprios para busca posterior.
   */
-  function publicarPost(event) {
+  async function publicarPost(event) {
     event.preventDefault();
 
     const descricao = texto.trim();
@@ -69,19 +73,18 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
       tag: categoria,
       descricao,
       imagem: imagem || imagemPadrao,
+      arquivo,
       /* Registra o momento de criação para ordenar posts no perfil. */
       criadoEm: new Date().toISOString(),
     };
 
-    onPublicar(novoPost);
+    // A Home envia o registro à API e informa se o backend confirmou a operação.
+    const publicadoNoBackend = await onPublicar(novoPost);
 
-    /* Mantém uma cópia dos posts criados para a área Minhas publicações. */
-    const postsSalvos =
-      JSON.parse(localStorage.getItem("cercaTrovaMeusPosts")) || [];
-    localStorage.setItem(
-      "cercaTrovaMeusPosts",
-      JSON.stringify([novoPost, ...postsSalvos]),
-    );
+    /* Mantém os dados no formulário quando a API rejeitar a publicação. */
+    if (!publicadoNoBackend) {
+      return;
+    }
 
     /* Limpa o compositor depois que o post foi enviado ao feed. */
     setTexto("");
@@ -90,6 +93,7 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
     setIdade("");
     setCategoria("Adoção");
     setImagem("");
+    setArquivo(null);
     setNomeArquivo("");
     event.target.reset();
   }
@@ -108,18 +112,6 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
         </div>
       </div>
 
-      <label className="criar-post-campo criar-post-nome-pet">
-        <span>Nome do pet</span>
-        <input
-          type="text"
-          value={nomePet}
-          onChange={(event) => setNomePet(event.target.value)}
-          placeholder="nome do pet"
-          aria-label="Nome do pet"
-        />
-        <small>Informe como o animal é chamado.</small>
-      </label>
-
       {/* Formulário social com descrição, dados do pet, ações e publicação. */}
       <form className="criar-post-formulario" onSubmit={publicarPost}>
         {/* Campo semelhante ao compositor de redes sociais. */}
@@ -135,7 +127,17 @@ export default function CriarPost({ onPublicar, imagemPadrao }) {
         </label>
 
         {/* Campo adicional para identificar o pet apresentado na publicação. */}
-
+        <label className="criar-post-campo criar-post-nome-pet">
+          <span>Nome do pet</span>
+          <input
+            type="text"
+            value={nomePet}
+            onChange={(event) => setNomePet(event.target.value)}
+            placeholder="nome do pet"
+            aria-label="Nome do pet"
+          />
+          <small>Informe como o animal é chamado.</small>
+        </label>
 
         {/* Campos complementares para registrar raça e idade do pet. */}
         <div className="criar-post-dados-pet">

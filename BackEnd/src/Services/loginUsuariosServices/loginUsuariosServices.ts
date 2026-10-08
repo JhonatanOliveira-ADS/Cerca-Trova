@@ -37,12 +37,13 @@ class LoginUsuariosServices{
         }
     )
 
-    return{
-        id: emailExiste.id,
-        nome: emailExiste.nome,
-        email: emailExiste.email,
-        token: token
-    }
+        return{
+            id: emailExiste.id,
+            nome: emailExiste.nome,
+            email: emailExiste.email,
+            tipo: emailExiste.tipo,
+            token: token
+        }
 
     }
 }

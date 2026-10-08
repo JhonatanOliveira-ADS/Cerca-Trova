@@ -1,119 +1,95 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "../assets/css/TinderPet.css";
 
-import lalinha from "../assets/imagens/lalinha.jpg";
-import loki from "../assets/imagens/loki.png";
-import bordercollie from "../assets/imagens/border-collie.webp";
-import husky from "../assets/husky.jpg";
-import rottweiler from "../assets/imagens/rottweiler.webp";
-
-/* Chave compartilhada com a página Favoritos para manter os perfis sincronizados. */
-const CHAVE_FAVORITOS = "cercaTrovaFavoritos";
-
-/* Leitura segura dos favoritos já salvos no navegador. */
-function carregarFavoritos() {
-  try {
-    return JSON.parse(localStorage.getItem(CHAVE_FAVORITOS)) || [];
-  } catch {
-    return [];
-  }
-}
+import {
+  API_BASE_URL,
+  listarPetsTinder,
+  listarPublicacoes,
+} from "../servicos/autenticacao";
 
 export default function TinderPet() {
-  const pets = [
-    {
-      id: 1,
-      nome: "Lalinha",
-      idade: "1 ano",
-      especie: "Cão",
-      cidade: "Bauru - SP",
-      sexo: "Fêmea",
-      porte: "Pequeno",
+  const [pets, setPets] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState("");
 
-      personalidade: ["Carinhosa 💜", "Brincalhona 🐾", "Adora colo"],
+  /* Busca somente pets ativos persistidos no banco. */
+  useEffect(() => {
+    async function carregarPets() {
+      try {
+        const [petsCadastrados, publicacoes] = await Promise.all([
+          listarPetsTinder(),
+          listarPublicacoes(),
+        ]);
 
-      descricao:
-        "Pequena no tamanho, gigante na personalidade. Adoro brincar, receber carinho e conhecer novas patinhas.",
+        /* Converte o modelo PetsTinder para o formato visual já usado pela aba. */
+        const petsDoCadastro = Array.isArray(petsCadastrados)
+          ? petsCadastrados.map((petApi) => ({
+              ...petApi,
+              imagem: petApi.foto
+                ? `${API_BASE_URL}/files/${encodeURIComponent(petApi.foto)}`
+                : "",
+              personalidade: petApi.personalidade
+                ? petApi.personalidade.split(",").map((item) => item.trim())
+                : [],
+            }))
+          : [];
 
-      imagem: lalinha,
-    },
+        /* Publicações marcadas como TinderPet também entram no mesmo catálogo. */
+        const petsDasPublicacoes = Array.isArray(publicacoes)
+          ? publicacoes
+              .filter((publicacao) =>
+                ["TINDER_PET", "TinderPet", "Tinder Pet"].includes(
+                  publicacao.tipo,
+                ),
+              )
+              .map((publicacao) => ({
+                ...publicacao,
+                nome: publicacao.nome_pet,
+                idade: publicacao.idade_pet,
+                imagem: publicacao.foto
+                  ? `${API_BASE_URL}/files/${encodeURIComponent(publicacao.foto)}`
+                  : "",
+                personalidade: [],
+                descricao: publicacao.descricao,
+              }))
+          : [];
 
-    {
-      id: 2,
-      nome: "Loki",
-      idade: "3 anos",
-      especie: "Cão",
-      cidade: "Bauru - SP",
-      sexo: "Macho",
-      porte: "Grande",
+        setPets([...petsDasPublicacoes, ...petsDoCadastro]);
+      } catch (erroApi) {
+        setErro(erroApi.message || "Não foi possível carregar o TinderPet.");
+      } finally {
+        setCarregando(false);
+      }
+    }
 
-      personalidade: ["Companheiro 🐾", "Brincalhão 🎾", "Carinhoso 💜"],
-
-      descricao:
-        "Especialista em cãopanhia, passeios e brincadeiras. Estou procurando novas patinhas para viver grandes aventuras.",
-
-      imagem: loki,
-    },
-
-    {
-      id: 3,
-      nome: "Max",
-      idade: "2 anos",
-      especie: "Cão",
-      cidade: "Bauru - SP",
-      sexo: "Macho",
-      porte: "Médio",
-
-      personalidade: ["Inteligente 🧠", "Energético ⚡", "Brincalhão 🎾"],
-
-      descricao:
-        "Cheio de energia e sempre pronto para uma aventura. Procuro uma cãopanhia para correr, brincar e colecionar bons momentos.",
-
-      imagem: bordercollie,
-    },
-
-    {
-      id: 4,
-      nome: "Sky",
-      idade: "2 anos",
-      especie: "Cão",
-      cidade: "Bauru - SP",
-      sexo: "Fêmea",
-      porte: "Médio",
-
-      personalidade: ["Aventureira 🏔️", "Energética ⚡", "Sociável 🐾"],
-
-      descricao:
-        "Olhos marcantes e energia de sobra. Procuro uma cãopanhia para passeios, brincadeiras e muitas aventuras.",
-
-      imagem: husky,
-    },
-
-    {
-      id: 5,
-      nome: "Bruce",
-      idade: "4 anos",
-      especie: "Cão",
-      cidade: "Bauru - SP",
-      sexo: "Macho",
-      porte: "Grande",
-
-      personalidade: ["Companheiro 🐾", "Confiante 💪", "Carinhoso 💜"],
-
-      descricao:
-        "Cara de sério, coração de manteiga. Gosto de companhia, passeios tranquilos e de conhecer novas patinhas.",
-
-      imagem: rottweiler,
-    },
-  ];
+    carregarPets();
+  }, []);
 
   const [petAtual, setPetAtual] = useState(0);
   const [mensagem, setMensagem] = useState("");
   /* Mantém os objetos completos para que Favoritos consiga renderizar o perfil. */
-  const [favoritos, setFavoritos] = useState(carregarFavoritos);
+  const [favoritos, setFavoritos] = useState([]);
 
   const pet = pets[petAtual];
+
+  /* Impede a interface de acessar um pet inexistente durante a consulta da API. */
+  if (carregando) {
+    return (
+      <main className="gatenho-page">
+        <p>Carregando pets cadastrados...</p>
+      </main>
+    );
+  }
+
+  if (erro || !pet) {
+    return (
+      <main className="gatenho-page">
+        <p>{erro || "Ainda não existem pets cadastrados no TinderPet."}</p>
+      </main>
+    );
+  }
+
   /* Define o estado visual da estrela para o pet atualmente exibido. */
   const petEstaFavoritado = favoritos.some(
     (favorito) => favorito.id === pet.id,
@@ -162,33 +138,16 @@ export default function TinderPet() {
   ========================= */
 
   function favoritar() {
-    /* Releitura evita sobrescrever favoritos adicionados pela Home ou por outra aba. */
-    const favoritosAtuais = carregarFavoritos();
-    const jaExiste = favoritosAtuais.some((favorito) => favorito.id === pet.id);
-
-    if (jaExiste) {
-      /* Segundo clique remove o perfil, seguindo o comportamento esperado de um favorito. */
-      const listaAtualizada = favoritosAtuais.filter(
-        (favorito) => favorito.id !== pet.id,
-      );
-      localStorage.setItem(CHAVE_FAVORITOS, JSON.stringify(listaAtualizada));
-      setFavoritos(listaAtualizada);
-      setMensagem(`☆ ${pet.nome} foi removido dos seus favoritos.`);
-      return;
-    }
-
-    /* Salva o perfil completo, incluindo imagem e dados exibidos no TinderPet. */
-    const petParaSalvar = {
-      ...pet,
-      tag: "Em busca de um Cãopanheiro",
-      status: "TinderPet",
-      autor: "TinderPet",
-    };
-
-    const listaAtualizada = [...favoritosAtuais, petParaSalvar];
-    localStorage.setItem(CHAVE_FAVORITOS, JSON.stringify(listaAtualizada));
+    const jaExiste = favoritos.some((favorito) => favorito.id === pet.id);
+    const listaAtualizada = jaExiste
+      ? favoritos.filter((favorito) => favorito.id !== pet.id)
+      : [...favoritos, pet];
     setFavoritos(listaAtualizada);
-    setMensagem(`⭐ ${pet.nome} foi adicionado aos seus favoritos!`);
+    setMensagem(
+      jaExiste
+        ? `☆ ${pet.nome} foi removido da seleção.`
+        : `⭐ ${pet.nome} foi adicionado à seleção.`,
+    );
   }
 
   return (

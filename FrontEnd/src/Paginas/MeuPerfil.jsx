@@ -1,40 +1,47 @@
 import { useEffect, useState } from "react";
 
 import "../assets/css/MeuPerfil.css";
+import {
+  atualizarPerfil as atualizarPerfilApi,
+  atualizarFotoCapa,
+  atualizarFotoPerfil,
+  atualizarPublicacao as atualizarPublicacaoApi,
+  excluirPublicacao,
+  listarPublicacoes,
+  obterPerfil,
+  API_BASE_URL,
+} from "../servicos/autenticacao";
 
-/* Chaves que mantêm os dados do perfil e os posts do usuário no navegador. */
-const CHAVE_PERFIL = "cercaTrovaPerfil";
-const CHAVE_POSTS = "cercaTrovaMeusPosts";
-
-/* Valores iniciais exibidos quando o usuário ainda não configurou o perfil. */
+/* Estrutura vazia usada somente enquanto os dados reais estão sendo carregados. */
 const perfilInicial = {
-  nome: "Usuário Cerca Trova",
-  biografia: "Compartilhando cuidado e carinho pelos animais.",
-  email: "usuario@cercatrova.com",
-  telefone: "(00) 00000-0000",
+  nome: "",
+  biografia: "",
+  email: "",
+  telefone: "",
   avatar: "",
   capa: "",
 };
 
-/* Faz a leitura segura do perfil salvo no LocalStorage. */
-function carregarPerfil() {
-  try {
-    return {
-      ...perfilInicial,
-      ...(JSON.parse(localStorage.getItem(CHAVE_PERFIL)) || {}),
-    };
-  } catch {
-    return perfilInicial;
-  }
-}
+/* Converte o rótulo do formulário para o valor persistido no banco. */
+const tiposPorRotulo = {
+  Adoção: "ADOCAO",
+  Perdido: "PERDIDO",
+  TinderPet: "TINDER_PET",
+  Achado: "ENCONTRADO",
+};
 
-/* Faz a leitura segura das publicações criadas pelo usuário. */
-function carregarPosts() {
-  try {
-    return JSON.parse(localStorage.getItem(CHAVE_POSTS)) || [];
-  } catch {
-    return [];
-  }
+/* Converte valores antigos ou novos do banco para o rótulo do select. */
+function rotuloDaCategoria(tipo) {
+  const rotulos = {
+    ADOCAO: "Adoção",
+    PERDIDO: "Perdido",
+    TINDER_PET: "TinderPet",
+    TinderPet: "TinderPet",
+    "Tinder Pet": "TinderPet",
+    ENCONTRADO: "Achado",
+  };
+
+  return rotulos[tipo] || "Adoção";
 }
 
 /* Mantém a publicação mais recente no topo da lista do perfil. */
@@ -58,16 +65,76 @@ function lerImagem(arquivo, aoCarregar) {
   leitor.readAsDataURL(arquivo);
 }
 
+/* Converte o nome salvo no banco em uma URL exibível pelo navegador. */
+function urlImagemPerfil(nomeArquivo) {
+  if (!nomeArquivo) {
+    return "";
+  }
+
+  if (nomeArquivo.startsWith("data:") || nomeArquivo.startsWith("http")) {
+    return nomeArquivo;
+  }
+
+  return `${API_BASE_URL}/files/${encodeURIComponent(nomeArquivo)}`;
+}
+
 export default function MeuPerfil() {
   /* Estados dos dados pessoais editáveis. */
-  const [perfil, setPerfil] = useState(carregarPerfil);
+  const [perfil, setPerfil] = useState(perfilInicial);
   const [senha, setSenha] = useState("");
   const [mensagemPerfil, setMensagemPerfil] = useState("");
+  /* Mantém os arquivos originais até o usuário confirmar o salvamento. */
+  const [arquivosPerfil, setArquivosPerfil] = useState({
+    avatar: null,
+    capa: null,
+  });
 
   /* Estados da seção de publicações próprias. */
-  const [posts, setPosts] = useState(() => ordenarPosts(carregarPosts()));
+  const [posts, setPosts] = useState([]);
   const [postEditando, setPostEditando] = useState(null);
   const [mensagemPost, setMensagemPost] = useState("");
+
+  /* Sincroniza os dados básicos do perfil e as publicações autenticadas com a API. */
+  useEffect(() => {
+    async function carregarDadosReais() {
+      try {
+        const perfilApi = await obterPerfil();
+        if (perfilApi) {
+          setPerfil((perfilAtual) => ({
+            ...perfilAtual,
+            nome: perfilApi.nome || perfilAtual.nome,
+            email: perfilApi.email || perfilAtual.email,
+            telefone: perfilApi.telefone || perfilAtual.telefone,
+            avatar: urlImagemPerfil(perfilApi.foto_perfil),
+            capa: urlImagemPerfil(perfilApi.foto_capa),
+          }));
+        }
+
+        const publicacoesApi = await listarPublicacoes();
+        if (Array.isArray(publicacoesApi) && perfilApi?.id) {
+          const postsDoUsuario = publicacoesApi
+            .filter((post) => post.id_usuario === perfilApi.id)
+            .map((post) => ({
+              ...post,
+              nome: post.nome_pet,
+              idade: post.idade_pet,
+              imagem: post.foto
+                ? `http://localhost:3333/files/${post.foto}`
+                : "",
+              status: rotuloDaCategoria(post.tipo),
+              tag: rotuloDaCategoria(post.tipo),
+              criadoEm: post.data_criacao,
+            }));
+          setPosts(ordenarPosts(postsDoUsuario));
+        }
+      } catch (erro) {
+        // Os dados locais continuam disponíveis quando não houver sessão ou API.
+        console.info("Perfil real indisponível; mantendo dados locais.", erro.message);
+      }
+    }
+
+    carregarDadosReais();
+  }, []);
 
   /* Atualiza um campo específico dos dados pessoais. */
   function atualizarPerfil(campo, valor) {
@@ -78,27 +145,45 @@ export default function MeuPerfil() {
   }
 
   /* Salva email, telefone e senha localmente para esta demonstração frontend. */
-  function salvarPerfil(event) {
+  async function salvarPerfil(event) {
     event.preventDefault();
 
-    const perfilParaSalvar = {
-      nome: perfil.nome,
-      biografia: perfil.biografia,
-      email: perfil.email,
-      telefone: perfil.telefone,
-      avatar: perfil.avatar,
-      capa: perfil.capa,
-    };
+    try {
+      // Os campos textuais são enviados pela rota própria de atualização do usuário.
+      await atualizarPerfilApi({
+        nome: perfil.nome,
+        email: perfil.email,
+        telefone: perfil.telefone,
+      });
 
-    localStorage.setItem(CHAVE_PERFIL, JSON.stringify(perfilParaSalvar));
+      /* Cada arquivo segue pela rota Multer correspondente usando o campo file. */
+      if (arquivosPerfil.avatar) {
+        await atualizarFotoPerfil(arquivosPerfil.avatar);
+      }
 
-    /* A senha nunca é armazenada em texto aberto no navegador. */
-    if (senha.trim()) {
-      localStorage.setItem("cercaTrovaSenhaAtualizada", "true");
-      setSenha("");
+      if (arquivosPerfil.capa) {
+        await atualizarFotoCapa(arquivosPerfil.capa);
+      }
+
+      /* Reconsulta o perfil para obter os nomes oficiais gravados pelo backend. */
+      const perfilAtualizado = await obterPerfil();
+
+      /* Usa os nomes oficiais devolvidos pelo banco depois do upload. */
+      setPerfil((perfilAtual) => ({
+        ...perfilAtual,
+        avatar: urlImagemPerfil(perfilAtualizado.foto_perfil),
+        capa: urlImagemPerfil(perfilAtualizado.foto_capa),
+      }));
+      setArquivosPerfil({ avatar: null, capa: null });
+      setMensagemPerfil("Informações atualizadas com sucesso.");
+    } catch (erro) {
+      setMensagemPerfil(erro.message || "Não foi possível salvar o perfil.");
+      return;
     }
 
-    setMensagemPerfil("Informações atualizadas com sucesso.");
+    /* A senha nunca é armazenada em texto aberto no navegador. */
+    setSenha("");
+
   }
 
   /* Abre a publicação selecionada no modo de edição. */
@@ -118,7 +203,7 @@ export default function MeuPerfil() {
   }
 
   /* Salva a publicação editada, marca o post e atualiza a lista imediatamente. */
-  function salvarEdicaoPost(event) {
+  async function salvarEdicaoPost(event) {
     event.preventDefault();
 
     const postAtualizado = {
@@ -127,16 +212,26 @@ export default function MeuPerfil() {
       editadoEm: new Date().toISOString(),
     };
 
-    const postsAtualizados = ordenarPosts(
-      posts.map((post) =>
-        post.id === postEditando.id ? postAtualizado : post,
-      ),
-    );
-
-    setPosts(postsAtualizados);
-    localStorage.setItem(CHAVE_POSTS, JSON.stringify(postsAtualizados));
-    setPostEditando(null);
-    setMensagemPost("Publicação atualizada com sucesso.");
+    try {
+      await atualizarPublicacaoApi({
+        ...postAtualizado,
+        tipo: postAtualizado.tipo || "ADOCAO",
+        nome_pet: postAtualizado.nome_pet || postAtualizado.nome,
+        idade_pet: postAtualizado.idade_pet || postAtualizado.idade,
+        arquivo: postAtualizado.arquivo,
+      });
+      setPosts((postsAtuais) =>
+        ordenarPosts(
+          postsAtuais.map((post) =>
+            post.id === postEditando.id ? postAtualizado : post,
+          ),
+        ),
+      );
+      setPostEditando(null);
+      setMensagemPost("Publicação atualizada com sucesso.");
+    } catch (erro) {
+      setMensagemPost(erro.message || "Não foi possível atualizar a publicação.");
+    }
   }
 
   /* Exclui uma publicação somente depois da confirmação do usuário. */
@@ -145,10 +240,14 @@ export default function MeuPerfil() {
       return;
     }
 
-    const postsAtualizados = posts.filter((post) => post.id !== id);
-    setPosts(postsAtualizados);
-    localStorage.setItem(CHAVE_POSTS, JSON.stringify(postsAtualizados));
-    setMensagemPost("Publicação excluída com sucesso.");
+    excluirPublicacao(id)
+      .then(() => {
+        setPosts((postsAtuais) => postsAtuais.filter((post) => post.id !== id));
+        setMensagemPost("Publicação excluída com sucesso.");
+      })
+      .catch((erro) => {
+        setMensagemPost(erro.message || "Não foi possível excluir a publicação.");
+      });
   }
 
   /* Atualiza a foto do post que está sendo editado. */
@@ -160,8 +259,14 @@ export default function MeuPerfil() {
 
   /* Atualiza a foto de perfil ou a capa selecionada pelo usuário. */
   function atualizarImagemPerfil(campo, event) {
-    lerImagem(event.target.files[0], (imagem) => {
+    const arquivo = event.target.files[0];
+
+    lerImagem(arquivo, (imagem) => {
       atualizarPerfil(campo, imagem);
+      setArquivosPerfil((arquivosAtuais) => ({
+        ...arquivosAtuais,
+        [campo]: arquivo,
+      }));
     });
   }
 
@@ -176,15 +281,7 @@ export default function MeuPerfil() {
     Isso permite visualizar posts criados em outra página da aplicação.
   */
   useEffect(() => {
-    function atualizarPostsAoVoltar() {
-      setPosts(ordenarPosts(carregarPosts()));
-    }
-
-    window.addEventListener("focus", atualizarPostsAoVoltar);
-
-    return () => {
-      window.removeEventListener("focus", atualizarPostsAoVoltar);
-    };
+    return undefined;
   }, []);
 
   return (
@@ -427,8 +524,10 @@ export default function MeuPerfil() {
               <select
                 value={postEditando.tag || postEditando.status}
                 onChange={(event) => {
-                  atualizarPost("tag", event.target.value);
-                  atualizarPost("status", event.target.value);
+                  const rotulo = event.target.value;
+                  atualizarPost("tag", rotulo);
+                  atualizarPost("status", rotulo);
+                  atualizarPost("tipo", tiposPorRotulo[rotulo]);
                 }}
               >
                 <option value="Adoção">Adoção</option>

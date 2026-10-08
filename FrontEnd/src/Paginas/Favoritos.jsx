@@ -1,5 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import "../assets/css/Favoritos.css";
+import {
+  listarFavoritos,
+  removerFavorito,
+} from "../servicos/autenticacao";
 
 /* Tags usadas no filtro avançado da página de favoritos. */
 const TAGS_FILTRO = [
@@ -26,6 +30,29 @@ function normalizarFavorito(pet) {
     idade: pet.idade || "Idade não informada",
     descricao: pet.descricao || "Este pet está salvo nos seus favoritos.",
   };
+}
+
+/* Converte a relação Favoritos + Publicacoes devolvida pelo Prisma para o card. */
+function adaptarFavoritoApi(registro) {
+  const publicacao = registro.publicacao || registro;
+  const nomesDosTipos = {
+    ADOCAO: "Adoção",
+    PERDIDO: "Perdido",
+    ENCONTRADO: "Achado",
+  };
+  const tag = nomesDosTipos[publicacao.tipo] || publicacao.tipo || "Adoção";
+
+  return normalizarFavorito({
+    ...publicacao,
+    idFavorito: registro.id,
+    nome: publicacao.nome_pet,
+    idade: publicacao.idade_pet,
+    imagem: publicacao.foto
+      ? `http://localhost:3333/files/${publicacao.foto}`
+      : "",
+    status: tag,
+    tag,
+  });
 }
 
 /* Card de favorito com ação própria para remover o item sem depender de outro componente. */
@@ -87,12 +114,24 @@ export default function Favoritos() {
   const [especieSelecionada, setEspecieSelecionada] = useState("Todas");
   const [racaSelecionada, setRacaSelecionada] = useState("Todas");
   const [idadeBusca, setIdadeBusca] = useState("");
+  const [erroFavoritos, setErroFavoritos] = useState("");
 
   /* Carrega os favoritos salvos pelo usuário assim que a página é aberta. */
   useEffect(() => {
-    const salvos =
-      JSON.parse(localStorage.getItem("cercaTrovaFavoritos")) || [];
-    setFavoritos(salvos.map(normalizarFavorito));
+    async function carregarFavoritosReais() {
+      try {
+        const resposta = await listarFavoritos();
+        if (Array.isArray(resposta)) {
+          setFavoritos(resposta.map(adaptarFavoritoApi));
+          return;
+        }
+      } catch (erro) {
+        setErroFavoritos(erro.message || "Não foi possível carregar seus favoritos.");
+        setFavoritos([]);
+      }
+    }
+
+    carregarFavoritosReais();
   }, []);
 
   /* Cria as opções de espécie com base nos favoritos existentes. */
@@ -151,15 +190,19 @@ export default function Favoritos() {
   ]);
 
   /* Remove o pet da tela e sincroniza a alteração com o LocalStorage. */
-  function removerFavorito(pet) {
+  async function removerFavoritoDaLista(pet) {
+    try {
+      if (pet.idFavorito) {
+        await removerFavorito(pet.idFavorito);
+      }
+    } catch (erro) {
+      console.info("Favorito não removido pela API; sincronizando localmente.", erro.message);
+    }
+
     const listaAtualizada = favoritos.filter(
       (favorito) => favorito.id !== pet.id,
     );
     setFavoritos(listaAtualizada);
-    localStorage.setItem(
-      "cercaTrovaFavoritos",
-      JSON.stringify(listaAtualizada),
-    );
   }
 
   /* Restaura todos os controles da busca avançada. */
@@ -288,7 +331,13 @@ export default function Favoritos() {
           <p>Gerencie seus interesses</p>
         </header>
 
-        {favoritos.length === 0 ? (
+        {erroFavoritos ? (
+          <div className="favoritos-empty-state">
+            <span aria-hidden="true">⚠</span>
+            <h2>{erroFavoritos}</h2>
+            <p>Entre na sua conta para consultar os favoritos salvos.</p>
+          </div>
+        ) : favoritos.length === 0 ? (
           <div className="favoritos-empty-state">
             <span aria-hidden="true">💔</span>
             <h2>Você ainda não favoritou nenhum bichinho</h2>
@@ -312,7 +361,7 @@ export default function Favoritos() {
               <FavoritoCard
                 key={pet.id}
                 pet={pet}
-                onRemover={removerFavorito}
+                onRemover={removerFavoritoDaLista}
               />
             ))}
           </div>

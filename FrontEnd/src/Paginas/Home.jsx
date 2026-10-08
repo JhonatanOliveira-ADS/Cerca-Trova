@@ -1,180 +1,134 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import CardAnimais from "../Componentes/CardAnimais";
 import CriarPost from "../Componentes/CriarPost";
-
 import "../assets/css/Home.css";
-
 import petsbanner from "../assets/petsbanner.png";
+import {
+  API_BASE_URL,
+  criarPublicacao,
+  listarPublicacoes,
+} from "../servicos/autenticacao";
 
+/* Converte os nomes internos do banco para os rótulos apresentados na interface. */
+function adaptarPublicacao(publicacao) {
+  const nomesDosTipos = {
+    ADOCAO: "Adoção",
+    PERDIDO: "Perdido",
+    ENCONTRADO: "Achado",
+    TINDER_PET: "TinderPet",
+    TinderPet: "TinderPet",
+    "Tinder Pet": "TinderPet",
+  };
+  const categoria = nomesDosTipos[publicacao.tipo] || publicacao.tipo || "Adoção";
 
-/* ==========================================
-   CARREGAR POSTS DO USUÁRIO
-========================================== */
-
-function carregarPostsDoUsuario() {
-  try {
-    const postsSalvos = JSON.parse(
-      localStorage.getItem("cercaTrovaMeusPosts")
-    );
-
-    return Array.isArray(postsSalvos)
-      ? postsSalvos
-      : [];
-  } catch (erro) {
-    console.error(
-      "Erro ao carregar os posts do usuário:",
-      erro
-    );
-
-    return [];
-  }
+  return {
+    ...publicacao,
+    nome: publicacao.nome_pet,
+    idade: publicacao.idade_pet,
+    imagem: publicacao.foto
+      ? `${API_BASE_URL}/files/${publicacao.foto}`
+      : petsbanner,
+    status: categoria,
+    tag: categoria,
+  };
 }
 
-
-/* ==========================================
-   HOME
-========================================== */
-
+/* Página principal com feed e criação de publicações persistidas no backend. */
 export default function Home() {
+  const [pets, setPets] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erroFeed, setErroFeed] = useState("");
 
-  /* ========================================
-     POSTS DO FEED
-  ======================================== */
+  /* Busca exclusivamente registros ativos da API, sem dados demonstrativos locais. */
+  useEffect(() => {
+    async function carregarFeedReal() {
+      try {
+        const resposta = await listarPublicacoes();
+        const publicacoesDaHome = Array.isArray(resposta)
+          ? resposta.filter(
+              (publicacao) =>
+                !["TINDER_PET", "TinderPet", "Tinder Pet"].includes(
+                  publicacao.tipo,
+                ),
+            )
+          : [];
+        setPets(publicacoesDaHome.map(adaptarPublicacao));
+      } catch (erro) {
+        setErroFeed(erro.message || "Não foi possível carregar as publicações.");
+      } finally {
+        setCarregando(false);
+      }
+    }
 
-  const [pets, setPets] = useState(() => [
-    ...carregarPostsDoUsuario(),
+    carregarFeedReal();
+  }, []);
 
-    {
-      id: "1",
-      nome: "Thor",
-      especie: "Cão",
-      raca: "SRD",
-      idade: "2 anos",
-      cidade: "Bauru",
-      status: "Adoção",
+  /* Envia a nova publicação para a API e adiciona o registro devolvido ao feed. */
+  async function adicionarPost(novoPost) {
+    try {
+      const resposta = await criarPublicacao({
+        tipo: {
+          Adoção: "ADOCAO",
+          Perdido: "PERDIDO",
+          TinderPet: "TINDER_PET",
+          Achado: "ENCONTRADO",
+        }[novoPost.status] || "ADOCAO",
+        nome_pet: novoPost.nome,
+        especie: novoPost.especie,
+        raca: novoPost.raca,
+        idade_pet: novoPost.idade,
+        porte: "Não informado",
+        sexo: "Não informado",
+        descricao: novoPost.descricao,
+        cidade: novoPost.cidade,
+        estado: "Não informado",
+        arquivo: novoPost.arquivo,
+      });
 
-      descricao:
-        "Thor é muito carinhoso, brincalhão e está procurando uma família.",
-
-      imagem:
-        "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=900",
-    },
-
-    {
-      id: "2",
-      nome: "Luna",
-      especie: "Gato",
-      raca: "SRD",
-      idade: "6 meses",
-      cidade: "Agudos",
-      status: "Adoção",
-
-      descricao:
-        "Luna é tranquila e adora carinho. Está disponível para adoção responsável.",
-
-      imagem:
-        "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=900",
-    },
-
-    {
-      id: "3",
-      nome: "Bob",
-      especie: "Cão",
-      raca: "SRD",
-      idade: "1 ano",
-      cidade: "Jaú",
-      status: "Adoção",
-
-      descricao:
-        "Bob é cheio de energia e procura um lar onde possa brincar bastante.",
-
-      imagem:
-        "https://plus.unsplash.com/premium_photo-1666777247416-ee7a95235559?q=80&w=900&auto=format&fit=crop",
-    },
-  ]);
-
-
-  /* ========================================
-     ADICIONAR NOVO POST
-  ======================================== */
-
-  function adicionarPost(novoPost) {
-    setPets((postsAtuais) => [
-      novoPost,
-      ...postsAtuais,
-    ]);
+      /* TinderPet possui catálogo próprio; as demais categorias permanecem no feed geral. */
+      if (!["TINDER_PET", "TinderPet", "Tinder Pet"].includes(resposta.tipo)) {
+        setPets((postsAtuais) => [adaptarPublicacao(resposta), ...postsAtuais]);
+      }
+      setErroFeed("");
+      return true;
+    } catch (erro) {
+      setErroFeed(erro.message || "Não foi possível publicar neste momento.");
+      return false;
+    }
   }
-
-
-  /* ========================================
-     INTERFACE
-  ======================================== */
 
   return (
     <main className="home-container">
-
-      {/* ==================================
-          BANNER
-      ================================== */}
-
+      {/* Banner visual da comunidade. */}
       <section className="home-banner">
-
         <img
           src={petsbanner}
           alt="Encontre o seu novo melhor amigo"
           className="home-banner-pets"
         />
-
       </section>
 
-
-      {/* ==================================
-          FEED
-      ================================== */}
-
+      {/* Feed conectado à API e compositor de novas publicações. */}
       <section className="feed">
-
         <div className="feed-topo">
-
-          <span className="feed-label">
-            🐾 Comunidade
-          </span>
-
-          <h2>
-            Encontre um novo amigo
-          </h2>
-
-          <p>
-            Animais para adoção, perdidos e encontrados.
-          </p>
-
+          <span className="feed-label">🐾 Comunidade</span>
+          <h2>Encontre um novo amigo</h2>
+          <p>Animais para adoção, perdidos e encontrados.</p>
         </div>
 
+        <CriarPost onPublicar={adicionarPost} imagemPadrao={petsbanner} />
 
-        {/* ==================================
-            CRIAR NOVA PUBLICAÇÃO
-        ================================== */}
-
-        <CriarPost
-          onPublicar={adicionarPost}
-          imagemPadrao={petsbanner}
-        />
-
-
-        {/* ==================================
-            PUBLICAÇÕES
-        ================================== */}
-
-        {pets.map((pet) => (
-          <CardAnimais
-            key={pet.id}
-            pet={pet}
-          />
-        ))}
-
+        {carregando ? (
+          <p className="feed-estado">Carregando publicações...</p>
+        ) : erroFeed ? (
+          <p className="feed-estado feed-estado-erro">{erroFeed}</p>
+        ) : pets.length === 0 ? (
+          <p className="feed-estado">Ainda não existem publicações.</p>
+        ) : (
+          pets.map((pet) => <CardAnimais key={pet.id} pet={pet} />)
+        )}
       </section>
-
     </main>
   );
 }

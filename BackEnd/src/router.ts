@@ -16,8 +16,9 @@ import publicacoesControllers from "./Controllers/publicacoesControllers"
 import favoritosControllers from "./Controllers/favoritosControllers";
 import loginUsuariosControllers from "./Controllers/loginUsuariosControllers/loginUsuariosControllers";
 import loginONGsControllers from "./Controllers/loginONGsControllers/loginONGsControllers";
-import adminControllers from "./Controllers/adminControllers/adminCotrollers";
-import loginAdminControllers from "./Controllers/loginAdminControllers/loginAdminControllers";
+import PetsTinderControllers from "./Controllers/petsTinderControllers";
+import AdminControllers from "./Controllers/adminControllers/adminCotrollers";
+
 
 //endpoints POST
 router.post('/CadastrarUsuarios', uploead.single('file'), new usuariosControllers().criarUsuarios)
@@ -25,20 +26,26 @@ router.post('/CadastrarONG', uploead.single('file'), new ongsControllers().criar
 router.post ('/CriarPublicacao', uploead.single('file'), estaAutenticado, new publicacoesControllers().publicarPost)
 router.post ('/CriarFavorito', estaAutenticado, new favoritosControllers().criarFavorito)
 router.post('/logarUsuario', new loginUsuariosControllers().logarUsuario)
-router.post ('/logarONGs', new loginONGsControllers().logarONG)
-router.post('/criarAdmin', new adminControllers().criarAdmin )
-router.post('/loginAdmin', new adminControllers().criarAdmin)
+router.post('/logarONGs', new loginONGsControllers().logarONG)
+router.post('/CriarPetTinder', uploead.single('file'), estaAutenticado, new PetsTinderControllers().criarPet)
+// Rota usada pelo Insomnia para criar a primeira conta administrativa.
+router.post('/CadastrarAdmin', new AdminControllers().criarAdministrador)
+
 
 //endpoints GET
 router.get('/visualizarDadosUnico', estaAutenticado, new usuariosControllers().visualizarDadosUnico)
 router.get('/visualizarDadosGeral', estaAutenticado, new usuariosControllers().visualizarDadosGeral)
 router.get('/visualizarONG', estaAutenticado, new ongsControllers().visualizarONG)
 router.get('/visualizarFavorito', estaAutenticado, new favoritosControllers().visualizarFavorito)
-router.get('/visualizarPublicacao', estaAutenticado, new publicacoesControllers().visualizarPublicacoes)
+// O feed é público; autenticação continua obrigatória para criar, editar e excluir.
+router.get('/visualizarPublicacao', new publicacoesControllers().visualizarPublicacoes)
+router.get('/visualizarPetsTinder', new PetsTinderControllers().listarPets)
 
 
 //endpoints PUT
-router.put('/atualizarDadosUsuario', uploead.single('file'), estaAutenticado, new usuariosControllers().atualizarDadosUsuario)
+router.put('/atualizarDadosUsuario', estaAutenticado, new usuariosControllers().atualizarDadosUsuario)
+router.put('/atualizarFotoPerfil', uploead.single('file'), estaAutenticado, new usuariosControllers().atualizarFotoPerfil)
+router.put('/atualizarFotoCapa', uploead.single('file'), estaAutenticado, new usuariosControllers().atualizarFotoCapa)
 router.put('/atualizarDadosONG', uploead.single('file'), estaAutenticado, new ongsControllers().atualizarONG)
 router.put('/atualizarDadosPublicacao', uploead.single('file'), estaAutenticado, new publicacoesControllers().atualizarPublicacao)
 

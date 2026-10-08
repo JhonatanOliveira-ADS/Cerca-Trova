@@ -52,6 +52,7 @@ class usuariosServices {
                 email: true,
                 telefone: true,
                 foto_perfil: true,
+                foto_capa: true,
                 tipo: true,
                 verificado: true
             }
@@ -71,6 +72,7 @@ class usuariosServices {
                 email: true,
                 telefone: true,
                 foto_perfil: true,
+                foto_capa: true,
                 tipo: true,
                 verificado: true
             }
@@ -79,20 +81,37 @@ class usuariosServices {
     }
 
 
-    async atualizarDados({ id, nome, email, telefone, foto_perfil }: altUsuario) {
+    async atualizarDados({ id, nome, email, telefone, foto_perfil, foto_capa }: altUsuario & { foto_capa?: string }) {
         const atualizarDados = await prismaClient.usuarios.update({
             where: {
                 id: id
             },
             data: {
-                id,
+                // O identificador é usado somente no where e nunca é regravado.
                 nome,
                 email,
                 telefone,
-                foto_perfil,
+                foto_perfil: foto_perfil || undefined,
+                foto_capa: foto_capa || undefined,
             }
         })
         return atualizarDados
+    }
+
+    /* Atualiza somente a foto de perfil recebida pelo upload.single("file"). */
+    async atualizarFotoPerfil(id: string, foto_perfil: string) {
+        return prismaClient.usuarios.update({
+            where: { id },
+            data: { foto_perfil },
+        })
+    }
+
+    /* Atualiza somente a capa recebida pelo upload.single("file"). */
+    async atualizarFotoCapa(id: string, foto_capa: string) {
+        return prismaClient.usuarios.update({
+            where: { id },
+            data: { foto_capa },
+        })
     }
 
 

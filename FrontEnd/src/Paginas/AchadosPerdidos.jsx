@@ -6,8 +6,9 @@ import "leaflet/dist/leaflet.css";
 
 import PetDetalhesModal from "../Componentes/PetDetalhesModal";
 import "../assets/css/AchadosPerdidos.css";
+import { API_BASE_URL, obterToken } from "../servicos/autenticacao";
 
-const API_URL = "http://localhost:3333";
+const API_URL = API_BASE_URL;
 const MAPA_PADRAO = [-22.3145, -49.0606];
 
 
@@ -239,16 +240,7 @@ export default function AchadosPerdidos() {
      TOKEN
   ======================================== */
 
-  const token = useMemo(() => {
-    return (
-      localStorage.getItem(
-        "cercaTrovaToken"
-      ) ||
-      sessionStorage.getItem(
-        "cercaTrovaToken"
-      )
-    );
-  }, []);
+  const token = useMemo(() => obterToken(), []);
 
 
   /* ========================================

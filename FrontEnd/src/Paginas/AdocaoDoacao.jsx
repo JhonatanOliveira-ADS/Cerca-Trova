@@ -1,6 +1,7 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PetDetalhesModal from "../Componentes/PetDetalhesModal";
 import "../assets/css/AdocaoeDoacao.css";
+import { API_BASE_URL, listarPublicacoes } from "../servicos/autenticacao";
 
 /*
   Tags disponíveis no filtro.
@@ -14,93 +15,27 @@ const TAGS_FILTRO = [
   "Em busca de um Cãopanheiro",
 ];
 
-/*
-  Dados iniciais das publicações.
-  Em uma etapa futura, esta lista poderá ser substituída por dados vindos de uma API.
-*/
-const PUBLICACOES_INICIAIS = [
-  {
-    id: 1,
-    autor: "Mariana Alves",
-    local: "Bauru, SP",
-    nome: "Thor",
-    especie: "Cão",
-    raca: "Sem raça definida",
-    idade: "2 anos",
-    tag: "Adoção",
-    descricao:
-      "Thor é carinhoso, brincalhão e procura uma família responsável para chamar de lar.",
-    imagem: "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=900",
-  },
-  {
-    id: 2,
-    autor: "Lucas Ferreira",
-    local: "Agudos, SP",
-    nome: "Luna",
-    especie: "Gato",
-    raca: "Sem raça definida",
-    idade: "6 meses",
-    tag: "Perdido",
-    descricao:
-      "Luna desapareceu próximo à praça central. Ela é dócil e atende pelo próprio nome.",
-    imagem:
-      "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=900",
-  },
-  {
-    id: 3,
-    autor: "Projeto Patinhas",
-    local: "Jaú, SP",
-    nome: "Bob",
-    especie: "Cão",
-    raca: "Sem raça definida",
-    idade: "1 ano",
-    tag: "Encontra",
-    descricao:
-      "Encontramos este cão amigável perto do bairro Jardim América. Ajude a localizar sua família.",
-    imagem:
-      "https://plus.unsplash.com/premium_photo-1666777247416-ee7a95235559?q=80&w=900&auto=format&fit=crop",
-  },
-  {
-    id: 4,
-    autor: "Ana Beatriz",
-    local: "Bauru, SP",
-    nome: "Mel",
-    especie: "Gato",
-    raca: "Siamês",
-    idade: "1 ano",
-    tag: "Em busca de um Cãopanheiro",
-    descricao:
-      "Mel é tranquila, carinhosa e procura uma companhia para dividir momentos especiais.",
-    imagem:
-      "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=900",
-  },
-  {
-    id: 5,
-    autor: "Casa dos Animais",
-    local: "Lençóis Paulista, SP",
-    nome: "Jade",
-    especie: "Cão",
-    raca: "Border Collie",
-    idade: "3 anos",
-    tag: "Adoção",
-    descricao:
-      "Jade convive bem com crianças e outros animais. Está pronta para uma adoção responsável.",
-    imagem: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=900",
-  },
-  {
-    id: 6,
-    autor: "Rafael Santos",
-    local: "Pederneiras, SP",
-    nome: "Simba",
-    especie: "Gato",
-    raca: "Persa",
-    idade: "2 anos",
-    tag: "Em busca de um Cãopanheiro",
-    descricao:
-      "Simba procura um amigo para brincar e uma família que ofereça muito carinho.",
-    imagem: "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=900",
-  },
-];
+/* Converte o registro persistido no banco para o modelo visual dos cards. */
+function adaptarPublicacao(publicacao) {
+  const nomesDosTipos = {
+    ADOCAO: "Adoção",
+    PERDIDO: "Perdido",
+    ENCONTRADO: "Encontra",
+  };
+  const tag = nomesDosTipos[publicacao.tipo] || publicacao.tipo || "Adoção";
+
+  return {
+    ...publicacao,
+    autor: publicacao.usuario?.nome || "Membro da comunidade",
+    local: [publicacao.cidade, publicacao.estado].filter(Boolean).join(", "),
+    nome: publicacao.nome_pet,
+    idade: publicacao.idade_pet,
+    tag,
+    imagem: publicacao.foto
+      ? `${API_BASE_URL}/files/${publicacao.foto}`
+      : "",
+  };
+}
 
 /*
   Card individual de publicação.
@@ -165,7 +100,28 @@ function PostCard({ publicacao }) {
 }
 
 export default function AdocaoDoacao() {
-  const [publicacoes] = useState(PUBLICACOES_INICIAIS);
+  const [publicacoes, setPublicacoes] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState("");
+
+  /* Busca somente publicações reais e mantém a página sem dados demonstrativos. */
+  useEffect(() => {
+    async function carregarPublicacoes() {
+      try {
+        const resposta = await listarPublicacoes();
+        const publicacoesDeAdocao = Array.isArray(resposta)
+          ? resposta.filter((publicacao) => publicacao.tipo === "ADOCAO")
+          : [];
+        setPublicacoes(publicacoesDeAdocao.map(adaptarPublicacao));
+      } catch (erroApi) {
+        setErro(erroApi.message || "Não foi possível carregar as publicações.");
+      } finally {
+        setCarregando(false);
+      }
+    }
+
+    carregarPublicacoes();
+  }, []);
   const [tagSelecionada, setTagSelecionada] = useState("Todos");
   const [termoBusca, setTermoBusca] = useState("");
   const [especieSelecionada, setEspecieSelecionada] = useState("Todas");
@@ -363,7 +319,17 @@ export default function AdocaoDoacao() {
           <p>Atualizações recentes</p>
         </header>
 
-        {publicacoesFiltradas.length > 0 ? (
+        {carregando ? (
+          <div className="adocao-empty-state">
+            <span aria-hidden="true">⌛</span>
+            <h2>Carregando publicações...</h2>
+          </div>
+        ) : erro ? (
+          <div className="adocao-empty-state">
+            <span aria-hidden="true">⚠</span>
+            <h2>{erro}</h2>
+          </div>
+        ) : publicacoesFiltradas.length > 0 ? (
           <div className="adocao-post-grid">
             {publicacoesFiltradas.map((publicacao) => (
               <PostCard key={publicacao.id} publicacao={publicacao} />

@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 /* Hook que permite encaminhar visitantes não autorizados ao login. */
 import { useNavigate } from "react-router-dom";
+import { obterUsuarioAtual } from "../servicos/autenticacao";
 
 /*
   Componente responsável por proteger visualmente a rota administrativa.
@@ -13,10 +14,9 @@ export default function ProtecaoAdmin({ children }) {
   /* A navegação é mantida dentro do componente para não expor a rota protegida. */
   const navigate = useNavigate();
 
-  // A sessão é lida somente no navegador para manter o painel restrito no frontend.
-  /* O valor é uma confirmação simples criada pelo fluxo de login administrativo. */
-  const sessaoAdmin =
-    sessionStorage.getItem("cercaTrovaAdminAutenticado") === "true";
+  // O tipo é devolvido pelo backend junto com o token e não depende de credencial fixa.
+  const usuarioAtual = obterUsuarioAtual();
+  const sessaoAdmin = usuarioAtual?.tipo === "ADMIN";
 
   // O redirecionamento ocorre após a renderização, conforme a boa prática do React.
   useEffect(() => {

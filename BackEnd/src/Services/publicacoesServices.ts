@@ -1,7 +1,7 @@
 import prismaClient from "../prismaCliente";
 
 interface cadPublicacoes {
-    tipo: "ADOCAO" | "ENCONTRADO" | "PERDIDO",
+    tipo: "ADOCAO" | "ENCONTRADO" | "PERDIDO" | "TINDER_PET" | string,
     nome_pet: string,
     especie: string
     raca: string,
@@ -17,7 +17,7 @@ interface cadPublicacoes {
 
 interface altPublicacoes {
     id: string,
-    tipo: "ADOCAO" | "ENCONTRADO" | "PERDIDO",
+    tipo: "ADOCAO" | "ENCONTRADO" | "PERDIDO" | "TINDER_PET" | string,
     nome_pet: string,
     especie: string,
     raca: string,
@@ -25,10 +25,11 @@ interface altPublicacoes {
     porte: string,
     sexo: string,
     descricao: string,
-    foto: string,
+    foto?: string,
     cidade: string,
     estado: string,
-    status: boolean,
+    // O formulário legado pode enviar texto; o Prisma aceita somente Boolean.
+    status?: boolean | string,
     id_usuario: string
 
 }
@@ -37,9 +38,11 @@ interface altPublicacoes {
 class publicacoesServices {
 
     async cadastrarPublicacao({ tipo, nome_pet, especie, raca, idade_pet, porte, sexo, descricao, foto, cidade, estado, id_usuario }: cadPublicacoes) {
-        await prismaClient.publicacoes.create({
+        // O registro criado é retornado para que o frontend atualize o feed sem depender de mock local.
+        const publicacao = await prismaClient.publicacoes.create({
             data: {
-                tipo: tipo,
+                /* Normaliza a etiqueta visual para a categoria do TinderPet. */
+                tipo: tipo === "TinderPet" || tipo === "Tinder Pet" ? "TINDER_PET" : tipo,
                 nome_pet: nome_pet,
                 especie: especie,
                 raca: raca,
@@ -53,10 +56,30 @@ class publicacoesServices {
                 id_usuario: id_usuario
             }
         })
-        return("Sua publicação vai ser analisada, por favor aguarde")
+        return publicacao
     }
 
-    async visualizarPublicacaoUnico(id: string) {
+    async visualizarPublicacaoUnico(id?: string) {
+        // Sem id, o endpoint entrega o feed completo para as páginas públicas.
+        if (!id) {
+            return prismaClient.publicacoes.findMany({
+                where: {
+                    status: true
+                },
+                orderBy: {
+                    data_criacao: "desc"
+                },
+                include: {
+                    usuario: {
+                        select: {
+                            id: true,
+                            nome: true
+                        }
+                    }
+                }
+            })
+        }
+
         const idExiste = await prismaClient.publicacoes.findFirst({
             where: {
                 id: id
@@ -72,21 +95,13 @@ class publicacoesServices {
             where: {
                 id: id
             },
-            select: {
-                id: true,
-                tipo: true,
-                status: true,
-                nome_pet: true,
-                especie: true,
-                raca: true,
-                idade_pet: true,
-                porte: true,
-                sexo: true,
-                descricao: true,
-                foto: true,
-                cidade: true,
-                estado: true,
-                id_usuario: true
+            include: {
+                usuario: {
+                    select: {
+                        id: true,
+                        nome: true
+                    }
+                }
             }
         })
 
@@ -94,7 +109,7 @@ class publicacoesServices {
 
     }
 
-    async atualizarPublicacao({ id, tipo, nome_pet, especie, raca, idade_pet,sexo, porte, descricao, foto, cidade, estado,status}: altPublicacoes) {
+    async atualizarPublicacao({ id, tipo, nome_pet, especie, raca, idade_pet,sexo, porte, descricao, foto, cidade, estado,status, id_usuario}: altPublicacoes) {
 
         const idExiste = await prismaClient.publicacoes.findFirst({
             where: {
@@ -104,33 +119,44 @@ class publicacoesServices {
 
         if (!idExiste) {
             return ("Publicação não existe")
+        }
+
+        // A publicação só pode ser alterada pelo usuário que a criou.
+        if (idExiste.id_usuario !== id_usuario) {
+            return ("Você não pode alterar esta publicação")
+        }
+
+        /*
+          Preserva o status atual quando o formulário envia textos como
+          "Perdido", evitando que uma String seja enviada para um campo Boolean.
+        */
+        const dadosAtualizacao = {
+            tipo: tipo === "TinderPet" || tipo === "Tinder Pet" ? "TINDER_PET" : tipo,
+            ...(typeof status === "boolean" ? { status } : {}),
+            nome_pet,
+            especie,
+            raca,
+            idade_pet,
+            sexo,
+            porte,
+            descricao,
+            ...(foto ? { foto } : {}),
+            cidade,
+            estado
         }
 
         const atualizarPublicacao = await prismaClient.publicacoes.update({
             where: {
                 id: id
             },
-            data: {
-                tipo: tipo,
-                status: status,
-                nome_pet: nome_pet,
-                especie: especie,
-                raca: raca,
-                idade_pet: idade_pet,
-                sexo: sexo,
-                porte: porte,
-                descricao: descricao,
-                foto: foto,
-                cidade: cidade,
-                estado: estado
-            }
+            data: dadosAtualizacao
         })
 
         return ("Dados alterados com sucesso")
     }
 
 
-    async deletarPublicacao(id: string) {
+    async deletarPublicacao(id: string, id_usuario: string) {
         const idExiste = await prismaClient.publicacoes.findFirst({
             where: {
                 id: id
@@ -141,6 +167,11 @@ class publicacoesServices {
             return ("Publicação não existe")
         }
 
+
+        // A exclusão também é limitada ao proprietário do registro autenticado.
+        if (idExiste.id_usuario !== id_usuario) {
+            return ("Você não pode excluir esta publicação")
+        }
 
         const deletar = await prismaClient.publicacoes.delete({
             where: {

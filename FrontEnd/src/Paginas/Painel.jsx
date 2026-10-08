@@ -1,42 +1,12 @@
 /* Hooks usados para estado local, efeitos de persistência e cálculos derivados. */
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 /* Hook de navegação usado para sair da área administrativa. */
 import { useNavigate } from "react-router-dom";
 
 /* Folha de estilos exclusiva do layout do painel administrativo. */
 import "../assets/css/Painel.css";
 
-/* Chave usada para persistir as páginas editadas no navegador durante a demonstração. */
-const CHAVE_PAGINAS_ADMIN = "cercaTrovaPaginasAdmin";
-
-/* Registros iniciais exibidos quando o painel ainda não possui páginas salvas. */
-const PAGINAS_INICIAIS = [
-  {
-    id: "home",
-    nome: "Home",
-    rota: "/",
-    titulo: "Encontre seu melhor amigo.",
-    descricao: "Página principal da comunidade Cerca Trova.",
-    status: "Publicada",
-  },
-  {
-    id: "adocao",
-    nome: "Adoção",
-    rota: "/adocao",
-    titulo: "Encontre, ajude e compartilhe histórias.",
-    descricao: "Publicações de adoção, animais perdidos e encontrados.",
-    status: "Publicada",
-  },
-  {
-    id: "chat",
-    nome: "Chat",
-    rota: "/chat",
-    titulo: "Conversas da comunidade.",
-    descricao: "Área de conversas entre os usuários da plataforma.",
-    status: "Publicada",
-  },
-];
-
+/* A administração de páginas depende de endpoints próprios do backend. */
 /* Modelo vazio usado no formulário de criação de página. */
 const PAGINA_VAZIA = {
   nome: "",
@@ -46,20 +16,14 @@ const PAGINA_VAZIA = {
   status: "Rascunho",
 };
 
-/* Faz a leitura segura dos registros administrativos salvos localmente. */
+/* Sem tabela/endpoint administrativo, a tela inicia sem dados falsos. */
 function carregarPaginas() {
-  try {
-    return (
-      JSON.parse(localStorage.getItem(CHAVE_PAGINAS_ADMIN)) || PAGINAS_INICIAIS
-    );
-  } catch {
-    return PAGINAS_INICIAIS;
-  }
+  return [];
 }
 
 export default function Painel() {
   /* Estados responsáveis pela lista, editor e mensagens do painel. */
-  /* A lista inicia com os dados persistidos ou com os registros de demonstração. */
+  /* A lista inicia vazia até existir uma API administrativa persistente. */
   const [paginas, setPaginas] = useState(carregarPaginas);
   /* Guarda a página atualmente aberta no formulário de criação ou edição. */
   const [paginaEditando, setPaginaEditando] = useState(null);
@@ -67,12 +31,6 @@ export default function Painel() {
   const [mensagem, setMensagem] = useState("");
   /* Permite retornar ao login ao encerrar a sessão administrativa. */
   const navigate = useNavigate();
-
-  /* Mantém os registros persistidos sempre que a lista sofre alterações. */
-  useEffect(() => {
-    /* Sincroniza a lista atual com o armazenamento local do navegador. */
-    localStorage.setItem(CHAVE_PAGINAS_ADMIN, JSON.stringify(paginas));
-  }, [paginas]);
 
   /* Calcula o resumo de páginas publicadas para o card de indicadores. */
   /* Deriva a quantidade de páginas que estão com status Publicada. */

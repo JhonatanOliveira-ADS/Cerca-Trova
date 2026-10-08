@@ -36,22 +36,36 @@ class favoritosServices {
             return ("Publicação não existe")
         }
 
+        // Evita duplicar o mesmo favorito para o mesmo usuário e publicação.
+        const favoritoExistente = await prismaClient.favoritos.findFirst({
+            where: {
+                id_usuarios,
+                id_publicacoes
+            }
+        })
+
+        if (favoritoExistente) {
+            return favoritoExistente
+        }
+
         const criarFavorito = await prismaClient.favoritos.create({
             data: {
                 id_usuarios,
                 id_publicacoes
             }
         })
+
+        return criarFavorito
     }
 
-    async visualizarFavorito(id: string) {
+    async visualizarFavorito(id_usuarios: string) {
 
-        const resposta = await prismaClient.favoritos.findFirst({
+        const resposta = await prismaClient.favoritos.findMany({
             where: {
-                id: id
+                id_usuarios
             },
-            select:{
-                id: true
+            include: {
+                publicacao: true
             }
         })
     
@@ -59,11 +73,25 @@ class favoritosServices {
 
     }
 
-    async deletarFavorito(id: string) {
+    async deletarFavorito(id: string, id_usuarios: string) {
 
-        const resposta = await prismaClient.favoritos.delete({
+        const favorito = await prismaClient.favoritos.findFirst({
             where: {
-                id: id
+                id_usuarios,
+                OR: [
+                    { id },
+                    { id_publicacoes: id }
+                ]
+            }
+        })
+
+        if (!favorito) {
+            return ("Favorito não encontrado para este usuário")
+        }
+
+        await prismaClient.favoritos.delete({
+            where: {
+                id: favorito.id
             }
         })
 

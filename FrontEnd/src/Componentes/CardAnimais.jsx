@@ -1,20 +1,9 @@
 import { useState } from "react";
 import PetDetalhesModal from "./PetDetalhesModal";
-
-/*
-  Chave única usada para compartilhar favoritos entre Home e Favoritos.
-  O mesmo nome precisa ser usado pelas duas páginas.
-*/
-const CHAVE_FAVORITOS = "cercaTrovaFavoritos";
-
-/* Leitura segura dos favoritos já salvos no navegador. */
-function carregarFavoritos() {
-  try {
-    return JSON.parse(localStorage.getItem(CHAVE_FAVORITOS)) || [];
-  } catch {
-    return [];
-  }
-}
+import {
+  criarFavorito,
+  removerFavorito,
+} from "../servicos/autenticacao";
 
 export default function CardAnimais({
   pet,
@@ -26,10 +15,7 @@ export default function CardAnimais({
     Inicializa o botão consultando o LocalStorage.
     A função lazy evita uma leitura desnecessária a cada renderização.
   */
-  const [favoritado, setFavoritado] = useState(() => {
-    if (isFavorito) return true;
-    return carregarFavoritos().some((favorito) => favorito.id === pet.id);
-  });
+  const [favoritado, setFavoritado] = useState(isFavorito);
 
   /* Controla a abertura do modal de detalhes acionada pela foto do card. */
   const [modalAberto, setModalAberto] = useState(false);
@@ -38,31 +24,19 @@ export default function CardAnimais({
     Salva ou remove o card dos favoritos e atualiza o botão imediatamente.
     A tag é normalizada para que a página Favoritos consiga filtrar o item.
   */
-  function alternarFavorito() {
-    const favoritosAtuais = carregarFavoritos();
-    const jaExiste = favoritosAtuais.some((favorito) => favorito.id === pet.id);
-
-    if (jaExiste) {
-      const listaAtualizada = favoritosAtuais.filter(
-        (favorito) => favorito.id !== pet.id,
-      );
-      localStorage.setItem(CHAVE_FAVORITOS, JSON.stringify(listaAtualizada));
-      setFavoritado(false);
-
-      if (onToggleFavorito) onToggleFavorito(pet);
-      return;
+  async function alternarFavorito() {
+    // A API recebe somente o id da publicação e identifica o usuário pelo JWT.
+    try {
+      if (typeof pet.id === "string" && favoritado) {
+        await removerFavorito(pet.id);
+        setFavoritado(false);
+      } else if (typeof pet.id === "string") {
+        await criarFavorito(pet.id);
+        setFavoritado(true);
+      }
+    } catch (erro) {
+      console.info("Favorito não foi salvo no backend.", erro.message);
     }
-
-    const petParaSalvar = {
-      ...pet,
-      tag: pet.tag || pet.status || "Adoção",
-    };
-
-    localStorage.setItem(
-      CHAVE_FAVORITOS,
-      JSON.stringify([...favoritosAtuais, petParaSalvar]),
-    );
-    setFavoritado(true);
   }
 
   return (

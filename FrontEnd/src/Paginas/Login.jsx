@@ -2,6 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "../assets/css/Login.css";
+import {
+  cadastrarUsuario,
+  encerrarSessao,
+  loginUsuario,
+} from "../servicos/autenticacao";
 
 /*
   Página única de autenticação.
@@ -63,34 +68,32 @@ export default function Login() {
     setConfirmarSenhaVisivel((valorAtual) => !valorAtual);
   }
 
-  /*
-    Valida e encaminha o login administrativo.
-    Esta versão usa sessionStorage porque o projeto atual é frontend Vite;
-    uma autenticação de produção deve validar os dados em um backend.
-  */
-  function autenticarAdministrador() {
-    const credenciaisValidas =
-      email.trim().toLowerCase() === "admin@cercatrova.com" &&
-      senha === "Admin@2026";
+  /* Valida o administrador no mesmo backend, usando o campo Usuarios.tipo. */
+  async function autenticarAdministrador() {
+    try {
+      const dados = await loginUsuario(email.trim(), senha);
 
-    if (!credenciaisValidas) {
+      if (dados.tipo !== "ADMIN") {
+        encerrarSessao();
+        throw new Error("Esta conta não possui acesso administrativo.");
+      }
+
+      sessionStorage.setItem("cercaTrovaAdminAutenticado", "true");
+      limparFeedback();
+      navigate("/admin");
+    } catch (erro) {
       setTipoMensagem("erro");
-      setMensagem("E-mail ou senha de administrador inválidos.");
-      return;
+      setMensagem(erro.message || "E-mail ou senha de administrador inválidos.");
     }
-
-    sessionStorage.setItem("cercaTrovaAdminAutenticado", "true");
-    limparFeedback();
-    navigate("/admin");
   }
 
   /* Processa login comum e cadastro com mensagens orientativas para o usuário. */
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     limparFeedback();
 
     if (modoAdmin) {
-      autenticarAdministrador();
+      await autenticarAdministrador();
       return;
     }
 
@@ -101,17 +104,35 @@ export default function Login() {
         return;
       }
 
-      setTipoMensagem("sucesso");
-      setMensagem(
-        "Cadastro preenchido. Conecte este formulário ao backend para salvar a conta.",
-      );
+      try {
+        await cadastrarUsuario({
+          nome: nome.trim(),
+          email: email.trim(),
+          senha,
+        });
+        setTipoMensagem("sucesso");
+        setMensagem("Cadastro realizado. Agora você já pode entrar.");
+        setAbaAtiva("entrar");
+        setSenha("");
+        setConfirmarSenha("");
+      } catch (erro) {
+        setTipoMensagem("erro");
+        setMensagem(erro.message || "Não foi possível concluir o cadastro.");
+      }
       return;
     }
 
-    setTipoMensagem("sucesso");
-    setMensagem(
-      "Login preenchido. Conecte este formulário ao backend para autenticar a conta.",
-    );
+    try {
+      // O login comum agora usa o endpoint real e guarda o JWT da sessão.
+      await loginUsuario(email.trim(), senha);
+      setTipoMensagem("sucesso");
+      setMensagem("Login realizado com sucesso.");
+      navigate("/", { replace: true });
+    } catch (erro) {
+      // Erros do backend são apresentados sem expor detalhes internos da API.
+      setTipoMensagem("erro");
+      setMensagem(erro.message || "Não foi possível realizar o login.");
+    }
   }
 
   /* Exibe uma orientação sem recarregar a página quando o link é acionado. */
