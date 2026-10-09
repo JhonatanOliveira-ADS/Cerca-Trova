@@ -1,57 +1,40 @@
 
-/*
-==========================================================
- CERCA TROVA - PAINEL ADMINISTRATIVO
- Arquivo: src/PaginasAdmin/Admin.jsx
+/* ======================================================
+   CERCA TROVA - PAINEL ADMINISTRATIVO
 
- FUNCIONALIDADES:
- - Menu lateral administrativo
- - Visão geral com indicadores
- - Decoração de animais
- - Tabelas de gerenciamento
- - Pesquisa por ID, nome e outros campos
- - Logout
+   Este painel carrega dados reais do backend.
 
- OBSERVAÇÕES:
- - Nenhum registro fictício
- - Dados aguardando integração com backend
- - Controle visual de acesso por sessionStorage
-==========================================================
-*/
+   Funcionalidades:
+   - Carregar usuários cadastrados
+   - Exibir pets publicados
+   - Separar adoções, perdidos e encontrados
+   - Consultar Tinder Pet
+   - Consultar metadados das conversas
+   - Ativar/desativar publicações
+   - Pesquisar registros por ID e outros campos
+   - Atualizar listagens manualmente
+   - Manter a decoração e o menu existentes
 
-import { useEffect, useMemo, useState } from "react";
+   Não utiliza dados fictícios.
+====================================================== */
+
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../assets/css/Admin.css";
 
-/* ======================================================
-   1. DADOS INICIAIS
+import {
+  listarDadosPainelAdmin,
+  atualizarStatusPublicacaoAdmin,
+} from "../servicos/adminApi";
 
-   Todos os registros começam vazios.
-   Posteriormente serão carregados do banco de dados.
-====================================================== */
-
-const DADOS_INICIAIS = {
-  usuarios: [],
-  pets: [],
-  adocoes: [],
-  achados: [],
-  tinder: [],
-  publicacoes: [],
-  chat: [],
-  publicidade: [],
-};
+import {
+  encerrarSessao,
+  obterUsuarioAtual,
+  obterTokenAdministrador,
+} from "../servicos/autenticacao";
 
 /* ======================================================
-   2. CONFIGURAÇÃO DO MENU LATERAL
-
-   Cada item contém:
-   - ID da seção
-   - Nome visível
-   - Ícone
-
-   Menus removidos:
-   Matches IA, Denúncias, Relatórios,
-   Configurações e Pontos/Honrarias.
+   1. MENU ADMINISTRATIVO
 ====================================================== */
 
 const secoes = [
@@ -68,128 +51,50 @@ const secoes = [
 ];
 
 /* ======================================================
-   3. CONFIGURAÇÃO DAS TABELAS
+   2. ESTADO INICIAL
 
-   Cada categoria possui suas colunas específicas.
-   A estrutura permite adicionar novos campos
-   futuramente sem reconstruir o painel.
+   Listas vazias são utilizadas durante o carregamento.
+   Não representam números reais até a API responder.
 ====================================================== */
 
-const configuracao = {
-  // USUÁRIOS
-  usuarios: {
-    titulo: "Usuários",
-    descricao: "Gerenciamento de usuários cadastrados.",
-    colunas: [
-      ["id", "ID"],
-      ["nome", "Nome"],
-      ["email", "E-mail"],
-      ["tipo", "Tipo"],
-      ["status", "Status"],
-    ],
-  },
-
-  // PETS
-  pets: {
-    titulo: "Pets",
-    descricao: "Controle dos animais cadastrados.",
-    colunas: [
-      ["id", "ID"],
-      ["nome", "Pet"],
-      ["especie", "Espécie"],
-      ["tipo", "Tipo"],
-      ["tutor", "Tutor"],
-      ["status", "Status"],
-    ],
-  },
-
-  // ADOÇÕES E DOAÇÕES
-  adocoes: {
-    titulo: "Adoções e doações",
-    descricao: "Acompanhamento dos processos de adoção.",
-    colunas: [
-      ["id", "ID"],
-      ["pet", "Pet"],
-      ["responsavel", "Responsável"],
-      ["interessados", "Interessados"],
-      ["status", "Status"],
-    ],
-  },
-
-  // ACHADOS E PERDIDOS
-  achados: {
-    titulo: "Achados e perdidos",
-    descricao: "Ocorrências de animais encontrados e perdidos.",
-    colunas: [
-      ["id", "ID"],
-      ["pet", "Pet"],
-      ["tipo", "Tipo"],
-      ["local", "Local"],
-      ["confirmacoes", "Confirmações"],
-      ["status", "Status"],
-    ],
-  },
-
-  // TINDER PET
-  tinder: {
-    titulo: "Tinder Pet",
-    descricao: "Perfis e matches dos animais.",
-    colunas: [
-      ["id", "ID"],
-      ["pet", "Pet"],
-      ["tutor", "Tutor"],
-      ["curtidas", "Curtidas"],
-      ["matches", "Matches"],
-      ["status", "Status"],
-    ],
-  },
-
-  // PUBLICAÇÕES
-  publicacoes: {
-    titulo: "Publicações",
-    descricao: "Gerenciamento das publicações.",
-    colunas: [
-      ["id", "ID"],
-      ["titulo", "Título"],
-      ["tipo", "Tipo"],
-      ["autor", "Autor"],
-      ["status", "Status"],
-    ],
-  },
-
-  // CHAT E SUPORTE
-  chat: {
-    titulo: "Chat e suporte",
-    descricao: "Solicitações de suporte da plataforma.",
-    colunas: [
-      ["id", "ID"],
-      ["usuario", "Usuário"],
-      ["motivo", "Motivo"],
-      ["status", "Status"],
-    ],
-  },
-
-  // PUBLICIDADE
-  publicidade: {
-    titulo: "Publicidade",
-    descricao: "Banners e parceiros cadastrados.",
-    colunas: [
-      ["id", "ID"],
-      ["empresa", "Empresa"],
-      ["local", "Local"],
-      ["status", "Status"],
-    ],
-  },
+const DADOS_VAZIOS = {
+  usuarios: [],
+  publicacoes: [],
+  petsTinder: [],
+  conversas: [],
 };
 
 /* ======================================================
-   4. NORMALIZAÇÃO DE TEXTO
-
-   Permite pesquisar ignorando:
-   - Letras maiúsculas/minúsculas
-   - Acentos
+   3. TRADUÇÃO DAS CATEGORIAS
 ====================================================== */
 
+const NOMES_TIPOS = {
+  ADOCAO: "Adoção",
+  PERDIDO: "Perdido",
+  ENCONTRADO: "Encontrado",
+  TINDER_PET: "Tinder Pet",
+};
+
+function nomeTipo(tipo) {
+  return NOMES_TIPOS[tipo] || tipo || "—";
+}
+
+/* ======================================================
+   4. AJUDANTES DE EXIBIÇÃO
+====================================================== */
+
+// Formata datas recebidas da API.
+function formatarData(data) {
+  if (!data) return "—";
+
+  const valor = new Date(data);
+
+  if (Number.isNaN(valor.getTime())) return "—";
+
+  return valor.toLocaleDateString("pt-BR");
+}
+
+// Normaliza os textos para permitir busca sem acentos.
 function normalizar(valor) {
   return String(valor ?? "")
     .normalize("NFD")
@@ -197,33 +102,25 @@ function normalizar(valor) {
     .toLowerCase();
 }
 
-/* ======================================================
-   5. FILTRO DE REGISTROS
-
-   Pesquisa em todas as propriedades ou apenas
-   no campo especificado.
-====================================================== */
-
+// Busca por todos os campos ou por um campo específico.
 function filtrarRegistros(lista, termo, campo = "todos") {
-  const busca = normalizar(String(termo ?? "").trim());
+  const busca = normalizar(termo.trim());
 
   if (!busca) return lista;
 
-  return lista.filter((item) => {
-    if (campo === "todos") {
-      return Object.values(item).some((valor) =>
-        normalizar(valor).includes(busca)
-      );
+  return lista.filter((registro) => {
+    if (campo !== "todos") {
+      return normalizar(registro[campo]).includes(busca);
     }
 
-    return normalizar(item[campo]).includes(busca);
+    return Object.values(registro).some((valor) =>
+      normalizar(valor).includes(busca)
+    );
   });
 }
 
 /* ======================================================
-   6. COMPONENTE DE CARD
-
-   Usado para organizar conteúdos administrativos.
+   5. COMPONENTE CARD
 ====================================================== */
 
 function Card({ titulo, descricao, children }) {
@@ -242,9 +139,7 @@ function Card({ titulo, descricao, children }) {
 }
 
 /* ======================================================
-   7. COMPONENTE DE INDICADORES
-
-   Exibe o nome, a quantidade e a descrição.
+   6. COMPONENTE DE ESTATÍSTICAS
 ====================================================== */
 
 function StatCard({ titulo, valor, descricao }) {
@@ -258,23 +153,25 @@ function StatCard({ titulo, valor, descricao }) {
 }
 
 /* ======================================================
-   8. COMPONENTE DE TABELAS
+   7. TABELA REUTILIZÁVEL
 
-   Renderiza dinamicamente as colunas.
-
-   Caso a lista esteja vazia, mostra uma mensagem
-   indicando a ausência de registros.
+   Pode incluir uma coluna de ações.
 ====================================================== */
 
-function Tabela({ registros, colunas }) {
+function Tabela({ registros, colunas, renderAcoes }) {
+  const totalColunas =
+    colunas.length + (renderAcoes ? 1 : 0);
+
   return (
     <div className="ct-admin-table-wrap">
       <table className="ct-admin-table">
         <thead>
           <tr>
-            {colunas.map(([chave, titulo]) => (
-              <th key={chave}>{titulo}</th>
+            {colunas.map(([campo, titulo]) => (
+              <th key={campo}>{titulo}</th>
             ))}
+
+            {renderAcoes && <th>Ações</th>}
           </tr>
         </thead>
 
@@ -282,7 +179,7 @@ function Tabela({ registros, colunas }) {
           {registros.length === 0 ? (
             <tr>
               <td
-                colSpan={colunas.length}
+                colSpan={totalColunas}
                 className="ct-admin-empty-cell"
               >
                 Nenhum registro encontrado.
@@ -291,11 +188,15 @@ function Tabela({ registros, colunas }) {
           ) : (
             registros.map((registro, indice) => (
               <tr key={registro.id ?? indice}>
-                {colunas.map(([chave]) => (
-                  <td key={chave}>
-                    {registro[chave] ?? "—"}
+                {colunas.map(([campo]) => (
+                  <td key={campo}>
+                    {registro[campo] ?? "—"}
                   </td>
                 ))}
+
+                {renderAcoes && (
+                  <td>{renderAcoes(registro)}</td>
+                )}
               </tr>
             ))
           )}
@@ -306,20 +207,12 @@ function Tabela({ registros, colunas }) {
 }
 
 /* ======================================================
-   9. DECORAÇÃO DA VISÃO GERAL
-
-   Esta área substitui:
-   - Ações rápidas
-   - Situação do sistema
-
-   Possui patinhas decorativas e uma mensagem
-   relacionada à proteção dos animais.
+   8. DECORAÇÃO DA VISÃO GERAL
 ====================================================== */
 
 function AreaDecorativaPets() {
   return (
     <section className="ct-admin-pet-area">
-      {/* Patinhas decorativas */}
       <div
         className="ct-admin-pet-decoration"
         aria-hidden="true"
@@ -331,25 +224,20 @@ function AreaDecorativaPets() {
         <span className="ct-paw paw-5">🐾</span>
       </div>
 
-      {/* Conteúdo principal */}
       <div className="ct-admin-pet-content">
-        <div
-          className="ct-admin-pet-icon"
-          aria-hidden="true"
-        >
+        <div className="ct-admin-pet-icon">
           🐶 🐱
         </div>
 
         <h2>Cada patinha conta uma história.</h2>
 
         <p>
-          Cada animal merece cuidado, proteção e
-          uma oportunidade de encontrar seu lar.
-          O Cerca Trova aproxima pessoas e
-          transforma reencontros em novas histórias.
+          Cada animal merece cuidado, proteção e uma
+          oportunidade de encontrar seu lar.
+          O Cerca Trova aproxima pessoas e transforma
+          reencontros em novas histórias.
         </p>
 
-        {/* Etiquetas decorativas */}
         <div className="ct-admin-pet-tags">
           <span>🐾 Proteção</span>
           <span>❤️ Adoção</span>
@@ -361,102 +249,310 @@ function AreaDecorativaPets() {
 }
 
 /* ======================================================
-   10. COMPONENTE PRINCIPAL DO ADMIN
+   9. CONFIGURAÇÃO DE CADA TABELA
+
+   Utiliza os nomes dos campos presentes no
+   schema.prisma do projeto enviado.
+====================================================== */
+
+const configuracao = {
+  usuarios: {
+    titulo: "Usuários",
+    descricao: "Contas reais cadastradas no Cerca Trova.",
+    colunas: [
+      ["id", "ID"],
+      ["nome", "Nome"],
+      ["email", "E-mail"],
+      ["telefone", "Telefone"],
+      ["tipo", "Tipo"],
+      ["status", "Verificação"],
+    ],
+  },
+
+  pets: {
+    titulo: "Pets",
+    descricao: "Todos os animais das publicações.",
+    colunas: [
+      ["id", "ID"],
+      ["nome", "Pet"],
+      ["especie", "Espécie"],
+      ["raca", "Raça"],
+      ["tutor", "Tutor"],
+      ["tipo", "Tipo"],
+      ["status", "Status"],
+    ],
+  },
+
+  adocoes: {
+    titulo: "Adoções e doações",
+    descricao: "Publicações reais de adoção.",
+    colunas: [
+      ["id", "ID"],
+      ["nome", "Pet"],
+      ["especie", "Espécie"],
+      ["tutor", "Responsável"],
+      ["cidade", "Cidade"],
+      ["status", "Status"],
+    ],
+  },
+
+  achados: {
+    titulo: "Achados e perdidos",
+    descricao: "Ocorrências publicadas pelos usuários.",
+    colunas: [
+      ["id", "ID"],
+      ["nome", "Pet"],
+      ["tipo", "Ocorrência"],
+      ["cidade", "Cidade"],
+      ["tutor", "Publicado por"],
+      ["status", "Status"],
+    ],
+  },
+
+  tinder: {
+    titulo: "Tinder Pet",
+    descricao: "Animais cadastrados no Tinder Pet.",
+    colunas: [
+      ["id", "ID"],
+      ["nome", "Pet"],
+      ["especie", "Espécie"],
+      ["tutor", "Tutor"],
+      ["cidade", "Cidade"],
+      ["status", "Status"],
+    ],
+  },
+
+  publicacoes: {
+    titulo: "Publicações",
+    descricao: "Todas as publicações do site.",
+    colunas: [
+      ["id", "ID"],
+      ["nome", "Pet"],
+      ["tipo", "Categoria"],
+      ["tutor", "Autor"],
+      ["data", "Data"],
+      ["status", "Status"],
+    ],
+  },
+
+  chat: {
+    titulo: "Chat e suporte",
+    descricao:
+      "Conversas registradas. O conteúdo das mensagens permanece privado.",
+    colunas: [
+      ["id", "ID"],
+      ["nome", "Participantes"],
+      ["pet", "Publicação"],
+      ["mensagens", "Mensagens"],
+      ["data", "Criada em"],
+    ],
+  },
+
+  publicidade: {
+    titulo: "Publicidade",
+    descricao: "Gerenciamento de parceiros e anúncios.",
+    colunas: [
+      ["id", "ID"],
+      ["nome", "Empresa"],
+      ["status", "Status"],
+    ],
+  },
+};
+
+/* ======================================================
+   10. COMPONENTE ADMIN
 ====================================================== */
 
 export default function Admin() {
-  /* --------------------------------------------------
-     NAVEGAÇÃO
-  -------------------------------------------------- */
-
   const navigate = useNavigate();
 
-  /* --------------------------------------------------
-     ESTADOS DO PAINEL
-  -------------------------------------------------- */
-
-  // Verificação visual de sessão.
-  const [autorizado, setAutorizado] = useState(false);
-
-  // Seção selecionada no menu lateral.
+  /* CONTROLE DAS SEÇÕES */
   const [secaoAtiva, setSecaoAtiva] = useState("visao");
-
-  // Pesquisa simples no cabeçalho.
   const [busca, setBusca] = useState("");
 
-  // Listas administrativas vazias.
-  // Futuramente serão substituídas por dados da API.
-  const dados = DADOS_INICIAIS;
+  /* DADOS CARREGADOS DO BACKEND */
+  const [dados, setDados] = useState(DADOS_VAZIOS);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState("");
+  const [mensagem, setMensagem] = useState("");
+  const [salvandoId, setSalvandoId] = useState(null);
 
-  /* --------------------------------------------------
-     ESTADOS DA PESQUISA AVANÇADA
-  -------------------------------------------------- */
-
-  // Categoria selecionada.
+  /* PESQUISA AVANÇADA */
   const [categoriaPesquisa, setCategoriaPesquisa] =
     useState("todos");
 
-  // Campo da pesquisa.
   const [campoPesquisa, setCampoPesquisa] =
     useState("todos");
 
-  // Texto pesquisado.
   const [termoPesquisa, setTermoPesquisa] =
     useState("");
 
-  /* ==================================================
-     11. VERIFICAÇÃO DE SESSÃO
+  /* ====================================================
+     11. PROTEÇÃO DO ADMIN
 
-     Mantém a lógica atual do projeto.
+     O frontend faz apenas uma verificação visual.
+     O backend protege /admin/dados usando JWT.
+  ==================================================== */
 
-     ATENÇÃO:
-     sessionStorage não é uma verificação segura
-     de privilégios administrativos.
-     O backend deve validar cada operação protegida.
-  ================================================== */
+  const usuarioAtual = obterUsuarioAtual();
+
+  const autorizado =
+    usuarioAtual?.tipo === "ADMIN" &&
+    Boolean(obterTokenAdministrador());
 
   useEffect(() => {
-    const autenticado =
-      sessionStorage.getItem(
-        "cercaTrovaAdminAutenticado"
-      ) === "true";
-
-    if (!autenticado) {
+    if (!autorizado) {
       navigate("/login", { replace: true });
-      return;
     }
+  }, [autorizado, navigate]);
 
-    setAutorizado(true);
-  }, [navigate]);
+  /* ====================================================
+     12. CARREGAR DADOS REAIS DA API
+  ==================================================== */
 
-  /* ==================================================
-     12. RESUMO DA VISÃO GERAL
+  const carregarDados = useCallback(async () => {
+    if (!autorizado) return;
 
-     Calcula os indicadores com base nos registros.
-  ================================================== */
+    setCarregando(true);
+    setErro("");
 
-  const resumo = useMemo(() => {
+    try {
+      const resposta = await listarDadosPainelAdmin();
+
+      setDados({
+        usuarios: Array.isArray(resposta.usuarios)
+          ? resposta.usuarios
+          : [],
+
+        publicacoes: Array.isArray(resposta.publicacoes)
+          ? resposta.publicacoes
+          : [],
+
+        petsTinder: Array.isArray(resposta.petsTinder)
+          ? resposta.petsTinder
+          : [],
+
+        conversas: Array.isArray(resposta.conversas)
+          ? resposta.conversas
+          : [],
+      });
+    } catch (erroApi) {
+      setErro(
+        erroApi.message ||
+        "Não foi possível carregar os cadastros."
+      );
+
+      // Em caso de erro, não mostramos dados antigos.
+      setDados(DADOS_VAZIOS);
+    } finally {
+      setCarregando(false);
+    }
+  }, [autorizado]);
+
+  /* CARREGAMENTO INICIAL */
+  useEffect(() => {
+    carregarDados();
+  }, [carregarDados]);
+
+  /* ====================================================
+     13. ADAPTAR OS DADOS DO PRISMA
+
+     As categorias ADOCAO, PERDIDO e ENCONTRADO
+     vêm da mesma tabela publicacoes.
+  ==================================================== */
+
+  const registros = useMemo(() => {
+    const usuarios = dados.usuarios.map((usuario) => ({
+      ...usuario,
+      status: usuario.verificado
+        ? "Verificado"
+        : "Não verificado",
+    }));
+
+    const publicacoes = dados.publicacoes.map((post) => ({
+      ...post,
+      nome: post.nome_pet,
+      tipo: nomeTipo(post.tipo),
+      tutor: post.usuario?.nome || "—",
+      data: formatarData(post.data_criacao),
+      status: post.status ? "Ativa" : "Inativa",
+      tipoOriginal: post.tipo,
+    }));
+
+    const tinder = dados.petsTinder.map((pet) => ({
+      ...pet,
+      tutor: pet.usuario?.nome || "—",
+      status: pet.ativo ? "Ativo" : "Inativo",
+    }));
+
+    const chat = dados.conversas.map((conversa) => ({
+      id: conversa.id,
+      nome: [
+        conversa.remetente?.nome,
+        conversa.destinatario?.nome,
+      ]
+        .filter(Boolean)
+        .join(" / "),
+      pet: conversa.publicacao?.nome_pet || "—",
+      mensagens: conversa._count?.mensagens ?? 0,
+      data: formatarData(conversa.data_criacao),
+    }));
+
     return {
-      usuarios: dados.usuarios.length,
-      pets: dados.pets.length,
-      adocoes: dados.adocoes.length,
+      usuarios,
 
-      perdidos: dados.achados.filter(
-        (item) =>
-          item.tipo === "Perdido" &&
-          item.status === "Ativo"
-      ).length,
+      // Todas as publicações com animais.
+      pets: publicacoes,
 
-      publicacoes: dados.publicacoes.length,
-      mensagens: dados.chat.length,
+      // Adoções são publicações do tipo ADOCAO.
+      adocoes: publicacoes.filter(
+        (post) => post.tipoOriginal === "ADOCAO"
+      ),
+
+      // Ocorrências perdidas ou encontradas.
+      achados: publicacoes.filter(
+        (post) =>
+          post.tipoOriginal === "PERDIDO" ||
+          post.tipoOriginal === "ENCONTRADO"
+      ),
+
+      tinder,
+      publicacoes,
+      chat,
+
+      // Não existe tabela Publicidade neste schema.
+      publicidade: [],
     };
   }, [dados]);
 
-  /* ==================================================
-     13. PESQUISA AVANÇADA
+  /* ====================================================
+     14. INDICADORES DO DASHBOARD
 
-     Pesquisa uma categoria específica ou todas.
-  ================================================== */
+     Os números refletem os registros carregados.
+  ==================================================== */
+
+  const resumo = useMemo(() => {
+    return {
+      usuarios: registros.usuarios.length,
+
+      pets:
+        registros.pets.length + registros.tinder.length,
+
+      perdidos: registros.achados.filter(
+        (post) =>
+          post.tipoOriginal === "PERDIDO" &&
+          post.status === "Ativa"
+      ).length,
+
+      adocoes: registros.adocoes.length,
+      publicacoes: registros.publicacoes.length,
+      mensagens: registros.chat.length,
+    };
+  }, [registros]);
+
+  /* ====================================================
+     15. PESQUISA EM TODAS AS CATEGORIAS
+  ==================================================== */
 
   const resultadosPesquisa = useMemo(() => {
     const categorias =
@@ -464,67 +560,103 @@ export default function Admin() {
         ? Object.keys(configuracao)
         : [categoriaPesquisa];
 
-    const resultados = [];
+    return categorias.flatMap((categoria) => {
+      const lista = registros[categoria] || [];
 
-    categorias.forEach((categoria) => {
-      const lista = dados[categoria] || [];
-
-      const filtrados = filtrarRegistros(
+      return filtrarRegistros(
         lista,
         termoPesquisa,
         campoPesquisa
-      );
-
-      filtrados.forEach((item) => {
-        resultados.push({
-          ...item,
-          categoria,
-          origem: configuracao[categoria].titulo,
-        });
-      });
+      ).map((item) => ({
+        ...item,
+        categoria,
+        origem: configuracao[categoria].titulo,
+      }));
     });
-
-    return resultados;
   }, [
-    dados,
+    registros,
     categoriaPesquisa,
     campoPesquisa,
     termoPesquisa,
   ]);
 
-  /* ==================================================
-     14. NAVEGAÇÃO ENTRE SEÇÕES
-  ================================================== */
+  /* ====================================================
+     16. TROCAR SEÇÃO DO MENU
+  ==================================================== */
 
   function mudarSecao(id) {
     setSecaoAtiva(id);
     setBusca("");
+    setMensagem("");
   }
 
-  /* ==================================================
-     15. LOGOUT ADMINISTRATIVO
-  ================================================== */
+  /* ====================================================
+     17. LOGOUT ADMINISTRATIVO
+  ==================================================== */
 
   function sairAdmin() {
-    sessionStorage.removeItem(
-      "cercaTrovaAdminAutenticado"
-    );
-
+    encerrarSessao();
     navigate("/login", { replace: true });
   }
 
-  /* ==================================================
-     16. VERIFICAÇÃO ANTES DA RENDERIZAÇÃO
-  ================================================== */
+  /* ====================================================
+     18. ATIVAR OU DESATIVAR PUBLICAÇÃO
+
+     Usa a rota PATCH que já existe no backend.
+     Não exclui registros permanentemente.
+  ==================================================== */
+
+  async function alterarStatusPublicacao(post) {
+    const novoStatus = !post.statusOriginal;
+
+    try {
+      setSalvandoId(post.id);
+      setErro("");
+
+      await atualizarStatusPublicacaoAdmin(
+        post.id,
+        novoStatus
+      );
+
+      // Atualiza os dados com a versão do banco.
+      await carregarDados();
+
+      setMensagem(
+        novoStatus
+          ? "Publicação ativada com sucesso."
+          : "Publicação desativada com sucesso."
+      );
+    } catch (erroApi) {
+      setErro(
+        erroApi.message ||
+        "Não foi possível atualizar a publicação."
+      );
+    } finally {
+      setSalvandoId(null);
+    }
+  }
+
+  /* ====================================================
+     19. CONFIGURAÇÃO DA SEÇÃO SELECIONADA
+  ==================================================== */
 
   if (!autorizado) return null;
 
-  // Configuração da seção selecionada.
   const configAtual = configuracao[secaoAtiva];
 
-  /* ==================================================
-     17. INTERFACE PRINCIPAL
-  ================================================== */
+  /* Inclui o status booleano original para a ação. */
+  const registrosSecao = (registros[secaoAtiva] || [])
+    .map((registro) => ({
+      ...registro,
+      statusOriginal:
+        dados.publicacoes.find(
+          (post) => post.id === registro.id
+        )?.status,
+    }));
+
+  /* ====================================================
+     20. INTERFACE
+  ==================================================== */
 
   return (
     <div className="ct-admin">
@@ -533,7 +665,6 @@ export default function Admin() {
       ============================================== */}
 
       <aside className="ct-admin-sidebar">
-        {/* Logo administrativo */}
         <div className="ct-admin-brand">
           <div className="ct-admin-brand-mark">
             🐾
@@ -545,7 +676,6 @@ export default function Admin() {
           </div>
         </div>
 
-        {/* Botões do menu */}
         <nav className="ct-admin-nav">
           {secoes.map(([id, nome, icone]) => (
             <button
@@ -559,13 +689,11 @@ export default function Admin() {
               <span className="ct-admin-nav-icon">
                 {icone}
               </span>
-
               <span>{nome}</span>
             </button>
           ))}
         </nav>
 
-        {/* Botão de saída */}
         <button
           type="button"
           className="ct-admin-logout"
@@ -576,7 +704,7 @@ export default function Admin() {
       </aside>
 
       {/* ==============================================
-          CONTEÚDO PRINCIPAL
+          CONTEÚDO DO PAINEL
       ============================================== */}
 
       <main className="ct-admin-main">
@@ -597,7 +725,7 @@ export default function Admin() {
           </div>
 
           <div className="ct-admin-header-actions">
-            {/* Pesquisa simples da seção */}
+            {/* Busca na seção ativa */}
             {configAtual && (
               <input
                 type="search"
@@ -609,12 +737,49 @@ export default function Admin() {
               />
             )}
 
-            {/* Avatar administrativo */}
+            {/* Recarrega as informações do banco */}
+            <button
+              type="button"
+              onClick={carregarDados}
+              disabled={carregando}
+              style={{
+                padding: "11px 14px",
+                border: "1px solid #dbe4ea",
+                borderRadius: "10px",
+                cursor: "pointer",
+                background: "#fff",
+                color: "#0d2b3e",
+              }}
+            >
+              {carregando ? "Carregando..." : "Atualizar"}
+            </button>
+
             <div className="ct-admin-avatar">
               ADM
             </div>
           </div>
         </header>
+
+        {/* AVISOS DE ERRO E SUCESSO */}
+        {erro && (
+          <p
+            role="alert"
+            style={{
+              color: "#9c2637",
+              background: "#ffe9ed",
+              padding: "12px",
+              borderRadius: "10px",
+            }}
+          >
+            {erro}
+          </p>
+        )}
+
+        {mensagem && (
+          <p role="status" className="ct-admin-search-count">
+            {mensagem}
+          </p>
+        )}
 
         {/* ==========================================
             VISÃO GERAL
@@ -622,54 +787,52 @@ export default function Admin() {
 
         {secaoAtiva === "visao" && (
           <>
-            {/* INDICADORES */}
             <section className="ct-admin-stats">
               <StatCard
                 titulo="Usuários"
-                valor={resumo.usuarios}
+                valor={carregando ? "..." : resumo.usuarios}
                 descricao="Contas cadastradas"
               />
 
               <StatCard
                 titulo="Pets"
-                valor={resumo.pets}
-                descricao="Animais cadastrados"
+                valor={carregando ? "..." : resumo.pets}
+                descricao="Animais publicados"
               />
 
               <StatCard
                 titulo="Perdidos ativos"
-                valor={resumo.perdidos}
+                valor={carregando ? "..." : resumo.perdidos}
                 descricao="Buscas em andamento"
               />
 
               <StatCard
                 titulo="Adoções"
-                valor={resumo.adocoes}
-                descricao="Processos cadastrados"
+                valor={carregando ? "..." : resumo.adocoes}
+                descricao="Publicações de adoção"
               />
 
               <StatCard
                 titulo="Publicações"
-                valor={resumo.publicacoes}
-                descricao="Posts cadastrados"
+                valor={
+                  carregando ? "..." : resumo.publicacoes
+                }
+                descricao="Posts no sistema"
               />
 
               <StatCard
-                titulo="Chat / Suporte"
-                valor={resumo.mensagens}
-                descricao="Solicitações cadastradas"
+                titulo="Conversas"
+                valor={carregando ? "..." : resumo.mensagens}
+                descricao="Conversas iniciadas"
               />
             </section>
 
-            {/* ÁREA DECORATIVA DOS ANIMAIS */}
             <AreaDecorativaPets />
           </>
         )}
 
         {/* ==========================================
-            TABELAS DAS SEÇÕES ADMINISTRATIVAS
-
-            Exibe a tabela correspondente à seção.
+            CADASTROS POR CATEGORIA
         ========================================== */}
 
         {configAtual && (
@@ -677,42 +840,69 @@ export default function Admin() {
             titulo={configAtual.titulo}
             descricao={configAtual.descricao}
           >
-            <Tabela
-              colunas={configAtual.colunas}
-              registros={filtrarRegistros(
-                dados[secaoAtiva] || [],
-                busca
-              )}
-            />
+            {carregando ? (
+              <p className="ct-admin-search-count">
+                Carregando cadastros do banco...
+              </p>
+            ) : (
+              <Tabela
+                colunas={configAtual.colunas}
+                registros={filtrarRegistros(
+                  registrosSecao,
+                  busca
+                )}
+                renderAcoes={
+                  ["publicacoes", "pets", "adocoes", "achados"]
+                    .includes(secaoAtiva)
+                    ? (post) => (
+                        <button
+                          type="button"
+                          disabled={salvandoId === post.id}
+                          onClick={() =>
+                            alterarStatusPublicacao(post)
+                          }
+                          style={{
+                            padding: "8px 12px",
+                            border: "none",
+                            borderRadius: "8px",
+                            background: post.statusOriginal
+                              ? "#c95757"
+                              : "#2f8f67",
+                            color: "white",
+                            cursor: "pointer",
+                          }}
+                        >
+                          {salvandoId === post.id
+                            ? "Salvando..."
+                            : post.statusOriginal
+                              ? "Desativar"
+                              : "Ativar"}
+                        </button>
+                      )
+                    : undefined
+                }
+              />
+            )}
           </Card>
         )}
 
         {/* ==========================================
             PESQUISA AVANÇADA
-
-            Filtros:
-            - Categoria
-            - Campo
-            - Termo pesquisado
         ========================================== */}
 
         {secaoAtiva === "pesquisas" && (
           <Card
             titulo="Pesquisa de cadastros"
-            descricao="Localize registros por ID, nome ou outros campos."
+            descricao="Pesquise registros reais por ID, nome ou outros campos."
           >
-            {/* CAMPOS DE FILTRO */}
             <div className="ct-admin-search-filters">
               {/* Categoria */}
               <label>
                 Categoria
-
                 <select
                   value={categoriaPesquisa}
                   onChange={(event) =>
-                    setCategoriaPesquisa(
-                      event.target.value
-                    )
+                    setCategoriaPesquisa(event.target.value)
                   }
                 >
                   <option value="todos">
@@ -729,55 +919,46 @@ export default function Admin() {
                 </select>
               </label>
 
-              {/* Campo da pesquisa */}
+              {/* Campo */}
               <label>
                 Filtrar por
-
                 <select
                   value={campoPesquisa}
                   onChange={(event) =>
-                    setCampoPesquisa(
-                      event.target.value
-                    )
+                    setCampoPesquisa(event.target.value)
                   }
                 >
                   <option value="todos">
                     Todos os campos
                   </option>
-
                   <option value="id">ID</option>
                   <option value="nome">Nome</option>
                   <option value="email">E-mail</option>
                   <option value="pet">Pet</option>
                   <option value="tutor">Tutor</option>
-                  <option value="autor">Autor</option>
+                  <option value="tipo">Tipo</option>
                   <option value="status">Status</option>
                 </select>
               </label>
 
-              {/* Texto da pesquisa */}
+              {/* Termo */}
               <label>
                 Pesquisar
-
                 <input
                   type="search"
                   value={termoPesquisa}
                   onChange={(event) =>
-                    setTermoPesquisa(
-                      event.target.value
-                    )
+                    setTermoPesquisa(event.target.value)
                   }
-                  placeholder="Digite ID ou nome..."
+                  placeholder="Digite nome ou ID..."
                 />
               </label>
             </div>
 
-            {/* QUANTIDADE DE RESULTADOS */}
             <p className="ct-admin-search-count">
               {resultadosPesquisa.length} resultado(s)
             </p>
 
-            {/* TABELA DE RESULTADOS */}
             <div className="ct-admin-table-wrap">
               <table className="ct-admin-table">
                 <thead>
@@ -801,44 +982,24 @@ export default function Admin() {
                       </td>
                     </tr>
                   ) : (
-                    resultadosPesquisa.map(
-                      (item, indice) => (
-                        <tr
-                          key={`${item.categoria}-${item.id ?? indice}`}
-                        >
-                          {/* ID */}
-                          <td>{item.id ?? "—"}</td>
-
-                          {/* Categoria */}
-                          <td>{item.origem}</td>
-
-                          {/* Nome */}
-                          <td>
-                            {item.nome ??
-                              item.pet ??
-                              item.titulo ??
-                              item.usuario ??
-                              item.empresa ??
-                              "—"}
-                          </td>
-
-                          {/* Informação complementar */}
-                          <td>
-                            {item.email ??
-                              item.tutor ??
-                              item.autor ??
-                              item.local ??
-                              item.responsavel ??
-                              "—"}
-                          </td>
-
-                          {/* Status */}
-                          <td>
-                            {item.status ?? "—"}
-                          </td>
-                        </tr>
-                      )
-                    )
+                    resultadosPesquisa.map((item, indice) => (
+                      <tr
+                        key={`${item.categoria}-${item.id ?? indice}`}
+                      >
+                        <td>{item.id}</td>
+                        <td>{item.origem}</td>
+                        <td>
+                          {item.nome ?? item.pet ?? "—"}
+                        </td>
+                        <td>
+                          {item.email ??
+                            item.tutor ??
+                            item.cidade ??
+                            "—"}
+                        </td>
+                        <td>{item.status ?? "—"}</td>
+                      </tr>
+                    ))
                   )}
                 </tbody>
               </table>
@@ -850,6 +1011,6 @@ export default function Admin() {
   );
 }
 
-/* ==========================================================
-   FIM DO ARQUIVO ADMIN.JSX
-========================================================== */
+/* ======================================================
+   FIM DO ADMIN.JSX
+====================================================== */

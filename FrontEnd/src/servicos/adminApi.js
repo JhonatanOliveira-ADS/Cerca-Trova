@@ -1,41 +1,99 @@
+
+/* =====================================================
+   CERCA TROVA - API ADMINISTRATIVA
+
+   Centraliza as requisições do painel Admin.
+
+   Todas as rotas administrativas devem ser
+   protegidas no backend por um JWT válido
+   e uma conta do tipo ADMIN.
+===================================================== */
+
 import { requisicaoApi } from "./autenticacao";
 
-/* Consulta usuários reais para indicadores administrativos autorizados. */
+/* =====================================================
+   1. RESUMO DO SISTEMA
+===================================================== */
+
+export async function obterResumoAdmin(desde) {
+  const query = desde
+    ? `?desde=${encodeURIComponent(desde)}`
+    : "";
+
+  return requisicaoApi(`/admin/resumo${query}`, {
+    cache: "no-store",
+  });
+}
+
+/* =====================================================
+   2. LISTAR USUÁRIOS
+===================================================== */
+
 export async function listarUsuariosAdmin() {
-  return requisicaoApi("/visualizarDadosGeral");
+  return requisicaoApi("/admin/usuarios", {
+    cache: "no-store",
+  });
 }
 
-/* Consulta publicações persistidas para o painel administrativo. */
+/* =====================================================
+   3. LISTAR PUBLICAÇÕES
+===================================================== */
+
 export async function listarPublicacoesAdmin() {
-  return requisicaoApi("/visualizarPublicacao");
+  return requisicaoApi("/admin/publicacoes", {
+    cache: "no-store",
+  });
 }
 
-/* Monta indicadores a partir das respostas reais do backend. */
-export async function obterResumoAdmin() {
+/* =====================================================
+   4. LISTAGENS EXISTENTES
+===================================================== */
+
+export async function obterListagensAdmin() {
   const [usuarios, publicacoes] = await Promise.all([
     listarUsuariosAdmin(),
     listarPublicacoesAdmin(),
   ]);
 
   return {
-    usuarios: Array.isArray(usuarios) ? usuarios.length : 0,
-    publicacoes: Array.isArray(publicacoes) ? publicacoes.length : 0,
+    usuarios,
+    publicacoes,
   };
 }
 
-/* O backend atual ainda não possui uma entidade persistente de páginas. */
-export async function listarPaginasAdmin() {
-  throw new Error("O backend ainda não possui o recurso de páginas administrativas.");
+/* =====================================================
+   5. ATUALIZAR STATUS DE PUBLICAÇÃO
+===================================================== */
+
+export async function atualizarStatusPublicacaoAdmin(
+  id,
+  status
+) {
+  return requisicaoApi(
+    `/admin/publicacoes/${encodeURIComponent(id)}/status`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({ status }),
+    }
+  );
 }
 
-export async function criarPaginaAdmin() {
-  throw new Error("O backend ainda não possui o recurso de páginas administrativas.");
-}
+/* =====================================================
+   6. CARREGAR TODOS OS DADOS DISPONÍVEIS
 
-export async function atualizarPaginaAdmin() {
-  throw new Error("O backend ainda não possui o recurso de páginas administrativas.");
-}
+   Nova função:
+   - Usuários
+   - Publicações
+   - Adoções
+   - Achados e perdidos
+   - Tinder Pet
+   - Metadados das conversas
 
-export async function excluirPaginaAdmin() {
-  throw new Error("O backend ainda não possui o recurso de páginas administrativas.");
+   Não utiliza dados mockados.
+===================================================== */
+
+export async function listarDadosPainelAdmin() {
+  return requisicaoApi("/admin/dados", {
+    cache: "no-store",
+  });
 }

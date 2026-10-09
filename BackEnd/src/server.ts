@@ -4,6 +4,7 @@ import "dotenv/config";
 import cors from "cors";
 import path from "path";
 import router from "./router";
+import prismaClient from "./prismaCliente";
 
 const app = express();
 
@@ -19,7 +20,7 @@ const origensPermitidas = (process.env.CORS_ORIGINS || "http://localhost:5173")
 app.use(
   cors({
     origin: origensPermitidas,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
@@ -43,8 +44,22 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 /* A porta pode ser definida pelo provedor de hospedagem. */
 const porta = Number(process.env.PORT || 3333);
 
-app.listen(porta, () => {
-  console.log(`Servidor online na porta ${porta}`);
-});
+/*
+  O servidor só anuncia que está online depois de validar o banco.
+  Antes, a API iniciava mesmo sem DATABASE_URL e o painel parecia vazio.
+*/
+prismaClient
+  .$connect()
+  .then(() => {
+    app.listen(porta, () => {
+      console.log(`Servidor online na porta ${porta}`);
+      console.log("Banco de dados conectado com sucesso.");
+    });
+  })
+  .catch((erro: Error) => {
+    console.error("Não foi possível conectar ao banco de dados.");
+    console.error(erro.message);
+    process.exitCode = 1;
+  });
 
 export default app;

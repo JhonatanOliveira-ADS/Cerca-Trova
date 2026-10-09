@@ -658,3 +658,102 @@
 .admin-navigation > a:last-child::after {
   display: none !important;
 }
+
+
+/* Área de monitoramento criada para sinalizar acontecimentos reais do sistema. */
+.admin-activity-card {
+  margin-top: 24px;
+}
+
+.admin-new-badge {
+  color: #163147;
+  background: #f4b25e;
+}
+
+.admin-activity-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.admin-activity-summary span {
+  padding: 10px 13px;
+  border: 1px solid #e1eaee;
+  border-radius: 12px;
+  color: #4d6472;
+  background: #f7fafb;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.admin-activity-summary strong {
+  color: #a95e94;
+  font-size: 1.1rem;
+}
+
+.admin-activity-list {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-activity-item {
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px;
+  border: 1px solid #e5edf1;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.admin-activity-item strong {
+  color: #163147;
+  font-size: 0.92rem;
+}
+
+.admin-activity-item p {
+  margin: 3px 0 0;
+  color: #6b8291;
+  font-size: 0.82rem;
+}
+
+.admin-activity-item time {
+  color: #6b8291;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.admin-activity-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #68a6c5;
+}
+
+.admin-activity-dot.tipo-publicacao_criada {
+  background: #bd5f91;
+}
+
+.admin-activity-dot.tipo-usuario_criado {
+  background: #68a6c5;
+}
+
+.admin-activity-dot.tipo-pet_tinder_criado {
+  background: #f4b25e;
+}
+
+.admin-activity-dot.tipo-interesse_iniciado {
+  background: #38a169;
+}
+
+@media (max-width: 680px) {
+  .admin-activity-item {
+    grid-template-columns: 12px minmax(0, 1fr);
+  }
+
+  .admin-activity-item time {
+    grid-column: 2;
+  }
+}

@@ -1,8 +1,24 @@
+
+/*
+========================================================
+ CERCA TROVA - CHAT
+========================================================
+ - Conversas reais carregadas pela API
+ - Abas Achados, Tinder Pet e Adoção
+ - Pesquisa de conversas
+ - Envio de mensagens
+ - Emojis
+ - Menu lateral recolhível
+ - Estado vazio centralizado
+========================================================
+*/
+
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import "../assets/css/Chat.css";
 import logotipo from "../assets/imagens/logotipo.png";
+
 import {
   API_BASE_URL,
   enviarMensagemConversa,
@@ -11,78 +27,83 @@ import {
   obterUsuarioAtual,
 } from "../servicos/autenticacao";
 
-/* Emojis rápidos continuam sendo uma ferramenta local da interface, não dados de conversa. */
+/* EMOJIS DISPONÍVEIS NO CAMPO DE MENSAGEM */
 const emojisDisponiveis = [
-  "🐾",
-  "🐶",
-  "🐱",
-  "❤️",
-  "😊",
-  "😂",
-  "😍",
-  "👍",
-  "🙏",
-  "🎉",
-  "😢",
-  "📍",
+  "🐾", "🐶", "🐱", "❤️",
+  "😊", "😂", "😍", "👍",
+  "🙏", "🎉", "😢", "📍",
 ];
 
-/* Normaliza uma conversa da API para o formato usado pela interface existente. */
-function adaptarConversa(conversa) {
-  return {
-    ...conversa,
-    nome: conversa.outroUsuario?.nome || "Usuário",
-    avatar: conversa.outroUsuario?.foto_perfil
-      ? `${API_BASE_URL}/files/${conversa.outroUsuario.foto_perfil}`
-      : null,
-    ultima: conversa.ultimaMensagem?.texto || "Nenhuma mensagem ainda.",
-    horario: conversa.ultimaMensagem?.data_criacao
-      ? formatarHorario(conversa.ultimaMensagem.data_criacao)
-      : formatarHorario(conversa.data_atualizacao),
-    categoria: conversa.publicacao?.tipo || "GERAL",
-  };
-}
-
-/* Apresenta horários reais sem depender de valores fixos no componente. */
+/* FORMATA O HORÁRIO DE UMA MENSAGEM */
 function formatarHorario(data) {
-  if (!data) {
-    return "";
-  }
+  if (!data) return "";
+
+  const dataConvertida = new Date(data);
+  if (Number.isNaN(dataConvertida.getTime())) return "";
 
   return new Intl.DateTimeFormat("pt-BR", {
     hour: "2-digit",
     minute: "2-digit",
-  }).format(new Date(data));
+  }).format(dataConvertida);
 }
 
-/* Converte a mensagem persistida para o formato visual do chat. */
+/* ADAPTA OS DADOS DE CONVERSAS RECEBIDOS DA API */
+function adaptarConversa(conversa) {
+  return {
+    ...conversa,
+
+    nome: conversa.outroUsuario?.nome || "Usuário",
+
+    avatar: conversa.outroUsuario?.foto_perfil
+      ? `${API_BASE_URL}/files/${conversa.outroUsuario.foto_perfil}`
+      : null,
+
+    ultima:
+      conversa.ultimaMensagem?.texto ||
+      "Nenhuma mensagem ainda.",
+
+    horario: formatarHorario(
+      conversa.ultimaMensagem?.data_criacao ||
+      conversa.data_atualizacao
+    ),
+
+    categoria: conversa.publicacao?.tipo || "GERAL",
+  };
+}
+
+/* ADAPTA UMA MENSAGEM PARA O LADO CORRETO DO CHAT */
 function adaptarMensagem(mensagem, idUsuarioAtual) {
   return {
     ...mensagem,
-    lado: mensagem.id_usuario === idUsuarioAtual ? "enviada" : "recebida",
-    texto: mensagem.texto,
+
+    lado:
+      String(mensagem.id_usuario) ===
+      String(idUsuarioAtual)
+        ? "enviada"
+        : "recebida",
+
+    texto: mensagem.texto || "",
+
     hora: formatarHorario(mensagem.data_criacao),
-    lida: mensagem.id_usuario === idUsuarioAtual,
+
+    lida:
+      String(mensagem.id_usuario) ===
+      String(idUsuarioAtual),
+
     avatar: mensagem.usuario?.foto_perfil
       ? `${API_BASE_URL}/files/${mensagem.usuario.foto_perfil}`
       : null,
   };
 }
 
-/* Define em qual aba uma conversa de publicação deve aparecer. */
+/* IDENTIFICA A ABA CORRESPONDENTE */
 function abaDaCategoria(categoria) {
-  if (categoria === "TINDER_PET") {
-    return "tinder";
-  }
-
-  if (categoria === "ADOCAO") {
-    return "adocao";
-  }
-
+  if (categoria === "TINDER_PET") return "tinder";
+  if (categoria === "ADOCAO") return "adocao";
   return "achados";
 }
 
-/* Filtra as conversas reais sem criar registros artificiais para as abas. */
+/* DEFINE QUAIS CONVERSAS PERTENCEM A CADA ABA */
 function conversaPertenceAba(conversa, aba) {
   if (aba === "tinder") {
     return conversa.categoria === "TINDER_PET";
@@ -92,58 +113,140 @@ function conversaPertenceAba(conversa, aba) {
     return conversa.categoria === "ADOCAO";
   }
 
-  return ["PERDIDO", "ENCONTRADO", "GERAL"].includes(conversa.categoria);
+  return ["PERDIDO", "ENCONTRADO", "GERAL"].includes(
+    conversa.categoria
+  );
 }
 
+/*
+========================================================
+ TELA DE BOAS-VINDAS
+
+ Aparece quando não existe conversa selecionada.
+ Não interfere nas mensagens e não cria dados falsos.
+========================================================
+*/
+function ChatSemConversa() {
+  return (
+    <div className="chat-no-conversation">
+      <div className="chat-welcome-card">
+        {/* Elementos decorativos */}
+        <div
+          className="chat-welcome-paws"
+          aria-hidden="true"
+        >
+          <span>🐾</span>
+          <span>🐾</span>
+        </div>
+
+        {/* Ícone principal */}
+        <div
+          className="chat-welcome-icon"
+          aria-hidden="true"
+        >
+          💬
+        </div>
+
+        <h2>Suas conversas começam aqui!</h2>
+
+        <p>
+          Escolha uma conversa ao lado ou demonstre
+          interesse em uma publicação para começar
+          a conversar com outro tutor.
+        </p>
+
+        {/* Detalhes visuais */}
+        <div className="chat-welcome-tags">
+          <span>🐾 Conecte-se</span>
+          <span>❤️ Cuide</span>
+          <span>🏡 Adote</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/*
+========================================================
+ COMPONENTE PRINCIPAL
+========================================================
+*/
 export default function Chat() {
+  /* ESTADOS DAS CONVERSAS */
   const [conversas, setConversas] = useState([]);
   const [conversaAtiva, setConversaAtiva] = useState(null);
   const [mensagens, setMensagens] = useState([]);
-  const [carregandoConversas, setCarregandoConversas] = useState(true);
-  const [carregandoMensagens, setCarregandoMensagens] = useState(false);
+
+  /* ESTADOS DE CARREGAMENTO */
+  const [carregandoConversas, setCarregandoConversas] =
+    useState(true);
+
+  const [carregandoMensagens, setCarregandoMensagens] =
+    useState(false);
+
+  /* CONTROLES DA INTERFACE */
   const [erro, setErro] = useState("");
-  const [barraRecolhida, setBarraRecolhida] = useState(false);
+  const [barraRecolhida, setBarraRecolhida] =
+    useState(false);
+
   const [abaAtiva, setAbaAtiva] = useState("achados");
   const [texto, setTexto] = useState("");
   const [busca, setBusca] = useState("");
   const [emojisAbertos, setEmojisAbertos] = useState(false);
   const [enviando, setEnviando] = useState(false);
 
+  /* NAVEGAÇÃO E USUÁRIO ATUAL */
   const localizacao = useLocation();
   const navegar = useNavigate();
   const usuarioAtual = obterUsuarioAtual();
   const idUsuarioAtual = usuarioAtual?.id;
 
-  /* Carrega exclusivamente as conversas persistidas do usuário autenticado. */
+  /*
+  ======================================================
+   CARREGAR CONVERSAS REAIS
+  ======================================================
+  */
   useEffect(() => {
     let ativo = true;
 
-    async function carregarConversasReais() {
+    async function carregarConversas() {
       try {
         setCarregandoConversas(true);
-        const resposta = await listarConversas();
-        if (!ativo) {
-          return;
-        }
+        setErro("");
 
-        const conversasAdaptadas = Array.isArray(resposta)
+        const resposta = await listarConversas();
+
+        if (!ativo) return;
+
+        const lista = Array.isArray(resposta)
           ? resposta.map(adaptarConversa)
           : [];
-        setConversas(conversasAdaptadas);
 
-        const idSolicitado = new URLSearchParams(localizacao.search).get("conversa");
-        const conversaSolicitada = conversasAdaptadas.find(
-          (conversa) => conversa.id === idSolicitado,
+        setConversas(lista);
+
+        /* Verifica se uma conversa veio pela URL */
+        const idSolicitado = new URLSearchParams(
+          localizacao.search
+        ).get("conversa");
+
+        const solicitada = lista.find(
+          (conversa) =>
+            String(conversa.id) === String(idSolicitado)
         );
-        const conversaInicial = conversaSolicitada || conversasAdaptadas[0] || null;
 
-        if (conversaInicial) {
-          setConversaAtiva(conversaInicial);
-          setAbaAtiva(abaDaCategoria(conversaInicial.categoria));
+        const inicial = solicitada || lista[0] || null;
+
+        setConversaAtiva(inicial);
+
+        if (inicial) {
+          setAbaAtiva(abaDaCategoria(inicial.categoria));
         }
       } catch (erroApi) {
         if (ativo) {
-          setErro(erroApi.message || "Não foi possível carregar suas conversas.");
+          setErro(
+            erroApi.message ||
+            "Não foi possível carregar suas conversas."
+          );
         }
       } finally {
         if (ativo) {
@@ -152,18 +255,22 @@ export default function Chat() {
       }
     }
 
-    carregarConversasReais();
+    carregarConversas();
 
     return () => {
       ativo = false;
     };
   }, [localizacao.search]);
 
-  /* Busca as mensagens sempre que o usuário troca a conversa ativa. */
+  /*
+  ======================================================
+   CARREGAR MENSAGENS DA CONVERSA SELECIONADA
+  ======================================================
+  */
   useEffect(() => {
     let ativo = true;
 
-    async function carregarMensagensReais() {
+    async function carregarMensagens() {
       if (!conversaAtiva?.id || !idUsuarioAtual) {
         setMensagens([]);
         return;
@@ -171,19 +278,27 @@ export default function Chat() {
 
       try {
         setCarregandoMensagens(true);
-        const resposta = await listarMensagensConversa(conversaAtiva.id);
-        if (ativo) {
-          setMensagens(
-            Array.isArray(resposta)
-              ? resposta.map((mensagem) =>
-                  adaptarMensagem(mensagem, idUsuarioAtual),
-                )
-              : [],
-          );
-        }
+        setErro("");
+
+        const resposta = await listarMensagensConversa(
+          conversaAtiva.id
+        );
+
+        if (!ativo) return;
+
+        setMensagens(
+          Array.isArray(resposta)
+            ? resposta.map((mensagem) =>
+                adaptarMensagem(mensagem, idUsuarioAtual)
+              )
+            : []
+        );
       } catch (erroApi) {
         if (ativo) {
-          setErro(erroApi.message || "Não foi possível carregar as mensagens.");
+          setErro(
+            erroApi.message ||
+            "Não foi possível carregar as mensagens."
+          );
         }
       } finally {
         if (ativo) {
@@ -192,162 +307,252 @@ export default function Chat() {
       }
     }
 
-    carregarMensagensReais();
+    carregarMensagens();
 
     return () => {
       ativo = false;
     };
   }, [conversaAtiva?.id, idUsuarioAtual]);
 
-  /* Mantém a busca limitada às conversas reais recebidas da API. */
+  /*
+  ======================================================
+   PESQUISAR CONVERSAS DA ABA ATIVA
+  ======================================================
+  */
   const conversasFiltradas = useMemo(() => {
     const termo = busca.trim().toLowerCase();
 
-    return conversas.filter(
-      (conversa) =>
+    return conversas.filter((conversa) => {
+      return (
         conversaPertenceAba(conversa, abaAtiva) &&
-        conversa.nome.toLowerCase().includes(termo),
-    );
-  }, [abaAtiva, busca, conversas]);
+        conversa.nome.toLowerCase().includes(termo)
+      );
+    });
+  }, [conversas, abaAtiva, busca]);
 
-  /* Seleciona uma conversa real e atualiza a URL para permitir compartilhamento interno. */
+  /*
+  ======================================================
+   SELECIONAR CONVERSA
+  ======================================================
+  */
   function selecionarConversa(conversa) {
     setConversaAtiva(conversa);
-    navegar(`/chat?conversa=${encodeURIComponent(conversa.id)}`, {
-      replace: true,
-    });
+    setEmojisAbertos(false);
+
+    navegar(
+      `/chat?conversa=${encodeURIComponent(conversa.id)}`,
+      { replace: true }
+    );
   }
 
-  /* Troca a categoria sem inventar conversas vazias. */
+  /*
+  ======================================================
+   TROCAR ABA
+  ======================================================
+  */
   function trocarAba(aba) {
     setAbaAtiva(aba);
     setTexto("");
     setEmojisAbertos(false);
 
-    const primeiraConversaDaAba = conversas.find((conversa) =>
-      conversaPertenceAba(conversa, aba),
+    const primeira = conversas.find((conversa) =>
+      conversaPertenceAba(conversa, aba)
     );
-    if (primeiraConversaDaAba) {
-      selecionarConversa(primeiraConversaDaAba);
+
+    if (primeira) {
+      selecionarConversa(primeira);
     } else {
       setConversaAtiva(null);
+      navegar("/chat", { replace: true });
     }
   }
 
-  /* Persiste a mensagem e atualiza o painel sem inserir mensagem mockada. */
+  /*
+  ======================================================
+   ENVIAR MENSAGEM PELA API
+  ======================================================
+  */
   async function enviarMensagem(event) {
     event.preventDefault();
+
     const mensagemLimpa = texto.trim();
 
-    if (!mensagemLimpa || !conversaAtiva || enviando) {
+    if (
+      !mensagemLimpa ||
+      !conversaAtiva ||
+      enviando
+    ) {
       return;
     }
 
     try {
       setEnviando(true);
+      setErro("");
+
       const resposta = await enviarMensagemConversa(
         conversaAtiva.id,
-        mensagemLimpa,
+        mensagemLimpa
       );
+
+      /* Atualiza a lista de mensagens exibidas */
       setMensagens((atuais) => [
         ...atuais,
         adaptarMensagem(resposta, idUsuarioAtual),
       ]);
+
+      /* Atualiza a prévia da última mensagem */
       setConversas((atuais) =>
         atuais.map((conversa) =>
           conversa.id === conversaAtiva.id
             ? {
                 ...conversa,
                 ultima: resposta.texto,
-                horario: formatarHorario(resposta.data_criacao),
+                horario: formatarHorario(
+                  resposta.data_criacao
+                ),
                 ultimaMensagem: resposta,
               }
-            : conversa,
-        ),
+            : conversa
+        )
       );
+
       setTexto("");
       setEmojisAbertos(false);
     } catch (erroApi) {
-      setErro(erroApi.message || "Não foi possível enviar a mensagem.");
+      setErro(
+        erroApi.message ||
+        "Não foi possível enviar a mensagem."
+      );
     } finally {
       setEnviando(false);
     }
   }
 
-  /* Insere um emoji no campo de texto sem alterar a persistência do chat. */
+  /* INSERIR EMOJI NA MENSAGEM */
   function inserirEmoji(emoji) {
-    setTexto((textoAtual) => `${textoAtual}${emoji}`);
+    setTexto((atual) => `${atual}${emoji}`);
     setEmojisAbertos(false);
   }
 
-  const conversaVazia = !carregandoConversas && conversasFiltradas.length === 0;
+  /* IDENTIFICA QUANDO A LISTA ESTÁ VAZIA */
+  const conversaVazia =
+    !carregandoConversas &&
+    conversasFiltradas.length === 0;
 
+  /*
+  ======================================================
+   INTERFACE DO CHAT
+  ======================================================
+  */
   return (
     <main
       className={`chat-page chat-theme-${abaAtiva} ${
         barraRecolhida ? "chat-sidebar-collapsed" : ""
       }`}
     >
+      {/* ================================================
+          MENU LATERAL DE CONVERSAS
+      ================================================ */}
+
       <aside className="chat-sidebar">
+        {/* Recolher / expandir menu */}
         <button
           className="chat-sidebar-toggle"
           type="button"
-          onClick={() => setBarraRecolhida((estado) => !estado)}
-          aria-label={barraRecolhida ? "Expandir barra de conversas" : "Recolher barra de conversas"}
+          onClick={() =>
+            setBarraRecolhida((atual) => !atual)
+          }
+          aria-label={
+            barraRecolhida
+              ? "Expandir barra de conversas"
+              : "Recolher barra de conversas"
+          }
           aria-expanded={!barraRecolhida}
         >
           {barraRecolhida ? "›" : "‹"}
         </button>
 
+        {/* Logo clicável */}
         <Link
           to="/"
           className="chat-brand"
           aria-label="Voltar para a página inicial"
         >
-          <img className="chat-brand-logo" src={logotipo} alt="Cerca Trova" />
+          <img
+            className="chat-brand-logo"
+            src={logotipo}
+            alt="Cerca Trova"
+          />
         </Link>
 
+        {/* Título do menu */}
         <div className="chat-sidebar-title">
-          <span className="chat-bubble-icon" aria-hidden="true">◌</span>
+          <span
+            className="chat-bubble-icon"
+            aria-hidden="true"
+          >
+            ◌
+          </span>
           <h1>Chat</h1>
         </div>
 
+        {/* Buscar conversas */}
         <label className="chat-search">
           <span aria-hidden="true">⌕</span>
+
           <input
             value={busca}
-            onChange={(event) => setBusca(event.target.value)}
+            onChange={(event) =>
+              setBusca(event.target.value)
+            }
             placeholder="Pesquisar conversas"
             aria-label="Pesquisar conversas"
           />
         </label>
 
+        {/* Lista real de conversas */}
         <div className="conversation-list">
           {carregandoConversas ? (
-            <p className="chat-empty-state">Carregando conversas...</p>
+            <p className="chat-inline-status">
+              Carregando conversas...
+            </p>
           ) : conversaVazia ? (
-            <p className="chat-empty-state">Nenhuma conversa nesta categoria.</p>
+            <p className="chat-inline-status">
+              Nenhuma conversa nesta categoria.
+            </p>
           ) : (
             conversasFiltradas.map((conversa) => (
               <button
                 key={conversa.id}
                 type="button"
                 className={`conversation-item ${
-                  conversaAtiva?.id === conversa.id ? "active" : ""
+                  conversaAtiva?.id === conversa.id
+                    ? "active"
+                    : ""
                 }`}
-                onClick={() => selecionarConversa(conversa)}
+                onClick={() =>
+                  selecionarConversa(conversa)
+                }
               >
+                {/* Avatar */}
                 <span className="pet-avatar avatar-azul">
                   {conversa.avatar ? (
-                    <img src={conversa.avatar} alt={conversa.nome} />
+                    <img
+                      src={conversa.avatar}
+                      alt={conversa.nome}
+                    />
                   ) : (
                     "🐾"
                   )}
                 </span>
+
+                {/* Nome e última mensagem */}
                 <span className="conversation-copy">
                   <strong>{conversa.nome}</strong>
                   <small>{conversa.ultima}</small>
                 </span>
+
+                {/* Horário */}
                 <span className="conversation-meta">
                   <small>{conversa.horario}</small>
                 </span>
@@ -356,94 +561,144 @@ export default function Chat() {
           )}
         </div>
 
-        <button className="chat-settings" type="button" aria-label="Configurações">
+        {/* Ícone de configurações visual existente */}
+        <span
+          className="chat-settings"
+          aria-hidden="true"
+        >
           ⚙
-        </button>
+        </span>
       </aside>
 
+      {/* ================================================
+          ÁREA DIREITA DO CHAT
+      ================================================ */}
+
       <section className="chat-conversation">
-        <div className="chat-tabs" aria-label="Categorias do chat">
+        {/* TRÊS ABAS SUPERIORES */}
+        <div
+          className="chat-tabs"
+          aria-label="Categorias do chat"
+        >
           <button
-            className={`tab-search ${abaAtiva === "achados" ? "active" : ""}`}
             type="button"
+            className={`tab-search ${
+              abaAtiva === "achados" ? "active" : ""
+            }`}
             onClick={() => trocarAba("achados")}
             aria-pressed={abaAtiva === "achados"}
           >
             <span className="tab-icon">⌕</span>
-            <span className="tab-text">Achados e Perdidos</span>
+            <span className="tab-text">
+              Achados e Perdidos
+            </span>
           </button>
+
           <button
-            className={`tab-match ${abaAtiva === "tinder" ? "active" : ""}`}
             type="button"
+            className={`tab-match ${
+              abaAtiva === "tinder" ? "active" : ""
+            }`}
             onClick={() => trocarAba("tinder")}
             aria-pressed={abaAtiva === "tinder"}
           >
             <span className="tab-icon">♥</span>
-            <span className="tab-text">TinderPet</span>
+            <span className="tab-text">
+              TinderPet
+            </span>
           </button>
+
           <button
-            className={`tab-adoption ${abaAtiva === "adocao" ? "active" : ""}`}
             type="button"
+            className={`tab-adoption ${
+              abaAtiva === "adocao" ? "active" : ""
+            }`}
             onClick={() => trocarAba("adocao")}
             aria-pressed={abaAtiva === "adocao"}
           >
             <span className="tab-icon">♣</span>
-            <span className="tab-text">Adoção</span>
+            <span className="tab-text">
+              Adoção
+            </span>
           </button>
         </div>
 
+        {/* ==============================================
+            CONVERSA SELECIONADA
+        ============================================== */}
         {conversaAtiva ? (
           <>
+            {/* Cabeçalho da conversa */}
             <header className="conversation-header">
               <span className="pet-avatar avatar-azul">
                 {conversaAtiva.avatar ? (
-                  <img src={conversaAtiva.avatar} alt={conversaAtiva.nome} />
+                  <img
+                    src={conversaAtiva.avatar}
+                    alt={conversaAtiva.nome}
+                  />
                 ) : (
                   "🐾"
                 )}
               </span>
+
               <div>
                 <h2>{conversaAtiva.nome}</h2>
-                <p>Conversa sobre uma publicação da comunidade</p>
+                <p>
+                  Conversa sobre uma publicação
+                  da comunidade
+                </p>
               </div>
-              <button className="more-button" type="button" aria-label="Mais opções">
-                ⋮
-              </button>
             </header>
 
+            {/* Mensagens recebidas e enviadas */}
             <div className="messages-area">
               {carregandoMensagens ? (
-                <p className="chat-empty-state">Carregando mensagens...</p>
-              ) : mensagens.length === 0 ? (
-                <p className="chat-empty-state">
-                  Esta conversa ainda não tem mensagens. Envie uma mensagem para começar.
+                <p className="chat-inline-status">
+                  Carregando mensagens...
                 </p>
+              ) : mensagens.length === 0 ? (
+                <div className="chat-messages-empty">
+                  <span aria-hidden="true">💌</span>
+                  <p>
+                    Esta conversa ainda não tem mensagens.
+                    Envie uma mensagem para começar!
+                  </p>
+                </div>
               ) : (
                 mensagens.map((mensagem) => (
-                  <div key={mensagem.id} className={`message-row ${mensagem.lado}`}>
+                  <div
+                    key={mensagem.id}
+                    className={`message-row ${mensagem.lado}`}
+                  >
+                    {/* Avatar de quem enviou */}
                     {mensagem.lado === "recebida" && (
                       <span className="pet-avatar small avatar-laranja">
                         {mensagem.avatar ? (
-                          <img src={mensagem.avatar} alt="" />
+                          <img
+                            src={mensagem.avatar}
+                            alt=""
+                          />
                         ) : (
                           "🐾"
                         )}
                       </span>
                     )}
+
+                    {/* Bolha de mensagem */}
                     <div className="message-group">
                       <div className="message-bubble">
-                        {mensagem.texto.split("\n").map((linha, index) => (
-                          <span key={`${mensagem.id}-${index}`}>
-                            {linha}
-                            {index < mensagem.texto.split("\n").length - 1 && <br />}
-                          </span>
-                        ))}
+                        {mensagem.texto}
                       </div>
+
                       <small>
                         {mensagem.hora}
-                        {mensagem.lida && <b className="read-mark">✓✓</b>}
+                        {mensagem.lida && (
+                          <b className="read-mark">✓✓</b>
+                        )}
                       </small>
                     </div>
+
+                    {/* Avatar do usuário atual */}
                     {mensagem.lado === "enviada" && (
                       <span className="pet-avatar small avatar-azul">
                         {usuarioAtual?.foto_perfil ? (
@@ -461,49 +716,88 @@ export default function Chat() {
               )}
             </div>
 
-            <form className="message-composer" onSubmit={enviarMensagem}>
+            {/* Campo de envio de mensagens */}
+            <form
+              className="message-composer"
+              onSubmit={enviarMensagem}
+            >
+              {/* Seletor de emojis */}
               <div className="emoji-picker-wrapper">
                 <button
                   type="button"
-                  className={`composer-icon ${emojisAbertos ? "active" : ""}`}
-                  onClick={() => setEmojisAbertos((estado) => !estado)}
+                  className={`composer-icon ${
+                    emojisAbertos ? "active" : ""
+                  }`}
+                  onClick={() =>
+                    setEmojisAbertos((atual) => !atual)
+                  }
                   aria-label="Adicionar emoji"
                   aria-expanded={emojisAbertos}
                 >
                   ☺
                 </button>
+
+                {/* Paleta de emojis */}
                 {emojisAbertos && (
-                  <div className="chat-emoji-picker" role="dialog" aria-label="Selecionar emoji">
+                  <div
+                    className="chat-emoji-picker"
+                    role="dialog"
+                    aria-label="Selecionar emoji"
+                  >
                     {emojisDisponiveis.map((emoji) => (
-                      <button key={emoji} type="button" onClick={() => inserirEmoji(emoji)}>
+                      <button
+                        key={emoji}
+                        type="button"
+                        onClick={() => inserirEmoji(emoji)}
+                      >
                         {emoji}
                       </button>
                     ))}
                   </div>
                 )}
               </div>
+
+              {/* Texto da mensagem */}
               <input
                 value={texto}
-                onChange={(event) => setTexto(event.target.value)}
+                onChange={(event) =>
+                  setTexto(event.target.value)
+                }
                 placeholder="Digite sua mensagem..."
                 aria-label="Digite sua mensagem"
                 disabled={enviando}
               />
-              <button type="submit" className="send-button" aria-label="Enviar mensagem" disabled={enviando}>
+
+              {/* Enviar */}
+              <button
+                type="submit"
+                className="send-button"
+                aria-label="Enviar mensagem"
+                disabled={enviando || !texto.trim()}
+              >
                 ➤
               </button>
             </form>
           </>
         ) : (
-          <div className="chat-no-conversation">
-            <span aria-hidden="true">🐾</span>
-            <h2>Selecione uma conversa</h2>
-            <p>Clique em “Tenho interesse” em uma publicação para iniciar um chat com o dono.</p>
-          </div>
+          /*
+           ============================================
+           NENHUMA CONVERSA SELECIONADA
+           ============================================
+           Exibe o novo estado vazio centralizado.
+          */
+          <ChatSemConversa />
         )}
 
-        {erro && <p className="chat-error" role="alert">{erro}</p>}
+        {/* Erros recebidos da API */}
+        {erro && (
+          <p className="chat-error" role="alert">
+            {erro}
+          </p>
+        )}
       </section>
     </main>
   );
 }
+
+/* FIM DO CHAT.JSX */

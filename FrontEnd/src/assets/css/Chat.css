@@ -1,6 +1,25 @@
-/* ======================================================
-   CERCA TROVA - CHAT
-====================================================== */
+
+/*
+========================================================
+ CERCA TROVA - CHAT.CSS
+
+ ESTILOS:
+ - Estrutura da página
+ - Barra lateral
+ - Conversas
+ - Abas superiores
+ - Mensagens
+ - Campo de envio
+ - Emojis
+ - Menu recolhível
+ - Tela de boas-vindas
+ - Responsividade
+========================================================
+*/
+
+/* ====================================================
+   1. CORES DO CHAT
+==================================================== */
 
 :root {
   --chat-navy: #123f57;
@@ -13,16 +32,16 @@
   --chat-line: #e4ebee;
 }
 
-/* ======================================================
-   PÁGINA
-====================================================== */
+/* ====================================================
+   2. ISOLAMENTO DO CHAT
+==================================================== */
 
-body:has(.chat-page) {
+body:has(.chat-page),
+.app-container:has(.chat-page) {
   background: var(--chat-cream);
 }
 
 .app-container:has(.chat-page) {
-  background: var(--chat-cream);
   animation: none;
 }
 
@@ -38,37 +57,57 @@ body:has(.chat-page) {
   display: none;
 }
 
-/* ======================================================
-   ESTRUTURA PRINCIPAL
-====================================================== */
+.app-container:has(.chat-page) .chat-floating-button {
+  display: none;
+}
+
+/* Evita diferenças de tamanho entre os elementos */
+.chat-page,
+.chat-page *,
+.chat-page *::before,
+.chat-page *::after {
+  box-sizing: border-box;
+}
+
+/* ====================================================
+   3. ESTRUTURA PRINCIPAL
+==================================================== */
 
 .chat-page {
-  width: 100%;
-  min-height: 100vh;
   display: grid;
   grid-template-columns: minmax(300px, 32%) minmax(0, 1fr);
+
+  width: 100%;
+  min-height: 100vh;
+
   color: var(--chat-navy);
   background: var(--chat-cream);
+
   font-family: "Trebuchet MS", Arial, sans-serif;
 }
 
-/* ======================================================
-   PAINEL ESQUERDO
-====================================================== */
+/* ====================================================
+   4. BARRA LATERAL
+==================================================== */
 
 .chat-sidebar {
   position: relative;
+
   display: flex;
   flex-direction: column;
+
+  min-width: 0;
   min-height: 100vh;
-  padding: 24px 22px 72px;
+
+  padding: 24px 22px 70px;
+
   background: rgba(255, 255, 255, 0.88);
   border-right: 1px solid var(--chat-line);
 }
 
-/* ======================================================
-   LOGO
-====================================================== */
+/* ====================================================
+   5. LOGOTIPO
+==================================================== */
 
 .chat-brand {
   display: flex;
@@ -76,7 +115,7 @@ body:has(.chat-page) {
   justify-content: center;
 
   width: 100%;
-  max-width: none;
+  height: 235px;
 
   margin: 0 0 20px;
   padding: 0;
@@ -84,16 +123,11 @@ body:has(.chat-page) {
   text-decoration: none;
   cursor: pointer;
 
-  transition:
-    transform 0.18s ease,
-    opacity 0.18s ease;
-
-  height: 235px;
+  transition: transform 0.18s ease;
 }
 
 .chat-brand:hover {
   transform: translateY(-2px);
-  opacity: 0.92;
 }
 
 .chat-brand-logo {
@@ -101,18 +135,21 @@ body:has(.chat-page) {
   width: 300px;
   max-width: 85%;
   height: auto;
+  max-height: 100%;
+
   margin: 0 auto;
   object-fit: contain;
 }
 
-/* ======================================================
-   TÍTULO CHAT
-====================================================== */
+/* ====================================================
+   6. TÍTULO DO MENU LATERAL
+==================================================== */
 
 .chat-sidebar-title {
   display: flex;
   align-items: center;
   gap: 13px;
+
   padding: 0 16px 20px;
 }
 
@@ -120,30 +157,36 @@ body:has(.chat-page) {
   margin: 0;
   font-size: 30px;
   font-weight: 900;
+  color: var(--chat-navy);
 }
 
 .chat-bubble-icon {
   display: grid;
   place-items: center;
+
   width: 34px;
   height: 34px;
+
   border: 3px solid var(--chat-navy);
   border-radius: 50%;
+
   font-size: 29px;
   line-height: 20px;
 }
 
-/* ======================================================
-   PESQUISA
-====================================================== */
+/* ====================================================
+   7. PESQUISA DE CONVERSAS
+==================================================== */
 
 .chat-search {
   display: flex;
   align-items: center;
   gap: 12px;
+
   min-height: 46px;
   margin: 0 2px 17px;
   padding: 0 16px;
+
   border-radius: 24px;
   background: #edf3f6;
   color: var(--chat-blue);
@@ -156,46 +199,54 @@ body:has(.chat-page) {
 
 .chat-search input {
   width: 100%;
+  min-width: 0;
+
   border: 0;
   outline: 0;
+
   background: transparent;
   color: var(--chat-navy);
-  font:
-    600 16px "Trebuchet MS",
-    sans-serif;
+
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .chat-search input::placeholder {
   color: #4f7a90;
 }
 
-/* ======================================================
-   LISTA DE CONVERSAS
-====================================================== */
+/* ====================================================
+   8. LISTA DE CONVERSAS
+==================================================== */
 
 .conversation-list {
   display: flex;
   flex-direction: column;
   gap: 3px;
+
+  min-height: 0;
   overflow-y: auto;
 }
 
+/* Cada conversa é um botão */
 .conversation-item {
   display: grid;
   grid-template-columns: 58px minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
+
   width: 100%;
   padding: 10px 12px;
+
   border: 0;
   border-radius: 20px;
+
   text-align: left;
   color: var(--chat-navy);
   background: transparent;
+
   cursor: pointer;
-  transition:
-    background 0.18s ease,
-    transform 0.18s ease;
+  transition: background 0.18s ease, transform 0.18s ease;
 }
 
 .conversation-item:hover {
@@ -203,27 +254,34 @@ body:has(.chat-page) {
   transform: translateX(2px);
 }
 
+/* Conversa selecionada */
 .conversation-item.active {
   background: linear-gradient(100deg, #d9edf5, #edf3f6);
 }
 
-/* ======================================================
-   AVATARES
-====================================================== */
+/* ====================================================
+   9. AVATARES
+==================================================== */
 
 .pet-avatar {
   display: grid;
   place-items: center;
+
   width: 58px;
   height: 58px;
   flex: 0 0 58px;
+
   overflow: hidden;
+
   border-radius: 50%;
-  background: var(--chat-blue);
   border: 4px solid var(--chat-blue);
+
+  background: var(--chat-blue);
+  font-size: 23px;
 }
 
 .pet-avatar img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -244,36 +302,43 @@ body:has(.chat-page) {
   border-color: var(--chat-blue);
 }
 
-/* ======================================================
-   TEXTO DAS CONVERSAS
-====================================================== */
+.pet-avatar.small {
+  width: 45px;
+  height: 45px;
+  flex-basis: 45px;
+  border-width: 3px;
+}
+
+/* ====================================================
+   10. INFORMAÇÕES DAS CONVERSAS
+==================================================== */
 
 .conversation-copy {
   display: flex;
   flex-direction: column;
-  min-width: 0;
   gap: 5px;
+  min-width: 0;
 }
 
 .conversation-copy strong {
   font-size: 18px;
+  color: var(--chat-navy);
 }
 
 .conversation-copy small {
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
   color: var(--chat-muted);
   font-size: 14px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .conversation-meta {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  align-self: stretch;
-  justify-content: space-between;
-  padding: 3px 0;
+
   color: var(--chat-muted);
   font-size: 12px;
 }
@@ -281,63 +346,66 @@ body:has(.chat-page) {
 .conversation-meta b {
   display: grid;
   place-items: center;
+
   width: 22px;
   height: 22px;
+
   border-radius: 50%;
-  color: #fff;
   background: var(--chat-blue);
-  font-size: 12px;
+  color: #ffffff;
 }
 
-.conversation-meta i,
-.conversation-header h2 i {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #73b486;
-}
-
-/* ======================================================
-   CONFIGURAÇÃO
-====================================================== */
+/* ====================================================
+   11. CONFIGURAÇÕES DECORATIVAS
+==================================================== */
 
 .chat-settings {
   position: absolute;
   bottom: 23px;
   left: 29px;
-  border: 0;
+
   color: var(--chat-blue);
-  background: transparent;
   font-size: 29px;
-  cursor: pointer;
 }
 
-/* ======================================================
-   ÁREA DIREITA
-====================================================== */
+/* ====================================================
+   12. ÁREA DIREITA DO CHAT
+
+   Layout:
+   Linha 1: abas
+   Linha 2: cabeçalho da conversa
+   Linha 3: mensagens
+   Linha 4: campo de envio
+==================================================== */
 
 .chat-conversation {
+  position: relative;
+
   display: grid;
   grid-template-rows: 60px 88px minmax(0, 1fr) 84px;
+
   min-width: 0;
   min-height: 100vh;
+
   background: var(--chat-cream);
 }
 
-/* ======================================================
-   3 BOTÕES SUPERIORES
-====================================================== */
+/* ====================================================
+   13. TRÊS ABAS SUPERIORES
+==================================================== */
 
 .chat-tabs {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  grid-row: 1;
+
   width: 100%;
   height: 60px;
   margin: 0;
   padding: 0;
+
   overflow: hidden;
-  border-radius: 0;
 }
 
 .chat-tabs button {
@@ -345,33 +413,40 @@ body:has(.chat-page) {
   align-items: center;
   justify-content: center;
   gap: 10px;
+
   width: 100%;
   min-width: 0;
   height: 60px;
+
   margin: 0;
   padding: 0 12px;
+
   border: 0;
   border-radius: 0;
-  font-family: "Trebuchet MS", Arial, sans-serif;
+
+  font-family: inherit;
   font-size: 19px;
   font-weight: 800;
+
   cursor: pointer;
-  transition:
-    filter 0.18s ease,
-    box-shadow 0.18s ease;
+  transition: filter 0.18s ease;
 }
 
 .chat-tabs button:not(:last-child) {
-  border-right: 2px solid rgba(255, 255, 255, 0.75);
+  border-right: 2px solid rgba(255,255,255,0.75);
 }
 
 .chat-tabs button:hover {
-  filter: brightness(0.97);
+  filter: brightness(0.96);
+}
+
+.chat-tabs button.active {
+  box-shadow: inset 0 -5px 0 rgba(255,255,255,0.72);
 }
 
 .tab-icon {
-  flex: 0 0 auto;
   font-size: 18px;
+  flex-shrink: 0;
 }
 
 .tab-text {
@@ -379,34 +454,38 @@ body:has(.chat-page) {
   white-space: nowrap;
 }
 
+/* Aba Achados / Perdidos */
 .chat-tabs .tab-search {
-  color: #fff !important;
+  color: white !important;
   background: #68a6c5 !important;
 }
 
+/* Aba Tinder Pet */
 .chat-tabs .tab-match {
   color: #123f57 !important;
   background: #f4b25e !important;
 }
 
+/* Aba Adoção */
 .chat-tabs .tab-adoption {
-  color: #fff !important;
+  color: white !important;
   background: #bd5f91 !important;
 }
 
-.chat-tabs button.active {
-  box-shadow: inset 0 -5px 0 rgba(255, 255, 255, 0.72);
-}
-
-/* ======================================================
-   CABEÇALHO DA CONVERSA
-====================================================== */
+/* ====================================================
+   14. CABEÇALHO DE UMA CONVERSA ATIVA
+==================================================== */
 
 .conversation-header {
+  grid-row: 2;
+
   display: flex;
   align-items: center;
   gap: 17px;
+
+  min-width: 0;
   padding: 16px 26px;
+
   border-bottom: 1px solid var(--chat-line);
 }
 
@@ -414,93 +493,90 @@ body:has(.chat-page) {
   display: flex;
   align-items: center;
   gap: 10px;
+
   margin: 0 0 5px;
+
+  color: var(--chat-navy);
   font-size: 25px;
 }
 
 .conversation-header p {
   margin: 0;
+
   color: var(--chat-muted);
   font-weight: 700;
 }
 
-.conversation-header p span {
-  padding: 0 5px;
-  color: var(--chat-blue);
-}
-
-.more-button {
-  margin-left: auto;
-  border: 0;
-  color: var(--chat-navy);
-  background: transparent;
-  font-size: 34px;
-  cursor: pointer;
-}
-
-/* ======================================================
-   MENSAGENS
-====================================================== */
+/* ====================================================
+   15. ÁREA DAS MENSAGENS
+==================================================== */
 
 .messages-area {
+  grid-row: 3;
+
   min-height: 0;
   overflow-y: auto;
+
   padding: 26px 26px 15px;
+
   background: var(--chat-cream);
 }
 
-.today-label {
-  width: max-content;
-  margin: 0 auto 22px;
-  padding: 7px 17px;
-  border-radius: 20px;
-  color: var(--chat-navy);
-  background: #edf3f6;
-  font-weight: 700;
-}
-
+/* Mensagens alinhadas por lado */
 .message-row {
   display: flex;
   align-items: flex-end;
   gap: 12px;
-  margin: 0 0 25px;
+
+  margin-bottom: 25px;
 }
 
 .message-row.enviada {
   justify-content: flex-end;
 }
 
+/* Agrupamento da bolha e horário */
 .message-group {
   display: flex;
   flex-direction: column;
-  max-width: min(57%, 500px);
   gap: 6px;
+
+  max-width: min(57%, 500px);
 }
 
 .message-row.enviada .message-group {
   align-items: flex-end;
 }
 
+/* Bolha padrão recebida */
 .message-bubble {
   padding: 13px 20px;
+
   border-radius: 24px;
-  color: var(--chat-navy);
   background: var(--chat-blue-soft);
+  color: var(--chat-navy);
+
   font-size: 18px;
-  line-height: 1.25;
-  box-shadow: 0 3px 8px rgba(18, 63, 87, 0.04);
+  line-height: 1.35;
+
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  box-shadow: 0 3px 8px rgba(18,63,87,0.04);
 }
 
+/* Mensagem enviada */
 .message-row.enviada .message-bubble {
-  color: #fff;
+  color: #ffffff;
   background: var(--chat-navy);
   border-radius: 24px 24px 5px 24px;
 }
 
+/* Mensagem recebida */
 .message-row.recebida .message-bubble {
   border-radius: 24px 24px 24px 5px;
 }
 
+/* Horário de cada mensagem */
 .message-group small {
   color: var(--chat-muted);
   font-size: 12px;
@@ -512,105 +588,364 @@ body:has(.chat-page) {
   font-size: 15px;
 }
 
-.pet-avatar.small {
-  width: 45px;
-  height: 45px;
-  flex-basis: 45px;
-  border-width: 3px;
-}
-
-/* ======================================================
-   DIGITAR MENSAGEM
-====================================================== */
+/* ====================================================
+   16. CAMPO PARA DIGITAR MENSAGEM
+==================================================== */
 
 .message-composer {
+  grid-row: 4;
+
   display: flex;
   align-items: center;
   gap: 12px;
+
+  min-width: 0;
   margin: 0 26px 24px;
   padding: 0 12px 0 16px;
+
   border-radius: 31px;
   background: #eaf1f4;
 }
 
 .message-composer input:not([type="file"]) {
-  min-width: 0;
   flex: 1;
+  min-width: 0;
   height: 58px;
+
   border: 0;
   outline: 0;
-  color: var(--chat-navy);
+
   background: transparent;
-  font:
-    16px "Trebuchet MS",
-    sans-serif;
+  color: var(--chat-navy);
+
+  font-size: 16px;
 }
 
 .message-composer input::placeholder {
   color: var(--chat-muted);
 }
 
+/* ====================================================
+   17. BOTÃO DE EMOJI
+==================================================== */
+
+.emoji-picker-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 .composer-icon {
   border: 0;
-  color: var(--chat-navy);
   background: transparent;
+  color: var(--chat-navy);
+
   font-size: 28px;
   cursor: pointer;
 }
 
-.attach {
-  position: relative;
-  display: grid;
-  place-items: center;
-  transform: rotate(-42deg);
-  font-size: 28px;
-}
-
-.attach input {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-}
-
-.attach.selected {
+.composer-icon.active {
   color: var(--chat-pink);
 }
 
-/* ======================================================
-   ENVIAR
-====================================================== */
+/* Paleta de emojis */
+.chat-emoji-picker {
+  position: absolute;
+  z-index: 20;
+  bottom: calc(100% + 10px);
+  left: 0;
+
+  display: grid;
+  grid-template-columns: repeat(4, 42px);
+  gap: 5px;
+
+  padding: 9px;
+
+  border: 1px solid var(--chat-line);
+  border-radius: 14px;
+
+  background: #ffffff;
+  box-shadow: 0 10px 25px rgba(18,63,87,0.18);
+}
+
+.chat-emoji-picker button {
+  display: grid;
+  place-items: center;
+
+  width: 42px;
+  height: 42px;
+
+  border: 0;
+  border-radius: 9px;
+
+  background: transparent;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.chat-emoji-picker button:hover,
+.chat-emoji-picker button:focus-visible {
+  background: var(--chat-blue-soft);
+  outline: none;
+}
+
+/* ====================================================
+   18. BOTÃO ENVIAR
+==================================================== */
 
 .send-button {
   display: grid;
   place-items: center;
+
   width: 58px;
   height: 58px;
   flex: 0 0 58px;
+
   border: 0;
   border-radius: 50%;
-  color: #fff;
+
   background: var(--chat-navy);
+  color: #ffffff;
+
   font-size: 29px;
   cursor: pointer;
-  transition:
-    transform 0.16s ease,
-    background 0.16s ease;
+  transition: transform 0.16s ease;
 }
 
-.send-button:hover {
+.send-button:hover:not(:disabled) {
   background: var(--chat-blue);
   transform: translateX(2px);
 }
 
-.send-button:active {
-  transform: scale(0.97);
+.send-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-/* ======================================================
-   TEMAS
-====================================================== */
+/* ====================================================
+   19. TELA SEM CONVERSA SELECIONADA
 
+   CORREÇÃO PRINCIPAL
+
+   Ocupa todas as linhas abaixo das três abas.
+   Centraliza o conteúdo horizontal e verticalmente.
+==================================================== */
+
+.chat-no-conversation {
+  grid-column: 1 / -1;
+  grid-row: 2 / -1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+
+  padding: 36px 24px;
+  background: var(--chat-cream);
+}
+
+/* Cartão central de boas-vindas */
+.chat-welcome-card {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  max-width: 590px;
+
+  padding: 46px 36px;
+
+  overflow: hidden;
+  isolation: isolate;
+  text-align: center;
+
+  border: 1px solid var(--chat-line);
+  border-radius: 26px;
+
+  background: linear-gradient(
+    140deg,
+    #ffffff 0%,
+    var(--chat-blue-soft) 100%
+  );
+
+  box-shadow: 0 12px 32px rgba(18,63,87,0.06);
+}
+
+/* Ícone central */
+.chat-welcome-icon {
+  display: grid;
+  place-items: center;
+
+  width: 86px;
+  height: 86px;
+
+  margin-bottom: 22px;
+
+  border-radius: 50%;
+  background: rgba(255,255,255,0.8);
+
+  font-size: 39px;
+  box-shadow: 0 5px 20px rgba(18,63,87,0.08);
+}
+
+/* Título de boas-vindas */
+.chat-welcome-card h2 {
+  position: relative;
+  z-index: 1;
+
+  margin: 0 0 13px;
+
+  color: var(--chat-navy);
+  font-size: clamp(23px, 2.5vw, 29px);
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+/* Descrição */
+.chat-welcome-card p {
+  position: relative;
+  z-index: 1;
+
+  max-width: 465px;
+  margin: 0;
+
+  color: var(--chat-navy);
+  opacity: 0.8;
+
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+/* Etiquetas decorativas */
+.chat-welcome-tags {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  margin-top: 25px;
+}
+
+.chat-welcome-tags span {
+  padding: 9px 15px;
+
+  border-radius: 30px;
+  background: rgba(255,255,255,0.75);
+  color: var(--chat-navy);
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Patinhas transparentes do fundo */
+.chat-welcome-paws {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.chat-welcome-paws span {
+  position: absolute;
+  opacity: 0.12;
+  font-size: 50px;
+  filter: grayscale(1);
+}
+
+.chat-welcome-paws span:first-child {
+  top: 16px;
+  left: 20px;
+  transform: rotate(-24deg);
+}
+
+.chat-welcome-paws span:last-child {
+  bottom: 12px;
+  right: 24px;
+  transform: rotate(24deg);
+}
+
+/* ====================================================
+   20. AVISOS DE CARREGAMENTO
+
+   Separados da tela de boas-vindas para
+   não provocar alterações no layout.
+==================================================== */
+
+.chat-inline-status {
+  margin: 12px 4px;
+  padding: 14px;
+
+  border-radius: 12px;
+  background: rgba(104,166,197,0.09);
+
+  color: var(--chat-navy);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* Chat ativo, mas ainda sem mensagens */
+.chat-messages-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 240px;
+  padding: 30px;
+  text-align: center;
+}
+
+.chat-messages-empty span {
+  font-size: 38px;
+  margin-bottom: 12px;
+}
+
+.chat-messages-empty p {
+  max-width: 350px;
+  margin: 0;
+
+  color: var(--chat-muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Erros de comunicação com a API */
+.chat-error {
+  position: absolute;
+  z-index: 30;
+  right: 18px;
+  bottom: 90px;
+
+  max-width: min(450px, 90%);
+  margin: 0;
+  padding: 12px 16px;
+
+  border: 1px solid #eeb9bd;
+  border-radius: 12px;
+
+  background: #fff0f0;
+  color: #932d3b;
+
+  font-size: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* ====================================================
+   21. TEMAS DAS CATEGORIAS
+
+   Mantém as cores do chat de acordo com a aba.
+==================================================== */
+
+/* ACHADOS E PERDIDOS */
 .chat-page.chat-theme-achados {
   --chat-navy: #123f57;
   --chat-blue: #68a6c5;
@@ -620,6 +955,7 @@ body:has(.chat-page) {
   --chat-line: #e4ebee;
 }
 
+/* TINDER PET */
 .chat-page.chat-theme-tinder {
   --chat-navy: #704d18;
   --chat-blue: #e3aa4e;
@@ -633,6 +969,7 @@ body:has(.chat-page) {
   background: #f8edda;
 }
 
+/* ADOÇÃO */
 .chat-page.chat-theme-adocao {
   --chat-navy: #713653;
   --chat-blue: #bd5f91;
@@ -646,210 +983,46 @@ body:has(.chat-page) {
   background: #f7e8ef;
 }
 
-/* ======================================================
-   TABLET
-====================================================== */
+/* ====================================================
+   22. BOTÃO PARA RECOLHER O MENU LATERAL
+==================================================== */
 
-@media (max-width: 900px) {
-  .chat-page {
-    grid-template-columns: 255px minmax(0, 1fr);
-  }
-
-  .chat-sidebar {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  .chat-brand {
-    width: 100%;
-    margin: 0 0 20px;
-  }
-
-  .chat-brand-logo {
-    width: 150px;
-  }
-
-  .chat-tabs button {
-    font-size: 15px;
-    gap: 5px;
-  }
-
-  .message-group {
-    max-width: 70%;
-  }
-}
-
-/* ======================================================
-   CELULAR
-====================================================== */
-
-@media (max-width: 640px) {
-  .chat-page {
-    display: block;
-  }
-
-  .chat-sidebar {
-    min-height: auto;
-    padding: 14px 10px 12px;
-  }
-
-  .chat-brand {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    margin: 0 0 20px;
-    padding: 0;
-  }
-
-  .chat-brand-logo {
-    width: 185px;
-    max-width: 85%;
-    height: auto;
-    margin: 0 auto;
-    object-fit: contain;
-  }
-
-  .chat-sidebar-title {
-    padding: 5px 8px 12px;
-  }
-
-  .chat-sidebar-title h1 {
-    font-size: 24px;
-  }
-
-  .conversation-list {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 3px;
-  }
-
-  .conversation-item {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 5px 2px;
-    border-radius: 15px;
-    text-align: center;
-  }
-
-  .conversation-item .pet-avatar {
-    width: 46px;
-    height: 46px;
-    flex-basis: 46px;
-  }
-
-  .conversation-copy small,
-  .conversation-meta {
-    display: none;
-  }
-
-  .conversation-copy strong {
-    font-size: 12px;
-  }
-
-  .chat-settings {
-    display: none;
-  }
-
-  .chat-conversation {
-    min-height: calc(100vh - 178px);
-    grid-template-rows: 56px 72px minmax(0, 1fr) 76px;
-  }
-
-  .chat-tabs {
-    height: 56px;
-  }
-
-  .chat-tabs button {
-    height: 56px;
-    padding: 0 4px;
-    gap: 3px;
-    font-size: 12px;
-  }
-
-  .tab-icon {
-    font-size: 16px;
-  }
-
-  .conversation-header {
-    padding: 10px 15px;
-  }
-
-  .conversation-header h2 {
-    font-size: 20px;
-  }
-
-  .conversation-header p {
-    font-size: 12px;
-  }
-
-  .messages-area {
-    padding: 18px 12px 10px;
-  }
-
-  .message-group {
-    max-width: 76%;
-  }
-
-  .message-bubble {
-    padding: 10px 13px;
-    font-size: 15px;
-  }
-
-  .message-composer {
-    margin: 0 10px 12px;
-  }
-}
-
-/* ======================================================
-   ACESSIBILIDADE
-====================================================== */
-
-@media (prefers-reduced-motion: reduce) {
-  .chat-brand,
-  .chat-tabs button,
-  .conversation-item,
-  .send-button {
-    transition: none;
-  }
-}
-
-/* ======================================================
-   CONTROLE DA BARRA DE CONVERSAS
-====================================================== */
-
-/* Botão discreto para alternar o estado fixo da barra, inspirado no VS Code. */
 .chat-sidebar-toggle {
   position: absolute;
-  z-index: 2;
+  z-index: 5;
+
   top: 18px;
   right: -13px;
+
   display: grid;
   place-items: center;
+
   width: 26px;
   height: 42px;
+
   border: 1px solid var(--chat-line);
   border-radius: 0 10px 10px 0;
+
   color: var(--chat-navy);
   background: #ffffff;
-  box-shadow: 2px 3px 8px rgba(18, 63, 87, 0.12);
+
+  box-shadow: 2px 3px 8px rgba(18,63,87,0.12);
+
   font-size: 25px;
-  line-height: 1;
   cursor: pointer;
-  transition:
-    color 0.18s ease,
-    background 0.18s ease;
 }
 
-.chat-sidebar-toggle:hover,
-.chat-sidebar-toggle:focus-visible {
+.chat-sidebar-toggle:hover {
   color: #ffffff;
   background: var(--chat-blue);
-  outline: none;
 }
 
-/* A coluna estreita preserva os avatares e libera mais espaço para a conversa. */
+/* ====================================================
+   23. MENU LATERAL RECOLHIDO
+
+   Mantém somente os avatares.
+==================================================== */
+
 .chat-page.chat-sidebar-collapsed {
   grid-template-columns: 86px minmax(0, 1fr);
 }
@@ -858,59 +1031,6 @@ body:has(.chat-page) {
   align-items: center;
   padding: 24px 10px 72px;
   overflow: visible;
-}
-
-/* A própria página Chat não precisa do atalho flutuante que leva ao Chat. */
-.app-container:has(.chat-page) .chat-floating-button {
-  display: none;
-}
-
-/* Área relativa para posicionar a paleta acima do botão de emoji. */
-.emoji-picker-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-/* Indica visualmente quando a paleta de emojis está aberta. */
-.composer-icon.active {
-  color: var(--chat-pink);
-}
-
-/* Paleta compacta e responsiva com os emojis prontos para inserção. */
-.chat-emoji-picker {
-  position: absolute;
-  z-index: 20;
-  bottom: calc(100% + 10px);
-  left: 0;
-  display: grid;
-  grid-template-columns: repeat(4, 42px);
-  gap: 5px;
-  padding: 9px;
-  border: 1px solid var(--chat-line);
-  border-radius: 14px;
-  background: #ffffff;
-  box-shadow: 0 10px 25px rgba(18, 63, 87, 0.18);
-}
-
-.chat-emoji-picker button {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border: 0;
-  border-radius: 9px;
-  background: transparent;
-  font-size: 22px;
-  cursor: pointer;
-  transition: background 0.16s ease, transform 0.16s ease;
-}
-
-.chat-emoji-picker button:hover,
-.chat-emoji-picker button:focus-visible {
-  background: var(--chat-blue-soft);
-  outline: none;
-  transform: scale(1.08);
 }
 
 .chat-page.chat-sidebar-collapsed .chat-brand {
@@ -926,7 +1046,8 @@ body:has(.chat-page) {
 .chat-page.chat-sidebar-collapsed .chat-sidebar-title,
 .chat-page.chat-sidebar-collapsed .chat-search,
 .chat-page.chat-sidebar-collapsed .conversation-copy,
-.chat-page.chat-sidebar-collapsed .conversation-meta {
+.chat-page.chat-sidebar-collapsed .conversation-meta,
+.chat-page.chat-sidebar-collapsed .chat-inline-status {
   display: none;
 }
 
@@ -951,29 +1072,229 @@ body:has(.chat-page) {
   transform: translateX(-50%);
 }
 
-/* ======================================================
-   RESPONSIVIDADE DA BARRA
-====================================================== */
+/* ====================================================
+   24. TABLETS
+==================================================== */
 
-@media (max-width: 760px) {
-  .chat-page,
+@media (max-width: 900px) {
+  .chat-page {
+    grid-template-columns: 255px minmax(0, 1fr);
+  }
+
+  .chat-sidebar {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .chat-brand-logo {
+    width: 150px;
+  }
+
+  .chat-tabs button {
+    font-size: 15px;
+    gap: 5px;
+  }
+
+  .message-group {
+    max-width: 70%;
+  }
+
+  .chat-welcome-card {
+    padding: 35px 22px;
+  }
+}
+
+/* ====================================================
+   25. CELULARES
+
+   A barra de conversas passa para a parte superior.
+==================================================== */
+
+@media (max-width: 640px) {
+  .chat-page {
+    display: block;
+  }
+
+  .chat-sidebar {
+    min-height: auto;
+    padding: 14px 10px 12px;
+  }
+
+  .chat-brand {
+    height: auto;
+    margin-bottom: 20px;
+  }
+
+  .chat-brand-logo {
+    width: 185px;
+    max-width: 85%;
+  }
+
+  .chat-sidebar-title {
+    padding: 5px 8px 12px;
+  }
+
+  .chat-sidebar-title h1 {
+    font-size: 24px;
+  }
+
+  /* Conversas em formato compacto */
+  .conversation-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3px;
+  }
+
+  .conversation-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    padding: 5px 2px;
+    border-radius: 15px;
+    text-align: center;
+  }
+
+  .conversation-item .pet-avatar {
+    width: 46px;
+    height: 46px;
+    flex-basis: 46px;
+  }
+
+  .conversation-copy small,
+  .conversation-meta {
+    display: none;
+  }
+
+  .conversation-copy strong {
+    font-size: 12px;
+  }
+
+  .chat-settings {
+    display: none;
+  }
+
+  /* Área principal do chat */
+  .chat-conversation {
+    min-height: calc(100vh - 178px);
+    grid-template-rows: 56px 72px minmax(0, 1fr) 76px;
+  }
+
+  /* Abas superiores */
+  .chat-tabs {
+    height: 56px;
+  }
+
+  .chat-tabs button {
+    height: 56px;
+    padding: 0 4px;
+
+    gap: 3px;
+    font-size: 12px;
+  }
+
+  .tab-icon {
+    font-size: 16px;
+  }
+
+  /* Cabeçalho das mensagens */
+  .conversation-header {
+    padding: 10px 15px;
+  }
+
+  .conversation-header h2 {
+    font-size: 20px;
+  }
+
+  .conversation-header p {
+    font-size: 12px;
+  }
+
+  /* Área das mensagens */
+  .messages-area {
+    padding: 18px 12px 10px;
+  }
+
+  .message-group {
+    max-width: 76%;
+  }
+
+  .message-bubble {
+    padding: 10px 13px;
+    font-size: 15px;
+  }
+
+  .message-composer {
+    margin: 0 10px 12px;
+  }
+
+  /* Tela sem conversa selecionada */
+  .chat-no-conversation {
+    padding: 22px 12px;
+  }
+
+  .chat-welcome-card {
+    padding: 30px 18px;
+    border-radius: 18px;
+  }
+
+  .chat-welcome-icon {
+    width: 68px;
+    height: 68px;
+    font-size: 30px;
+  }
+
+  .chat-welcome-card h2 {
+    font-size: 22px;
+  }
+
+  .chat-welcome-card p {
+    font-size: 14px;
+  }
+
+  .chat-welcome-tags {
+    gap: 7px;
+  }
+
+  .chat-welcome-tags span {
+    padding: 7px 10px;
+    font-size: 11px;
+  }
+
+  /* Menu recolhido em celulares */
   .chat-page.chat-sidebar-collapsed {
+    display: grid;
     grid-template-columns: 1fr;
   }
 
-  .chat-sidebar,
   .chat-page.chat-sidebar-collapsed .chat-sidebar {
+    position: relative;
+    width: 100%;
     min-height: auto;
+    padding: 12px;
   }
 
-  .chat-page.chat-sidebar-collapsed .chat-sidebar {
-    position: absolute;
-    z-index: 5;
-    width: 86px;
-    height: 100vh;
-  }
-
-  .chat-sidebar-toggle {
-    right: 10px;
+  .chat-page.chat-sidebar-collapsed .chat-conversation {
+    min-width: 0;
   }
 }
+
+/* ====================================================
+   26. ACESSIBILIDADE
+
+   Reduz as animações para usuários que preferem
+   movimentos reduzidos.
+==================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-brand,
+  .conversation-item,
+  .chat-tabs button,
+  .send-button {
+    transition: none;
+  }
+}
+
+/* ====================================================
+   FIM DO CHAT.CSS
+==================================================== */
