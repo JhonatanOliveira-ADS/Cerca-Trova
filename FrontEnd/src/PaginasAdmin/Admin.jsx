@@ -1,235 +1,58 @@
-// src/PaginasAdmin/Admin.jsx
+
+/*
+==========================================================
+ CERCA TROVA - PAINEL ADMINISTRATIVO
+ Arquivo: src/PaginasAdmin/Admin.jsx
+
+ FUNCIONALIDADES:
+ - Menu lateral administrativo
+ - Visão geral com indicadores
+ - Decoração de animais
+ - Tabelas de gerenciamento
+ - Pesquisa por ID, nome e outros campos
+ - Logout
+
+ OBSERVAÇÕES:
+ - Nenhum registro fictício
+ - Dados aguardando integração com backend
+ - Controle visual de acesso por sessionStorage
+==========================================================
+*/
 
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../assets/css/Admin.css";
 
-const usuariosMock = [
-  {
-    id: 1,
-    nome: "João Silva",
-    email: "joao@email.com",
-    status: "Ativo",
-    tipo: "Usuário",
-    pontos: 120,
-  },
-  {
-    id: 2,
-    nome: "Maria Souza",
-    email: "maria@email.com",
-    status: "Ativo",
-    tipo: "Protetora",
-    pontos: 540,
-  },
-  {
-    id: 3,
-    nome: "Carlos Lima",
-    email: "carlos@email.com",
-    status: "Bloqueado",
-    tipo: "Usuário",
-    pontos: 20,
-  },
+/* ======================================================
+   1. DADOS INICIAIS
 
-  {
-    id:123,
-    nome:"samuel",
-    email:"sam@admin.com",
-    senha:"123",
-    tipo:"admin"
-  }
-];
+   Todos os registros começam vazios.
+   Posteriormente serão carregados do banco de dados.
+====================================================== */
 
-const petsMock = [
-  {
-    id: 1,
-    nome: "Thor",
-    especie: "Cão",
-    tipo: "Perdido",
-    tutor: "João Silva",
-    status: "Ativo",
-  },
-  {
-    id: 2,
-    nome: "Luna",
-    especie: "Gato",
-    tipo: "Adoção",
-    tutor: "Maria Souza",
-    status: "Disponível",
-  },
-  {
-    id: 3,
-    nome: "Max",
-    especie: "Cão",
-    tipo: "Encontrado",
-    tutor: "Carlos Lima",
-    status: "Resolvido",
-  },
-];
+const DADOS_INICIAIS = {
+  usuarios: [],
+  pets: [],
+  adocoes: [],
+  achados: [],
+  tinder: [],
+  publicacoes: [],
+  chat: [],
+  publicidade: [],
+};
 
-const adocoesMock = [
-  {
-    id: 1,
-    pet: "Luna",
-    responsavel: "Maria Souza",
-    interessados: 4,
-    status: "Disponível",
-  },
-  {
-    id: 2,
-    pet: "Nina",
-    responsavel: "ONG Patinhas",
-    interessados: 2,
-    status: "Em análise",
-  },
-];
+/* ======================================================
+   2. CONFIGURAÇÃO DO MENU LATERAL
 
-const achadosPerdidosMock = [
-  {
-    id: 1,
-    pet: "Thor",
-    tipo: "Perdido",
-    local: "Bauru - SP",
-    confirmacoes: 8,
-    status: "Ativo",
-  },
-  {
-    id: 2,
-    pet: "Bob",
-    tipo: "Encontrado",
-    local: "Centro",
-    confirmacoes: 3,
-    status: "Ativo",
-  },
-];
+   Cada item contém:
+   - ID da seção
+   - Nome visível
+   - Ícone
 
-const tinderMock = [
-  {
-    id: 1,
-    pet: "Lalinha",
-    tutor: "Ana",
-    curtidas: 18,
-    matches: 5,
-    status: "Ativo",
-  },
-  {
-    id: 2,
-    pet: "Loki",
-    tutor: "Pedro",
-    curtidas: 11,
-    matches: 2,
-    status: "Ativo",
-  },
-  {
-    id: 3,
-    pet: "Sky",
-    tutor: "Marina",
-    curtidas: 22,
-    matches: 7,
-    status: "Ativo",
-  },
-];
-
-const publicacoesMock = [
-  {
-    id: 33,
-    titulo: "Thor desaparecido",
-    tipo: "Perdido",
-    autor: "João Silva",
-    status: "Ativa",
-  },
-  {
-    id: 34,
-    titulo: "Luna para adoção",
-    tipo: "Adoção",
-    autor: "Maria Souza",
-    status: "Ativa",
-  },
-];
-
-const denunciasMock = [
-  {
-    id: 101,
-    motivo: "Informação falsa",
-    alvo: "Postagem #33",
-    autor: "Usuário #18",
-    status: "Pendente",
-  },
-  {
-    id: 102,
-    motivo: "Conteúdo impróprio",
-    alvo: "Usuário #12",
-    autor: "Usuário #41",
-    status: "Pendente",
-  },
-];
-
-const matchesIaMock = [
-  {
-    id: 1,
-    perdido: "Thor",
-    encontrado: "Cão encontrado - Centro",
-    similaridade: 92,
-    status: "Pendente",
-  },
-  {
-    id: 2,
-    perdido: "Mel",
-    encontrado: "Cadela vista - Vila",
-    similaridade: 81,
-    status: "Pendente",
-  },
-];
-
-const publicidadeMock = [
-  {
-    id: 1,
-    empresa: "Cobasi Bauru",
-    local: "Home",
-    status: "Ativa",
-  },
-  {
-    id: 2,
-    empresa: "Agrosolo",
-    local: "Adoção",
-    status: "Pausada",
-  },
-];
-
-const mensagensMock = [
-  {
-    id: 1,
-    usuario: "João Silva",
-    motivo: "Denúncia no chat",
-    status: "Pendente",
-  },
-  {
-    id: 2,
-    usuario: "Maria Souza",
-    motivo: "Solicitação de suporte",
-    status: "Aberto",
-  },
-];
-
-const honrariasMock = [
-  {
-    id: 1,
-    nome: "Bronze",
-    minimo: 0,
-    maximo: 100,
-  },
-  {
-    id: 2,
-    nome: "Prata",
-    minimo: 101,
-    maximo: 500,
-  },
-  {
-    id: 3,
-    nome: "Ouro",
-    minimo: 501,
-    maximo: 99999,
-  },
-];
+   Menus removidos:
+   Matches IA, Denúncias, Relatórios,
+   Configurações e Pontos/Honrarias.
+====================================================== */
 
 const secoes = [
   ["visao", "Visão geral", "▦"],
@@ -239,272 +62,510 @@ const secoes = [
   ["achados", "Achados / Perdidos", "📍"],
   ["tinder", "Tinder Pet", "💜"],
   ["publicacoes", "Publicações", "📰"],
-  ["ia", "Matches IA", "🤖"],
-  ["denuncias", "Denúncias", "🚨"],
   ["chat", "Chat / Suporte", "💬"],
   ["publicidade", "Publicidade", "📢"],
-  ["honrarias", "Pontos / Honrarias", "🏆"],
-  ["relatorios", "Relatórios", "📊"],
-  ["config", "Configurações", "⚙️"],
+  ["pesquisas", "Pesquisas", "🔎"],
 ];
 
+/* ======================================================
+   3. CONFIGURAÇÃO DAS TABELAS
+
+   Cada categoria possui suas colunas específicas.
+   A estrutura permite adicionar novos campos
+   futuramente sem reconstruir o painel.
+====================================================== */
+
+const configuracao = {
+  // USUÁRIOS
+  usuarios: {
+    titulo: "Usuários",
+    descricao: "Gerenciamento de usuários cadastrados.",
+    colunas: [
+      ["id", "ID"],
+      ["nome", "Nome"],
+      ["email", "E-mail"],
+      ["tipo", "Tipo"],
+      ["status", "Status"],
+    ],
+  },
+
+  // PETS
+  pets: {
+    titulo: "Pets",
+    descricao: "Controle dos animais cadastrados.",
+    colunas: [
+      ["id", "ID"],
+      ["nome", "Pet"],
+      ["especie", "Espécie"],
+      ["tipo", "Tipo"],
+      ["tutor", "Tutor"],
+      ["status", "Status"],
+    ],
+  },
+
+  // ADOÇÕES E DOAÇÕES
+  adocoes: {
+    titulo: "Adoções e doações",
+    descricao: "Acompanhamento dos processos de adoção.",
+    colunas: [
+      ["id", "ID"],
+      ["pet", "Pet"],
+      ["responsavel", "Responsável"],
+      ["interessados", "Interessados"],
+      ["status", "Status"],
+    ],
+  },
+
+  // ACHADOS E PERDIDOS
+  achados: {
+    titulo: "Achados e perdidos",
+    descricao: "Ocorrências de animais encontrados e perdidos.",
+    colunas: [
+      ["id", "ID"],
+      ["pet", "Pet"],
+      ["tipo", "Tipo"],
+      ["local", "Local"],
+      ["confirmacoes", "Confirmações"],
+      ["status", "Status"],
+    ],
+  },
+
+  // TINDER PET
+  tinder: {
+    titulo: "Tinder Pet",
+    descricao: "Perfis e matches dos animais.",
+    colunas: [
+      ["id", "ID"],
+      ["pet", "Pet"],
+      ["tutor", "Tutor"],
+      ["curtidas", "Curtidas"],
+      ["matches", "Matches"],
+      ["status", "Status"],
+    ],
+  },
+
+  // PUBLICAÇÕES
+  publicacoes: {
+    titulo: "Publicações",
+    descricao: "Gerenciamento das publicações.",
+    colunas: [
+      ["id", "ID"],
+      ["titulo", "Título"],
+      ["tipo", "Tipo"],
+      ["autor", "Autor"],
+      ["status", "Status"],
+    ],
+  },
+
+  // CHAT E SUPORTE
+  chat: {
+    titulo: "Chat e suporte",
+    descricao: "Solicitações de suporte da plataforma.",
+    colunas: [
+      ["id", "ID"],
+      ["usuario", "Usuário"],
+      ["motivo", "Motivo"],
+      ["status", "Status"],
+    ],
+  },
+
+  // PUBLICIDADE
+  publicidade: {
+    titulo: "Publicidade",
+    descricao: "Banners e parceiros cadastrados.",
+    colunas: [
+      ["id", "ID"],
+      ["empresa", "Empresa"],
+      ["local", "Local"],
+      ["status", "Status"],
+    ],
+  },
+};
+
+/* ======================================================
+   4. NORMALIZAÇÃO DE TEXTO
+
+   Permite pesquisar ignorando:
+   - Letras maiúsculas/minúsculas
+   - Acentos
+====================================================== */
+
+function normalizar(valor) {
+  return String(valor ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+/* ======================================================
+   5. FILTRO DE REGISTROS
+
+   Pesquisa em todas as propriedades ou apenas
+   no campo especificado.
+====================================================== */
+
+function filtrarRegistros(lista, termo, campo = "todos") {
+  const busca = normalizar(String(termo ?? "").trim());
+
+  if (!busca) return lista;
+
+  return lista.filter((item) => {
+    if (campo === "todos") {
+      return Object.values(item).some((valor) =>
+        normalizar(valor).includes(busca)
+      );
+    }
+
+    return normalizar(item[campo]).includes(busca);
+  });
+}
+
+/* ======================================================
+   6. COMPONENTE DE CARD
+
+   Usado para organizar conteúdos administrativos.
+====================================================== */
+
+function Card({ titulo, descricao, children }) {
+  return (
+    <section className="ct-admin-card">
+      <div className="ct-admin-card-header">
+        <div>
+          <h2>{titulo}</h2>
+          <p>{descricao}</p>
+        </div>
+      </div>
+
+      {children}
+    </section>
+  );
+}
+
+/* ======================================================
+   7. COMPONENTE DE INDICADORES
+
+   Exibe o nome, a quantidade e a descrição.
+====================================================== */
+
+function StatCard({ titulo, valor, descricao }) {
+  return (
+    <article className="ct-admin-stat">
+      <span>{titulo}</span>
+      <strong>{valor}</strong>
+      <small>{descricao}</small>
+    </article>
+  );
+}
+
+/* ======================================================
+   8. COMPONENTE DE TABELAS
+
+   Renderiza dinamicamente as colunas.
+
+   Caso a lista esteja vazia, mostra uma mensagem
+   indicando a ausência de registros.
+====================================================== */
+
+function Tabela({ registros, colunas }) {
+  return (
+    <div className="ct-admin-table-wrap">
+      <table className="ct-admin-table">
+        <thead>
+          <tr>
+            {colunas.map(([chave, titulo]) => (
+              <th key={chave}>{titulo}</th>
+            ))}
+          </tr>
+        </thead>
+
+        <tbody>
+          {registros.length === 0 ? (
+            <tr>
+              <td
+                colSpan={colunas.length}
+                className="ct-admin-empty-cell"
+              >
+                Nenhum registro encontrado.
+              </td>
+            </tr>
+          ) : (
+            registros.map((registro, indice) => (
+              <tr key={registro.id ?? indice}>
+                {colunas.map(([chave]) => (
+                  <td key={chave}>
+                    {registro[chave] ?? "—"}
+                  </td>
+                ))}
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+/* ======================================================
+   9. DECORAÇÃO DA VISÃO GERAL
+
+   Esta área substitui:
+   - Ações rápidas
+   - Situação do sistema
+
+   Possui patinhas decorativas e uma mensagem
+   relacionada à proteção dos animais.
+====================================================== */
+
+function AreaDecorativaPets() {
+  return (
+    <section className="ct-admin-pet-area">
+      {/* Patinhas decorativas */}
+      <div
+        className="ct-admin-pet-decoration"
+        aria-hidden="true"
+      >
+        <span className="ct-paw paw-1">🐾</span>
+        <span className="ct-paw paw-2">🐾</span>
+        <span className="ct-paw paw-3">🐾</span>
+        <span className="ct-paw paw-4">🐾</span>
+        <span className="ct-paw paw-5">🐾</span>
+      </div>
+
+      {/* Conteúdo principal */}
+      <div className="ct-admin-pet-content">
+        <div
+          className="ct-admin-pet-icon"
+          aria-hidden="true"
+        >
+          🐶 🐱
+        </div>
+
+        <h2>Cada patinha conta uma história.</h2>
+
+        <p>
+          Cada animal merece cuidado, proteção e
+          uma oportunidade de encontrar seu lar.
+          O Cerca Trova aproxima pessoas e
+          transforma reencontros em novas histórias.
+        </p>
+
+        {/* Etiquetas decorativas */}
+        <div className="ct-admin-pet-tags">
+          <span>🐾 Proteção</span>
+          <span>❤️ Adoção</span>
+          <span>🏡 Reencontros</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ======================================================
+   10. COMPONENTE PRINCIPAL DO ADMIN
+====================================================== */
+
 export default function Admin() {
+  /* --------------------------------------------------
+     NAVEGAÇÃO
+  -------------------------------------------------- */
+
   const navigate = useNavigate();
 
-  const [autorizado, setAutorizado] = useState(false);
-  const [secaoAtiva, setSecaoAtiva] = useState("visao");
-  const [busca, setBusca] = useState("");
-  const [mensagem, setMensagem] = useState("");
+  /* --------------------------------------------------
+     ESTADOS DO PAINEL
+  -------------------------------------------------- */
 
-  const [usuarios, setUsuarios] = useState(usuariosMock);
-  const [pets, setPets] = useState(petsMock);
-  const [adocoes, setAdocoes] = useState(adocoesMock);
-  const [achados, setAchados] = useState(achadosPerdidosMock);
-  const [tinder, setTinder] = useState(tinderMock);
-  const [publicacoes, setPublicacoes] = useState(publicacoesMock);
-  const [denuncias, setDenuncias] = useState(denunciasMock);
-  const [matchesIa, setMatchesIa] = useState(matchesIaMock);
-  const [publicidade, setPublicidade] = useState(publicidadeMock);
-  const [mensagens, setMensagens] = useState(mensagensMock);
-  const [honrarias] = useState(honrariasMock);
+  // Verificação visual de sessão.
+  const [autorizado, setAutorizado] = useState(false);
+
+  // Seção selecionada no menu lateral.
+  const [secaoAtiva, setSecaoAtiva] = useState("visao");
+
+  // Pesquisa simples no cabeçalho.
+  const [busca, setBusca] = useState("");
+
+  // Listas administrativas vazias.
+  // Futuramente serão substituídas por dados da API.
+  const dados = DADOS_INICIAIS;
+
+  /* --------------------------------------------------
+     ESTADOS DA PESQUISA AVANÇADA
+  -------------------------------------------------- */
+
+  // Categoria selecionada.
+  const [categoriaPesquisa, setCategoriaPesquisa] =
+    useState("todos");
+
+  // Campo da pesquisa.
+  const [campoPesquisa, setCampoPesquisa] =
+    useState("todos");
+
+  // Texto pesquisado.
+  const [termoPesquisa, setTermoPesquisa] =
+    useState("");
+
+  /* ==================================================
+     11. VERIFICAÇÃO DE SESSÃO
+
+     Mantém a lógica atual do projeto.
+
+     ATENÇÃO:
+     sessionStorage não é uma verificação segura
+     de privilégios administrativos.
+     O backend deve validar cada operação protegida.
+  ================================================== */
 
   useEffect(() => {
-    const adminAutenticado =
-      sessionStorage.getItem("cercaTrovaAdminAutenticado") === "true";
+    const autenticado =
+      sessionStorage.getItem(
+        "cercaTrovaAdminAutenticado"
+      ) === "true";
 
-    if (!adminAutenticado) {
-      navigate("/login", {
-        replace: true,
-      });
-
+    if (!autenticado) {
+      navigate("/login", { replace: true });
       return;
     }
 
     setAutorizado(true);
   }, [navigate]);
 
-  const resumo = useMemo(
-    () => ({
-      usuarios: usuarios.length,
+  /* ==================================================
+     12. RESUMO DA VISÃO GERAL
 
-      pets: pets.length,
+     Calcula os indicadores com base nos registros.
+  ================================================== */
 
-      perdidos: achados.filter(
+  const resumo = useMemo(() => {
+    return {
+      usuarios: dados.usuarios.length,
+      pets: dados.pets.length,
+      adocoes: dados.adocoes.length,
+
+      perdidos: dados.achados.filter(
         (item) =>
           item.tipo === "Perdido" &&
           item.status === "Ativo"
       ).length,
 
-      adocoes: adocoes.filter(
-        (item) => item.status !== "Concluída"
-      ).length,
+      publicacoes: dados.publicacoes.length,
+      mensagens: dados.chat.length,
+    };
+  }, [dados]);
 
-      denuncias: denuncias.filter(
-        (item) => item.status === "Pendente"
-      ).length,
+  /* ==================================================
+     13. PESQUISA AVANÇADA
 
-      ia: matchesIa.filter(
-        (item) => item.status === "Pendente"
-      ).length,
+     Pesquisa uma categoria específica ou todas.
+  ================================================== */
 
-      tinderMatches: tinder.reduce(
-        (total, item) => total + item.matches,
-        0
-      ),
-    }),
-    [
-      usuarios,
-      pets,
-      achados,
-      adocoes,
-      denuncias,
-      matchesIa,
-      tinder,
-    ]
-  );
+  const resultadosPesquisa = useMemo(() => {
+    const categorias =
+      categoriaPesquisa === "todos"
+        ? Object.keys(configuracao)
+        : [categoriaPesquisa];
 
-  function avisar(texto) {
-    setMensagem(texto);
+    const resultados = [];
 
-    window.clearTimeout(
-      window.__cercaTrovaAdminToast
-    );
+    categorias.forEach((categoria) => {
+      const lista = dados[categoria] || [];
 
-    window.__cercaTrovaAdminToast =
-      window.setTimeout(() => {
-        setMensagem("");
-      }, 2400);
+      const filtrados = filtrarRegistros(
+        lista,
+        termoPesquisa,
+        campoPesquisa
+      );
+
+      filtrados.forEach((item) => {
+        resultados.push({
+          ...item,
+          categoria,
+          origem: configuracao[categoria].titulo,
+        });
+      });
+    });
+
+    return resultados;
+  }, [
+    dados,
+    categoriaPesquisa,
+    campoPesquisa,
+    termoPesquisa,
+  ]);
+
+  /* ==================================================
+     14. NAVEGAÇÃO ENTRE SEÇÕES
+  ================================================== */
+
+  function mudarSecao(id) {
+    setSecaoAtiva(id);
+    setBusca("");
   }
+
+  /* ==================================================
+     15. LOGOUT ADMINISTRATIVO
+  ================================================== */
 
   function sairAdmin() {
     sessionStorage.removeItem(
       "cercaTrovaAdminAutenticado"
     );
 
-    navigate("/login", {
-      replace: true,
-    });
+    navigate("/login", { replace: true });
   }
 
-  function filtrar(itens) {
-    const termo = busca
-      .trim()
-      .toLowerCase();
+  /* ==================================================
+     16. VERIFICAÇÃO ANTES DA RENDERIZAÇÃO
+  ================================================== */
 
-    if (!termo) {
-      return itens;
-    }
+  if (!autorizado) return null;
 
-    return itens.filter((item) =>
-      Object.values(item).some((valor) =>
-        String(valor)
-          .toLowerCase()
-          .includes(termo)
-      )
-    );
-  }
+  // Configuração da seção selecionada.
+  const configAtual = configuracao[secaoAtiva];
 
-  function alternarStatusUsuario(id) {
-    setUsuarios((lista) =>
-      lista.map((usuario) =>
-        usuario.id === id
-          ? {
-              ...usuario,
-
-              status:
-                usuario.status === "Ativo"
-                  ? "Bloqueado"
-                  : "Ativo",
-            }
-          : usuario
-      )
-    );
-
-    avisar(
-      "Status do usuário atualizado."
-    );
-  }
-
-  function excluirItem(
-    setter,
-    id,
-    nome
-  ) {
-    const confirmar = window.confirm(
-      `Deseja realmente excluir ${nome}?`
-    );
-
-    if (!confirmar) {
-      return;
-    }
-
-    setter((lista) =>
-      lista.filter(
-        (item) => item.id !== id
-      )
-    );
-
-    avisar(`${nome} removido.`);
-  }
-
-  function atualizarStatus(
-    setter,
-    id,
-    status,
-    texto
-  ) {
-    setter((lista) =>
-      lista.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              status,
-            }
-          : item
-      )
-    );
-
-    avisar(texto);
-  }
-
-  function definirSimilaridade(
-    id,
-    valor
-  ) {
-    setMatchesIa((lista) =>
-      lista.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              similaridade:
-                Number(valor),
-            }
-          : item
-      )
-    );
-  }
-
-  if (!autorizado) {
-    return null;
-  }
+  /* ==================================================
+     17. INTERFACE PRINCIPAL
+  ================================================== */
 
   return (
     <div className="ct-admin">
+      {/* ==============================================
+          MENU LATERAL
+      ============================================== */}
 
       <aside className="ct-admin-sidebar">
-
+        {/* Logo administrativo */}
         <div className="ct-admin-brand">
-
           <div className="ct-admin-brand-mark">
             🐾
           </div>
 
           <div>
-
-            <strong>
-              Cerca Trova
-            </strong>
-
-            <span>
-              Administração
-            </span>
-
+            <strong>Cerca Trova</strong>
+            <span>Administração</span>
           </div>
-
         </div>
 
+        {/* Botões do menu */}
         <nav className="ct-admin-nav">
+          {secoes.map(([id, nome, icone]) => (
+            <button
+              key={id}
+              type="button"
+              className={
+                secaoAtiva === id ? "active" : ""
+              }
+              onClick={() => mudarSecao(id)}
+            >
+              <span className="ct-admin-nav-icon">
+                {icone}
+              </span>
 
-          {secoes.map(
-            ([id, label, icon]) => (
-
-              <button
-                key={id}
-                type="button"
-                className={
-                  secaoAtiva === id
-                    ? "active"
-                    : ""
-                }
-                onClick={() => {
-                  setSecaoAtiva(id);
-                  setBusca("");
-                }}
-              >
-
-                <span>
-                  {icon}
-                </span>
-
-                {label}
-
-              </button>
-
-            )
-          )}
-
+              <span>{nome}</span>
+            </button>
+          ))}
         </nav>
 
+        {/* Botão de saída */}
         <button
           type="button"
           className="ct-admin-logout"
@@ -512,1584 +573,283 @@ export default function Admin() {
         >
           Sair do Admin
         </button>
-
       </aside>
 
+      {/* ==============================================
+          CONTEÚDO PRINCIPAL
+      ============================================== */}
+
       <main className="ct-admin-main">
-
+        {/* CABEÇALHO */}
         <header className="ct-admin-header">
-
           <div>
-
             <span className="ct-admin-eyebrow">
               PAINEL ADMINISTRATIVO
             </span>
 
             <h1>
-              {
-                secoes.find(
-                  ([id]) =>
-                    id === secaoAtiva
-                )?.[1]
-              }
+              {secoes.find(
+                ([id]) => id === secaoAtiva
+              )?.[1]}
             </h1>
 
-            <p>
-              Controle central do Cerca Trova.
-            </p>
-
+            <p>Controle central do Cerca Trova.</p>
           </div>
 
           <div className="ct-admin-header-actions">
-
-            {secaoAtiva !== "visao" && (
-
+            {/* Pesquisa simples da seção */}
+            {configAtual && (
               <input
-                type="text"
+                type="search"
+                placeholder="Pesquisar nesta seção..."
                 value={busca}
                 onChange={(event) =>
-                  setBusca(
-                    event.target.value
-                  )
+                  setBusca(event.target.value)
                 }
-                placeholder="Pesquisar nesta seção..."
               />
-
             )}
 
+            {/* Avatar administrativo */}
             <div className="ct-admin-avatar">
               ADM
             </div>
-
           </div>
-
         </header>
 
-        {mensagem && (
-
-          <div className="ct-admin-toast">
-            {mensagem}
-          </div>
-
-        )}
+        {/* ==========================================
+            VISÃO GERAL
+        ========================================== */}
 
         {secaoAtiva === "visao" && (
-
           <>
-
+            {/* INDICADORES */}
             <section className="ct-admin-stats">
-
               <StatCard
                 titulo="Usuários"
                 valor={resumo.usuarios}
-                texto="Contas cadastradas"
+                descricao="Contas cadastradas"
               />
 
               <StatCard
                 titulo="Pets"
                 valor={resumo.pets}
-                texto="Animais cadastrados"
+                descricao="Animais cadastrados"
               />
 
               <StatCard
                 titulo="Perdidos ativos"
                 valor={resumo.perdidos}
-                texto="Buscas em andamento"
+                descricao="Buscas em andamento"
               />
 
               <StatCard
                 titulo="Adoções"
                 valor={resumo.adocoes}
-                texto="Processos ativos"
+                descricao="Processos cadastrados"
               />
 
               <StatCard
-                titulo="Denúncias"
-                valor={resumo.denuncias}
-                texto="Aguardando análise"
+                titulo="Publicações"
+                valor={resumo.publicacoes}
+                descricao="Posts cadastrados"
               />
 
               <StatCard
-                titulo="Matches IA"
-                valor={resumo.ia}
-                texto="Aguardando validação"
+                titulo="Chat / Suporte"
+                valor={resumo.mensagens}
+                descricao="Solicitações cadastradas"
               />
-
-              <StatCard
-                titulo="Matches Tinder"
-                valor={
-                  resumo.tinderMatches
-                }
-                texto="Matches registrados"
-              />
-
             </section>
 
-            <section className="ct-admin-grid-2">
-
-              <Card
-                titulo="Ações rápidas"
-                subtitulo="Acesse funções importantes do sistema."
-              >
-
-                <div className="ct-admin-quick">
-
-                  <button
-                    onClick={() =>
-                      setSecaoAtiva(
-                        "usuarios"
-                      )
-                    }
-                  >
-                    Gerenciar usuários
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      setSecaoAtiva(
-                        "achados"
-                      )
-                    }
-                  >
-                    Ver perdidos
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      setSecaoAtiva("ia")
-                    }
-                  >
-                    Analisar IA
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      setSecaoAtiva(
-                        "denuncias"
-                      )
-                    }
-                  >
-                    Ver denúncias
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      setSecaoAtiva(
-                        "publicidade"
-                      )
-                    }
-                  >
-                    Publicidade
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      setSecaoAtiva(
-                        "relatorios"
-                      )
-                    }
-                  >
-                    Relatórios
-                  </button>
-
-                </div>
-
-              </Card>
-
-              <Card
-                titulo="Pendências"
-                subtitulo="O que precisa de atenção."
-              >
-
-                <div className="ct-admin-pendencias">
-
-                  <p>
-                    <strong>
-                      {resumo.denuncias}
-                    </strong>{" "}
-                    denúncias pendentes
-                  </p>
-
-                  <p>
-                    <strong>
-                      {resumo.ia}
-                    </strong>{" "}
-                    possíveis matches da IA
-                  </p>
-
-                  <p>
-                    <strong>
-                      {resumo.perdidos}
-                    </strong>{" "}
-                    pets perdidos ativos
-                  </p>
-
-                  <p>
-                    <strong>
-                      {
-                        mensagens.filter(
-                          (mensagem) =>
-                            mensagem.status !==
-                            "Resolvido"
-                        ).length
-                      }
-                    </strong>{" "}
-                    solicitações no chat
-                  </p>
-
-                </div>
-
-              </Card>
-
-            </section>
-
+            {/* ÁREA DECORATIVA DOS ANIMAIS */}
+            <AreaDecorativaPets />
           </>
-
         )}
 
-        {secaoAtiva === "usuarios" && (
+        {/* ==========================================
+            TABELAS DAS SEÇÕES ADMINISTRATIVAS
 
+            Exibe a tabela correspondente à seção.
+        ========================================== */}
+
+        {configAtual && (
           <Card
-            titulo="Usuários"
-            subtitulo="Bloqueie, ative, exclua e acompanhe pontos."
+            titulo={configAtual.titulo}
+            descricao={configAtual.descricao}
           >
-
-            <AdminTable
-              headers={[
-                "Nome",
-                "E-mail",
-                "Tipo",
-                "Pontos",
-                "Status",
-                "Ações",
-              ]}
-            >
-
-              {filtrar(
-                usuarios
-              ).map((usuario) => (
-
-                <tr key={usuario.id}>
-
-                  <td>
-                    {usuario.nome}
-                  </td>
-
-                  <td>
-                    {usuario.email}
-                  </td>
-
-                  <td>
-                    {usuario.tipo}
-                  </td>
-
-                  <td>
-                    {usuario.pontos}
-                  </td>
-
-                  <td>
-
-                    <StatusBadge
-                      value={
-                        usuario.status
-                      }
-                    />
-
-                  </td>
-
-                  <td className="ct-admin-actions">
-
-                    <button
-                      className="secondary"
-                      onClick={() =>
-                        alternarStatusUsuario(
-                          usuario.id
-                        )
-                      }
-                    >
-                      {usuario.status ===
-                      "Ativo"
-                        ? "Bloquear"
-                        : "Ativar"}
-                    </button>
-
-                    <button
-                      className="danger"
-                      onClick={() =>
-                        excluirItem(
-                          setUsuarios,
-                          usuario.id,
-                          "usuário"
-                        )
-                      }
-                    >
-                      Excluir
-                    </button>
-
-                  </td>
-
-                </tr>
-
-              ))}
-
-            </AdminTable>
-
-          </Card>
-
-        )}
-
-        {secaoAtiva === "pets" && (
-
-          <Card
-            titulo="Pets"
-            subtitulo="Controle todos os animais cadastrados."
-          >
-
-            <AdminTable
-              headers={[
-                "Pet",
-                "Espécie",
-                "Tipo",
-                "Tutor",
-                "Status",
-                "Ações",
-              ]}
-            >
-
-              {filtrar(
-                pets
-              ).map((pet) => (
-
-                <tr key={pet.id}>
-
-                  <td>
-                    {pet.nome}
-                  </td>
-
-                  <td>
-                    {pet.especie}
-                  </td>
-
-                  <td>
-                    {pet.tipo}
-                  </td>
-
-                  <td>
-                    {pet.tutor}
-                  </td>
-
-                  <td>
-
-                    <StatusBadge
-                      value={
-                        pet.status
-                      }
-                    />
-
-                  </td>
-
-                  <td className="ct-admin-actions">
-
-                    <button
-                      className="success"
-                      onClick={() =>
-                        atualizarStatus(
-                          setPets,
-                          pet.id,
-                          "Resolvido",
-                          "Status do pet atualizado."
-                        )
-                      }
-                    >
-                      Resolver
-                    </button>
-
-                    <button
-                      className="danger"
-                      onClick={() =>
-                        excluirItem(
-                          setPets,
-                          pet.id,
-                          "pet"
-                        )
-                      }
-                    >
-                      Excluir
-                    </button>
-
-                  </td>
-
-                </tr>
-
-              ))}
-
-            </AdminTable>
-
-          </Card>
-
-        )}
-
-        {secaoAtiva === "adocoes" && (
-
-          <Card
-            titulo="Adoções e doações"
-            subtitulo="Acompanhe anúncios, interessados e conclusões."
-          >
-
-            <AdminTable
-              headers={[
-                "Pet",
-                "Responsável",
-                "Interessados",
-                "Status",
-                "Ações",
-              ]}
-            >
-
-              {filtrar(
-                adocoes
-              ).map((item) => (
-
-                <tr key={item.id}>
-
-                  <td>
-                    {item.pet}
-                  </td>
-
-                  <td>
-                    {item.responsavel}
-                  </td>
-
-                  <td>
-                    {item.interessados}
-                  </td>
-
-                  <td>
-
-                    <StatusBadge
-                      value={
-                        item.status
-                      }
-                    />
-
-                  </td>
-
-                  <td className="ct-admin-actions">
-
-                    <button
-                      className="success"
-                      onClick={() =>
-                        atualizarStatus(
-                          setAdocoes,
-                          item.id,
-                          "Concluída",
-                          "Adoção marcada como concluída."
-                        )
-                      }
-                    >
-                      Concluir
-                    </button>
-
-                    <button
-                      className="secondary"
-                      onClick={() =>
-                        atualizarStatus(
-                          setAdocoes,
-                          item.id,
-                          "Pausada",
-                          "Adoção pausada."
-                        )
-                      }
-                    >
-                      Pausar
-                    </button>
-
-                  </td>
-
-                </tr>
-
-              ))}
-
-            </AdminTable>
-
-          </Card>
-
-        )}
-
-        {secaoAtiva === "achados" && (
-
-          <Card
-            titulo="Achados e perdidos"
-            subtitulo="Controle status, localização e confirmações do mapa."
-          >
-
-            <AdminTable
-              headers={[
-                "Pet",
-                "Tipo",
-                "Local",
-                "Confirmações",
-                "Status",
-                "Ações",
-              ]}
-            >
-
-              {filtrar(
-                achados
-              ).map((item) => (
-
-                <tr key={item.id}>
-
-                  <td>
-                    {item.pet}
-                  </td>
-
-                  <td>
-                    {item.tipo}
-                  </td>
-
-                  <td>
-                    {item.local}
-                  </td>
-
-                  <td>
-                    {item.confirmacoes}
-                  </td>
-
-                  <td>
-
-                    <StatusBadge
-                      value={
-                        item.status
-                      }
-                    />
-
-                  </td>
-
-                  <td className="ct-admin-actions">
-
-                    <button
-                      className="success"
-                      onClick={() =>
-                        atualizarStatus(
-                          setAchados,
-                          item.id,
-                          "Resolvido",
-                          "Ocorrência encerrada."
-                        )
-                      }
-                    >
-                      Resolver
-                    </button>
-
-                    <button
-                      className="danger"
-                      onClick={() =>
-                        excluirItem(
-                          setAchados,
-                          item.id,
-                          "ocorrência"
-                        )
-                      }
-                    >
-                      Excluir
-                    </button>
-
-                  </td>
-
-                </tr>
-
-              ))}
-
-            </AdminTable>
-
-          </Card>
-
-        )}
-
-        {secaoAtiva === "tinder" && (
-
-          <Card
-            titulo="Tinder Pet"
-            subtitulo="Administre perfis, curtidas e matches."
-          >
-
-            <AdminTable
-              headers={[
-                "Pet",
-                "Tutor",
-                "Curtidas",
-                "Matches",
-                "Status",
-                "Ações",
-              ]}
-            >
-
-              {filtrar(
-                tinder
-              ).map((item) => (
-
-                <tr key={item.id}>
-
-                  <td>
-                    {item.pet}
-                  </td>
-
-                  <td>
-                    {item.tutor}
-                  </td>
-
-                  <td>
-                    {item.curtidas}
-                  </td>
-
-                  <td>
-                    {item.matches}
-                  </td>
-
-                  <td>
-
-                    <StatusBadge
-                      value={
-                        item.status
-                      }
-                    />
-
-                  </td>
-
-                  <td className="ct-admin-actions">
-
-                    <button
-                      className="secondary"
-                      onClick={() =>
-                        atualizarStatus(
-                          setTinder,
-                          item.id,
-                          item.status ===
-                          "Ativo"
-                            ? "Pausado"
-                            : "Ativo",
-                          "Perfil do Tinder Pet atualizado."
-                        )
-                      }
-                    >
-                      {item.status ===
-                      "Ativo"
-                        ? "Pausar"
-                        : "Ativar"}
-                    </button>
-
-                    <button
-                      className="danger"
-                      onClick={() =>
-                        excluirItem(
-                          setTinder,
-                          item.id,
-                          "perfil"
-                        )
-                      }
-                    >
-                      Remover
-                    </button>
-
-                  </td>
-
-                </tr>
-
-              ))}
-
-            </AdminTable>
-
-          </Card>
-
-        )}
-
-        {secaoAtiva ===
-          "publicacoes" && (
-
-          <Card
-            titulo="Publicações"
-            subtitulo="Modere o conteúdo publicado no site."
-          >
-
-            <AdminTable
-              headers={[
-                "Título",
-                "Tipo",
-                "Autor",
-                "Status",
-                "Ações",
-              ]}
-            >
-
-              {filtrar(
-                publicacoes
-              ).map((item) => (
-
-                <tr key={item.id}>
-
-                  <td>
-                    {item.titulo}
-                  </td>
-
-                  <td>
-                    {item.tipo}
-                  </td>
-
-                  <td>
-                    {item.autor}
-                  </td>
-
-                  <td>
-
-                    <StatusBadge
-                      value={
-                        item.status
-                      }
-                    />
-
-                  </td>
-
-                  <td className="ct-admin-actions">
-
-                    <button
-                      className="secondary"
-                      onClick={() =>
-                        atualizarStatus(
-                          setPublicacoes,
-                          item.id,
-                          item.status ===
-                          "Ativa"
-                            ? "Oculta"
-                            : "Ativa",
-                          "Visibilidade atualizada."
-                        )
-                      }
-                    >
-                      {item.status ===
-                      "Ativa"
-                        ? "Ocultar"
-                        : "Ativar"}
-                    </button>
-
-                    <button
-                      className="danger"
-                      onClick={() =>
-                        excluirItem(
-                          setPublicacoes,
-                          item.id,
-                          "publicação"
-                        )
-                      }
-                    >
-                      Excluir
-                    </button>
-
-                  </td>
-
-                </tr>
-
-              ))}
-
-            </AdminTable>
-
-          </Card>
-
-        )}
-
-        {secaoAtiva === "ia" && (
-
-          <Card
-            titulo="Possíveis matches da IA"
-            subtitulo="Valide ou descarte correspondências automáticas."
-          >
-
-            <div className="ct-admin-match-list">
-
-              {filtrar(
-                matchesIa
-              ).map((item) => (
-
-                <article
-                  className="ct-admin-match-card"
-                  key={item.id}
-                >
-
-                  <div>
-
-                    <span className="ct-admin-match-label">
-                      Pet perdido
-                    </span>
-
-                    <strong>
-                      {item.perdido}
-                    </strong>
-
-                  </div>
-
-                  <div className="ct-admin-match-score">
-
-                    <strong>
-                      {item.similaridade}%
-                    </strong>
-
-                    <span>
-                      similaridade
-                    </span>
-
-                    <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value={
-                        item.similaridade
-                      }
-                      onChange={(event) =>
-                        definirSimilaridade(
-                          item.id,
-                          event.target.value
-                        )
-                      }
-                    />
-
-                  </div>
-
-                  <div>
-
-                    <span className="ct-admin-match-label">
-                      Possível encontrado
-                    </span>
-
-                    <strong>
-                      {item.encontrado}
-                    </strong>
-
-                  </div>
-
-                  <div className="ct-admin-actions">
-
-                    <button
-                      className="success"
-                      onClick={() =>
-                        atualizarStatus(
-                          setMatchesIa,
-                          item.id,
-                          "Confirmado",
-                          "Correspondência confirmada."
-                        )
-                      }
-                    >
-                      Confirmar
-                    </button>
-
-                    <button
-                      className="danger"
-                      onClick={() =>
-                        atualizarStatus(
-                          setMatchesIa,
-                          item.id,
-                          "Descartado",
-                          "Correspondência descartada."
-                        )
-                      }
-                    >
-                      Descartar
-                    </button>
-
-                  </div>
-
-                </article>
-
-              ))}
-
-            </div>
-
-          </Card>
-
-        )}
-
-        {secaoAtiva ===
-          "denuncias" && (
-
-          <Card
-            titulo="Denúncias"
-            subtitulo="Analise denúncias e aplique decisões administrativas."
-          >
-
-            <AdminTable
-              headers={[
-                "Código",
-                "Motivo",
-                "Alvo",
-                "Denunciante",
-                "Status",
-                "Ações",
-              ]}
-            >
-
-              {filtrar(
-                denuncias
-              ).map((item) => (
-
-                <tr key={item.id}>
-
-                  <td>
-                    #{item.id}
-                  </td>
-
-                  <td>
-                    {item.motivo}
-                  </td>
-
-                  <td>
-                    {item.alvo}
-                  </td>
-
-                  <td>
-                    {item.autor}
-                  </td>
-
-                  <td>
-
-                    <StatusBadge
-                      value={
-                        item.status
-                      }
-                    />
-
-                  </td>
-
-                  <td className="ct-admin-actions">
-
-                    <button
-                      className="success"
-                      onClick={() =>
-                        atualizarStatus(
-                          setDenuncias,
-                          item.id,
-                          "Resolvida",
-                          "Denúncia resolvida."
-                        )
-                      }
-                    >
-                      Resolver
-                    </button>
-
-                    <button
-                      className="secondary"
-                      onClick={() =>
-                        atualizarStatus(
-                          setDenuncias,
-                          item.id,
-                          "Ignorada",
-                          "Denúncia ignorada."
-                        )
-                      }
-                    >
-                      Ignorar
-                    </button>
-
-                  </td>
-
-                </tr>
-
-              ))}
-
-            </AdminTable>
-
-          </Card>
-
-        )}
-
-        {secaoAtiva === "chat" && (
-
-          <Card
-            titulo="Chat e suporte"
-            subtitulo="Acompanhe denúncias e solicitações relacionadas ao chat."
-          >
-
-            <AdminTable
-              headers={[
-                "Usuário",
-                "Motivo",
-                "Status",
-                "Ações",
-              ]}
-            >
-
-              {filtrar(
-                mensagens
-              ).map((item) => (
-
-                <tr key={item.id}>
-
-                  <td>
-                    {item.usuario}
-                  </td>
-
-                  <td>
-                    {item.motivo}
-                  </td>
-
-                  <td>
-
-                    <StatusBadge
-                      value={
-                        item.status
-                      }
-                    />
-
-                  </td>
-
-                  <td className="ct-admin-actions">
-
-                    <button
-                      className="success"
-                      onClick={() =>
-                        atualizarStatus(
-                          setMensagens,
-                          item.id,
-                          "Resolvido",
-                          "Atendimento encerrado."
-                        )
-                      }
-                    >
-                      Resolver
-                    </button>
-
-                  </td>
-
-                </tr>
-
-              ))}
-
-            </AdminTable>
-
-          </Card>
-
-        )}
-
-        {secaoAtiva ===
-          "publicidade" && (
-
-          <Card
-            titulo="Publicidade"
-            subtitulo="Controle banners, parceiros e locais de exibição."
-          >
-
-            <div className="ct-admin-toolbar">
-
-              <button
-                type="button"
-                onClick={() =>
-                  avisar(
-                    "Nova publicidade preparada para integração com o backend."
-                  )
-                }
-              >
-                + Nova publicidade
-              </button>
-
-            </div>
-
-            <AdminTable
-              headers={[
-                "Empresa",
-                "Local",
-                "Status",
-                "Ações",
-              ]}
-            >
-
-              {filtrar(
-                publicidade
-              ).map((item) => (
-
-                <tr key={item.id}>
-
-                  <td>
-                    {item.empresa}
-                  </td>
-
-                  <td>
-                    {item.local}
-                  </td>
-
-                  <td>
-
-                    <StatusBadge
-                      value={
-                        item.status
-                      }
-                    />
-
-                  </td>
-
-                  <td className="ct-admin-actions">
-
-                    <button
-                      className="secondary"
-                      onClick={() =>
-                        atualizarStatus(
-                          setPublicidade,
-                          item.id,
-                          item.status ===
-                          "Ativa"
-                            ? "Pausada"
-                            : "Ativa",
-                          "Publicidade atualizada."
-                        )
-                      }
-                    >
-                      {item.status ===
-                      "Ativa"
-                        ? "Pausar"
-                        : "Ativar"}
-                    </button>
-
-                    <button
-                      className="danger"
-                      onClick={() =>
-                        excluirItem(
-                          setPublicidade,
-                          item.id,
-                          "publicidade"
-                        )
-                      }
-                    >
-                      Excluir
-                    </button>
-
-                  </td>
-
-                </tr>
-
-              ))}
-
-            </AdminTable>
-
-          </Card>
-
-        )}
-
-        {secaoAtiva ===
-          "honrarias" && (
-
-          <Card
-            titulo="Pontos e honrarias"
-            subtitulo="Regras de pontuação e níveis de participação."
-          >
-
-            <section className="ct-admin-honor-grid">
-
-              {honrarias.map(
-                (item) => (
-
-                  <article key={item.id}>
-
-                    <div className="ct-admin-honor-icon">
-
-                      {item.nome ===
-                      "Bronze"
-                        ? "🥉"
-                        : item.nome ===
-                          "Prata"
-                          ? "🥈"
-                          : "🥇"}
-
-                    </div>
-
-                    <h3>
-                      {item.nome}
-                    </h3>
-
-                    <p>
-                      {item.minimo} a{" "}
-                      {item.maximo ===
-                      99999
-                        ? "∞"
-                        : item.maximo}{" "}
-                      pontos
-                    </p>
-
-                    <button
-                      onClick={() =>
-                        avisar(
-                          `Editar regra ${item.nome}.`
-                        )
-                      }
-                    >
-                      Editar regra
-                    </button>
-
-                  </article>
-
-                )
+            <Tabela
+              colunas={configAtual.colunas}
+              registros={filtrarRegistros(
+                dados[secaoAtiva] || [],
+                busca
               )}
-
-            </section>
-
-            <div className="ct-admin-points-rules">
-
-              <h3>
-                Regras de pontuação
-              </h3>
-
-              <p>
-                Confirmar localização
-                real: +10 pontos
-              </p>
-
-              <p>
-                "Está lá / Não está":
-                +5 pontos
-              </p>
-
-              <p>
-                Participação validada
-                em adoção: +20 pontos
-              </p>
-
-            </div>
-
+            />
           </Card>
-
         )}
 
-        {secaoAtiva ===
-          "relatorios" && (
+        {/* ==========================================
+            PESQUISA AVANÇADA
 
+            Filtros:
+            - Categoria
+            - Campo
+            - Termo pesquisado
+        ========================================== */}
+
+        {secaoAtiva === "pesquisas" && (
           <Card
-            titulo="Relatórios"
-            subtitulo="Indicadores gerais do Cerca Trova."
+            titulo="Pesquisa de cadastros"
+            descricao="Localize registros por ID, nome ou outros campos."
           >
+            {/* CAMPOS DE FILTRO */}
+            <div className="ct-admin-search-filters">
+              {/* Categoria */}
+              <label>
+                Categoria
 
-            <section className="ct-admin-report-grid">
+                <select
+                  value={categoriaPesquisa}
+                  onChange={(event) =>
+                    setCategoriaPesquisa(
+                      event.target.value
+                    )
+                  }
+                >
+                  <option value="todos">
+                    Todas
+                  </option>
 
-              <ReportCard
-                titulo="Usuários cadastrados"
-                valor={
-                  resumo.usuarios
-                }
-              />
+                  {Object.entries(configuracao).map(
+                    ([id, config]) => (
+                      <option key={id} value={id}>
+                        {config.titulo}
+                      </option>
+                    )
+                  )}
+                </select>
+              </label>
 
-              <ReportCard
-                titulo="Pets cadastrados"
-                valor={resumo.pets}
-              />
+              {/* Campo da pesquisa */}
+              <label>
+                Filtrar por
 
-              <ReportCard
-                titulo="Perdidos ativos"
-                valor={
-                  resumo.perdidos
-                }
-              />
+                <select
+                  value={campoPesquisa}
+                  onChange={(event) =>
+                    setCampoPesquisa(
+                      event.target.value
+                    )
+                  }
+                >
+                  <option value="todos">
+                    Todos os campos
+                  </option>
 
-              <ReportCard
-                titulo="Adoções em andamento"
-                valor={
-                  resumo.adocoes
-                }
-              />
+                  <option value="id">ID</option>
+                  <option value="nome">Nome</option>
+                  <option value="email">E-mail</option>
+                  <option value="pet">Pet</option>
+                  <option value="tutor">Tutor</option>
+                  <option value="autor">Autor</option>
+                  <option value="status">Status</option>
+                </select>
+              </label>
 
-              <ReportCard
-                titulo="Denúncias pendentes"
-                valor={
-                  resumo.denuncias
-                }
-              />
+              {/* Texto da pesquisa */}
+              <label>
+                Pesquisar
 
-              <ReportCard
-                titulo="Matches IA pendentes"
-                valor={resumo.ia}
-              />
-
-            </section>
-
-            <div className="ct-admin-toolbar">
-
-              <button
-                type="button"
-                onClick={() =>
-                  avisar(
-                    "Relatório preparado para futura exportação."
-                  )
-                }
-              >
-                Gerar relatório
-              </button>
-
+                <input
+                  type="search"
+                  value={termoPesquisa}
+                  onChange={(event) =>
+                    setTermoPesquisa(
+                      event.target.value
+                    )
+                  }
+                  placeholder="Digite ID ou nome..."
+                />
+              </label>
             </div>
 
-          </Card>
+            {/* QUANTIDADE DE RESULTADOS */}
+            <p className="ct-admin-search-count">
+              {resultadosPesquisa.length} resultado(s)
+            </p>
 
-        )}
+            {/* TABELA DE RESULTADOS */}
+            <div className="ct-admin-table-wrap">
+              <table className="ct-admin-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Categoria</th>
+                    <th>Nome / Título</th>
+                    <th>Informação</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
 
-        {secaoAtiva ===
-          "config" && (
+                <tbody>
+                  {resultadosPesquisa.length === 0 ? (
+                    <tr>
+                      <td
+                        colSpan={5}
+                        className="ct-admin-empty-cell"
+                      >
+                        Nenhum registro encontrado.
+                      </td>
+                    </tr>
+                  ) : (
+                    resultadosPesquisa.map(
+                      (item, indice) => (
+                        <tr
+                          key={`${item.categoria}-${item.id ?? indice}`}
+                        >
+                          {/* ID */}
+                          <td>{item.id ?? "—"}</td>
 
-          <Card
-            titulo="Configurações"
-            subtitulo="Parâmetros gerais da plataforma."
-          >
+                          {/* Categoria */}
+                          <td>{item.origem}</td>
 
-            <div className="ct-admin-settings">
+                          {/* Nome */}
+                          <td>
+                            {item.nome ??
+                              item.pet ??
+                              item.titulo ??
+                              item.usuario ??
+                              item.empresa ??
+                              "—"}
+                          </td>
 
-              <label>
+                          {/* Informação complementar */}
+                          <td>
+                            {item.email ??
+                              item.tutor ??
+                              item.autor ??
+                              item.local ??
+                              item.responsavel ??
+                              "—"}
+                          </td>
 
-                <span>
-                  Nome da plataforma
-                </span>
-
-                <input
-                  defaultValue="Cerca Trova"
-                />
-
-              </label>
-
-              <label>
-
-                <span>
-                  E-mail administrativo
-                </span>
-
-                <input
-                  defaultValue="admin@cercatrova.com"
-                />
-
-              </label>
-
-              <label>
-
-                <span>
-                  Limite de tentativas
-                  de login
-                </span>
-
-                <input
-                  type="number"
-                  defaultValue="5"
-                />
-
-              </label>
-
-              <label className="ct-admin-switch-row">
-
-                <span>
-                  Permitir novos cadastros
-                </span>
-
-                <input
-                  type="checkbox"
-                  defaultChecked
-                />
-
-              </label>
-
-              <label className="ct-admin-switch-row">
-
-                <span>
-                  Ativar Tinder Pet
-                </span>
-
-                <input
-                  type="checkbox"
-                  defaultChecked
-                />
-
-              </label>
-
-              <label className="ct-admin-switch-row">
-
-                <span>
-                  Ativar confirmação
-                  no mapa
-                </span>
-
-                <input
-                  type="checkbox"
-                  defaultChecked
-                />
-
-              </label>
-
-              <button
-                type="button"
-                onClick={() =>
-                  avisar(
-                    "Configurações salvas para teste."
-                  )
-                }
-              >
-                Salvar configurações
-              </button>
-
+                          {/* Status */}
+                          <td>
+                            {item.status ?? "—"}
+                          </td>
+                        </tr>
+                      )
+                    )
+                  )}
+                </tbody>
+              </table>
             </div>
-
           </Card>
-
         )}
-
       </main>
-
     </div>
   );
 }
 
-function Card({
-  titulo,
-  subtitulo,
-  children,
-}) {
-  return (
-    <section className="ct-admin-card">
-
-      <div className="ct-admin-card-header">
-
-        <div>
-
-          <h2>
-            {titulo}
-          </h2>
-
-          <p>
-            {subtitulo}
-          </p>
-
-        </div>
-
-      </div>
-
-      {children}
-
-    </section>
-  );
-}
-
-function StatCard({
-  titulo,
-  valor,
-  texto,
-}) {
-  return (
-    <article className="ct-admin-stat">
-
-      <span>
-        {titulo}
-      </span>
-
-      <strong>
-        {valor}
-      </strong>
-
-      <small>
-        {texto}
-      </small>
-
-    </article>
-  );
-}
-
-function ReportCard({
-  titulo,
-  valor,
-}) {
-  return (
-    <article className="ct-admin-report-card">
-
-      <span>
-        {titulo}
-      </span>
-
-      <strong>
-        {valor}
-      </strong>
-
-    </article>
-  );
-}
-
-function AdminTable({
-  headers,
-  children,
-}) {
-  return (
-    <div className="ct-admin-table-wrap">
-
-      <table className="ct-admin-table">
-
-        <thead>
-
-          <tr>
-
-            {headers.map(
-              (header) => (
-
-                <th key={header}>
-                  {header}
-                </th>
-
-              )
-            )}
-
-          </tr>
-
-        </thead>
-
-        <tbody>
-          {children}
-        </tbody>
-
-      </table>
-
-    </div>
-  );
-}
-
-function StatusBadge({ value }) {
-  const status =
-    String(value).toLowerCase();
-
-  let tipo = "neutral";
-
-  if (
-    [
-      "ativo",
-      "ativa",
-      "disponível",
-      "resolvido",
-      "resolvida",
-      "concluída",
-      "confirmado",
-    ].includes(status)
-  ) {
-    tipo = "success";
-  } else if (
-    [
-      "pendente",
-      "em análise",
-      "aberto",
-    ].includes(status)
-  ) {
-    tipo = "warning";
-  } else if (
-    [
-      "bloqueado",
-      "pausada",
-      "pausado",
-      "oculta",
-      "ignorada",
-      "descartado",
-    ].includes(status)
-  ) {
-    tipo = "danger";
-  }
-
-  return (
-    <span
-      className={`ct-admin-status ${tipo}`}
-    >
-      {value}
-    </span>
-  );
-}
+/* ==========================================================
+   FIM DO ARQUIVO ADMIN.JSX
+========================================================== */

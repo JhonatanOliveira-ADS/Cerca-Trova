@@ -1,4 +1,26 @@
-/* src/assets/css/Admin.css */
+
+/*
+==========================================================
+ CERCA TROVA - PAINEL ADMINISTRATIVO
+ Arquivo: src/assets/css/Admin.css
+
+ ESTILOS:
+ - Cores oficiais
+ - Menu lateral
+ - Logo
+ - Botão de saída
+ - Cabeçalho
+ - Indicadores
+ - Área decorativa com animais
+ - Tabelas
+ - Pesquisas
+ - Responsividade
+==========================================================
+*/
+
+/* ======================================================
+   1. CORES E VARIÁVEIS DO SISTEMA
+====================================================== */
 
 :root {
   --ct-dark: #0d2b3e;
@@ -14,1145 +36,907 @@
   --ct-muted: #6d7d88;
   --ct-success: #2f8f67;
   --ct-danger: #c95757;
-  --ct-warning: #d79532;
-
-  --ct-shadow:
-    0 12px 35px
-    rgba(13, 43, 62, 0.1);
+  --ct-shadow: 0 12px 35px rgba(13,43,62,0.1);
 }
 
-* {
+/* ======================================================
+   2. CONFIGURAÇÕES GERAIS
+
+   Mantém o layout administrativo isolado
+   das configurações globais do site.
+====================================================== */
+
+.ct-admin,
+.ct-admin *,
+.ct-admin *::before,
+.ct-admin *::after {
   box-sizing: border-box;
 }
 
 .ct-admin {
-  min-height: 100vh;
-
   display: grid;
+  grid-template-columns: 270px minmax(0, 1fr);
+  min-height: 100vh;
+  width: 100%;
 
-  grid-template-columns:
-    270px
-    minmax(0, 1fr);
+  background: var(--ct-bg);
+  color: var(--ct-text);
 
-  background:
-    var(--ct-bg);
-
-  color:
-    var(--ct-text);
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .ct-admin button,
-.ct-admin input {
+.ct-admin input,
+.ct-admin select {
   font: inherit;
 }
 
-/* ==========================================
-   SIDEBAR
-========================================== */
+/* ======================================================
+   3. MENU LATERAL
 
-.ct-admin-sidebar {
+   Fundo azul-escuro em degradê.
+   Barra com rolagem quando necessário.
+====================================================== */
+
+.ct-admin .ct-admin-sidebar {
   position: sticky;
-
   top: 0;
 
   height: 100vh;
+  min-height: 0;
 
   display: flex;
-
   flex-direction: column;
 
   padding: 24px 18px;
 
+  background: linear-gradient(
+    180deg,
+    #0d2b3e 0%,
+    #163a50 100%
+  ) !important;
+
+  color: #ffffff;
+
   overflow-y: auto;
+  overflow-x: hidden;
 
-  color:
-    var(--ct-white);
-
-  background:
-    linear-gradient(
-      180deg,
-      var(--ct-dark),
-      var(--ct-dark-2)
-    );
+  scrollbar-width: thin;
+  scrollbar-color: #426071 transparent;
 }
 
-/* ==========================================
-   LOGO ADMIN
-========================================== */
+/* ======================================================
+   4. LOGO ADMINISTRATIVO
+====================================================== */
 
 .ct-admin-brand {
   display: flex;
-
   align-items: center;
-
   gap: 12px;
 
-  padding:
-    4px
-    6px
-    24px;
+  padding: 4px 6px 22px;
 
-  border-bottom:
-    1px solid
-    rgba(
-      255,
-      255,
-      255,
-      0.12
-    );
+  border-bottom: 1px solid rgba(
+    255,255,255,0.12
+  );
+
+  flex-shrink: 0;
 }
 
 .ct-admin-brand-mark {
   width: 46px;
-
   height: 46px;
 
-  display: grid;
+  flex-shrink: 0;
 
+  display: grid;
   place-items: center;
 
   border-radius: 14px;
-
   font-size: 24px;
 
-  background:
-    linear-gradient(
-      135deg,
-      var(--ct-orange),
-      var(--ct-pink)
-    );
-}
-
-.ct-admin-brand strong,
-.ct-admin-brand span {
-  display: block;
+  background: linear-gradient(
+    135deg,
+    var(--ct-orange),
+    var(--ct-pink)
+  );
 }
 
 .ct-admin-brand strong {
-  font-size: 18px;
+  display: block;
+  font-size: 17px;
+  color: #ffffff;
 }
 
 .ct-admin-brand span {
-  margin-top: 2px;
+  display: block;
+  margin-top: 3px;
 
   font-size: 12px;
-
-  opacity: 0.72;
+  color: #d5e1e8;
 }
 
-/* ==========================================
-   MENU
-========================================== */
+/* ======================================================
+   5. NAVEGAÇÃO LATERAL
 
-.ct-admin-nav {
+   Remove fundos indevidos e mantém
+   o contraste dos textos.
+====================================================== */
+
+.ct-admin .ct-admin-sidebar .ct-admin-nav {
   display: flex;
-
   flex-direction: column;
 
   gap: 7px;
-
-  margin-top: 20px;
-}
-
-.ct-admin-nav button {
   width: 100%;
 
-  display: flex;
+  margin-top: 20px;
+  padding: 0;
 
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* BOTÕES DO MENU */
+
+.ct-admin .ct-admin-sidebar
+.ct-admin-nav > button {
+  display: flex;
   align-items: center;
 
   gap: 11px;
+  width: 100%;
+  min-height: 46px;
 
-  padding:
-    12px
-    13px;
+  padding: 11px 13px;
+  margin: 0;
 
-  border: 0;
-
+  border: none !important;
   border-radius: 12px;
 
-  background:
-    transparent;
+  background: transparent !important;
+  color: #f7fafc !important;
 
-  color:
-    rgba(
-      255,
-      255,
-      255,
-      0.82
-    );
-
-  cursor: pointer;
+  opacity: 1 !important;
+  visibility: visible !important;
 
   text-align: left;
+  text-decoration: none;
 
-  transition:
-    0.2s ease;
+  cursor: pointer;
+  line-height: 1.35;
+  font-weight: 500;
+
+  transition: background 0.2s ease;
 }
 
-.ct-admin-nav button:hover {
-  color: white;
+/* TEXTOS E ÍCONES */
 
-  background:
-    rgba(
-      255,
-      255,
-      255,
-      0.08
-    );
-
-  transform:
-    translateX(2px);
+.ct-admin .ct-admin-sidebar
+.ct-admin-nav > button span {
+  color: inherit !important;
+  opacity: 1 !important;
 }
 
-.ct-admin-nav button.active {
-  color: white;
+.ct-admin-nav-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-  background:
-    rgba(
-      255,
-      255,
-      255,
-      0.12
-    );
-
-  box-shadow:
-    inset
-    3px
-    0
-    0
-    var(--ct-orange);
+  flex: 0 0 22px;
+  font-size: 17px;
 }
 
-/* ==========================================
-   SAIR
-========================================== */
+/* HOVER */
 
-.ct-admin-logout {
-  margin-top: auto;
+.ct-admin .ct-admin-sidebar
+.ct-admin-nav > button:hover {
+  background: rgba(
+    255,255,255,0.10
+  ) !important;
 
+  color: #ffffff !important;
+}
+
+/* ITEM ATIVO */
+
+.ct-admin .ct-admin-sidebar
+.ct-admin-nav > button.active {
+  background: rgba(
+    233,163,74,0.16
+  ) !important;
+
+  color: #ffffff !important;
+
+  box-shadow: inset 3px 0 0
+    var(--ct-orange) !important;
+}
+
+/* ACESSIBILIDADE */
+
+.ct-admin .ct-admin-sidebar
+.ct-admin-nav > button:focus-visible {
+  outline: 2px solid var(--ct-orange);
+  outline-offset: 2px;
+}
+
+/* ======================================================
+   6. BOTÃO SAIR DO ADMIN
+
+   Fica após os itens do menu sem sobreposição.
+====================================================== */
+
+.ct-admin .ct-admin-logout {
+  display: block;
+
+  width: 100%;
+  flex-shrink: 0;
+
+  position: relative;
+
+  margin-top: 20px;
   padding: 12px;
 
-  border:
-    1px solid
-    rgba(
-      255,
-      255,
-      255,
-      0.18
-    );
+  border: 1px solid rgba(
+    255,255,255,0.18
+  );
 
   border-radius: 12px;
 
-  background:
-    rgba(
-      217,
-      104,
-      160,
-      0.12
-    );
+  background: rgba(
+    217,104,160,0.13
+  ) !important;
 
-  color: white;
+  color: #ffffff !important;
 
   cursor: pointer;
-
-  transition:
-    0.2s ease;
+  text-align: center;
 }
 
-.ct-admin-logout:hover {
-  background:
-    rgba(
-      217,
-      104,
-      160,
-      0.25
-    );
+.ct-admin .ct-admin-logout:hover {
+  background: rgba(
+    217,104,160,0.28
+  ) !important;
 }
 
-/* ==========================================
-   CONTEÚDO
-========================================== */
+/* ======================================================
+   7. CONTEÚDO PRINCIPAL
+====================================================== */
 
 .ct-admin-main {
   min-width: 0;
-
   padding: 28px;
 }
 
+/* ======================================================
+   8. CABEÇALHO
+====================================================== */
+
+
 /* ==========================================
-   CABEÇALHO
+   CABEÇALHO ADMINISTRATIVO - CERCA TROVA
 ========================================== */
 
-.ct-admin-header {
+.ct-admin .ct-admin-header {
   display: flex;
-
-  justify-content:
-    space-between;
-
   align-items: center;
+  justify-content: space-between;
+  gap: 20px;
 
-  gap: 18px;
-
+  width: 100%;
+  min-height: 125px;
   margin-bottom: 24px;
+  padding: 22px 28px;
+
+  background: #ffffff;
+  border: 1px solid #dbe4ea;
+  border-radius: 18px;
+
+  box-shadow: 0 6px 22px rgba(13, 43, 62, 0.05);
 }
 
-.ct-admin-header h1 {
-  margin:
-    4px
-    0;
+/* Identificação do painel */
+.ct-admin .ct-admin-eyebrow {
+  display: block;
+  margin: 0 0 6px;
 
-  font-size:
-    clamp(
-      26px,
-      3vw,
-      38px
-    );
-
-  color:
-    var(--ct-dark);
+  color: #d968a0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  line-height: 1.5;
 }
 
-.ct-admin-header p {
+/* Nome da página */
+.ct-admin .ct-admin-header h1 {
+  margin: 0 0 6px;
+
+  color: #0d2b3e;
+  font-size: clamp(24px, 2.5vw, 32px);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+/* Descrição */
+.ct-admin .ct-admin-header p {
   margin: 0;
 
-  color:
-    var(--ct-muted);
+  color: #6d7d88;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
-.ct-admin-eyebrow {
-  font-size: 12px;
-
-  font-weight: 800;
-
-  letter-spacing:
-    0.15em;
-
-  color:
-    var(--ct-pink);
-}
-
-.ct-admin-header-actions {
+/* Área direita do cabeçalho */
+.ct-admin .ct-admin-header-actions {
   display: flex;
-
   align-items: center;
-
+  justify-content: flex-end;
   gap: 12px;
+  flex-shrink: 0;
 }
 
-.ct-admin-header-actions input {
-  width:
-    min(
-      360px,
-      40vw
-    );
+/* Campo de pesquisa */
+.ct-admin .ct-admin-header-actions input {
+  width: min(340px, 35vw);
+  min-height: 44px;
+  padding: 11px 14px;
 
-  padding:
-    12px
-    14px;
-
-  border:
-    1px solid
-    var(--ct-border);
-
+  background: #ffffff;
+  color: #173042;
+  border: 1px solid #dbe4ea;
   border-radius: 12px;
-
   outline: none;
-
-  background:
-    white;
 }
 
-.ct-admin-header-actions input:focus {
-  border-color:
-    var(--ct-purple);
-
-  box-shadow:
-    0
-    0
-    0
-    3px
-    rgba(
-      139,
-      95,
-      168,
-      0.12
-    );
+.ct-admin .ct-admin-header-actions input:focus {
+  border-color: #8b5fa8;
+  box-shadow: 0 0 0 3px rgba(139, 95, 168, 0.12);
 }
 
-/* ==========================================
-   AVATAR ADMIN
-========================================== */
-
-.ct-admin-avatar {
-  width: 44px;
-
-  height: 44px;
-
+/* Avatar administrativo */
+.ct-admin .ct-admin-avatar {
   display: grid;
-
   place-items: center;
 
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+
   border-radius: 50%;
+  background: linear-gradient(135deg, #8b5fa8, #d968a0);
 
+  color: #ffffff;
   font-size: 12px;
-
   font-weight: 800;
-
-  color: white;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--ct-purple),
-      var(--ct-pink)
-    );
 }
 
 /* ==========================================
-   TOAST
+   RESPONSIVIDADE DO CABEÇALHO
 ========================================== */
 
-.ct-admin-toast {
-  position: fixed;
+@media (max-width: 640px) {
+  .ct-admin .ct-admin-header {
+    flex-direction: column;
+    align-items: stretch;
+    min-height: auto;
+    padding: 20px;
+  }
 
-  top: 24px;
+  .ct-admin .ct-admin-header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
 
-  right: 26px;
+  .ct-admin .ct-admin-header-actions input {
+    width: 100%;
+    min-width: 0;
+  }
 
-  z-index: 100;
-
-  padding:
-    13px
-    17px;
-
-  border-radius: 12px;
-
-  background:
-    var(--ct-dark);
-
-  color: white;
-
-  box-shadow:
-    var(--ct-shadow);
+  .ct-admin .ct-admin-header h1 {
+    font-size: 26px;
+  }
 }
 
-/* ==========================================
-   CARDS DE ESTATÍSTICA
-========================================== */
+/* ======================================================
+   11. INDICADORES DA VISÃO GERAL
+
+   Desktop: três colunas
+   Tablet: duas colunas
+   Celular: uma coluna
+====================================================== */
 
 .ct-admin-stats {
   display: grid;
 
-  grid-template-columns:
-    repeat(
-      4,
-      minmax(
-        0,
-        1fr
-      )
-    );
+  grid-template-columns: repeat(
+    3,
+    minmax(0,1fr)
+  );
 
   gap: 16px;
-
   margin-bottom: 20px;
 }
 
-.ct-admin-stat,
-.ct-admin-report-card {
+.ct-admin-stat {
   padding: 20px;
 
-  border:
-    1px solid
-    var(--ct-border);
-
+  border: 1px solid var(--ct-border);
   border-radius: 18px;
 
-  background: white;
-
-  box-shadow:
-    var(--ct-shadow);
+  background: #ffffff;
+  box-shadow: var(--ct-shadow);
 }
 
-.ct-admin-stat span,
-.ct-admin-report-card span {
-  color:
-    var(--ct-muted);
-
-  font-size: 13px;
-}
-
-.ct-admin-stat strong,
-.ct-admin-report-card strong {
+.ct-admin-stat span {
   display: block;
 
-  margin:
-    6px
-    0;
+  font-size: 13px;
+  color: var(--ct-muted);
+}
+
+.ct-admin-stat strong {
+  display: block;
+
+  margin: 8px 0;
 
   font-size: 30px;
-
-  color:
-    var(--ct-dark);
+  color: var(--ct-dark);
 }
 
 .ct-admin-stat small {
-  color:
-    var(--ct-muted);
+  display: block;
+  color: var(--ct-muted);
 }
 
-/* ==========================================
-   GRID DASHBOARD
-========================================== */
+/* ======================================================
+   12. CARDS DAS SEÇÕES ADMINISTRATIVAS
 
-.ct-admin-grid-2 {
-  display: grid;
-
-  grid-template-columns:
-    1fr
-    1fr;
-
-  gap: 20px;
-}
-
-/* ==========================================
-   CARDS
-========================================== */
+   Utilizados nas páginas:
+   Usuários, Pets, Adoções e demais cadastros.
+====================================================== */
 
 .ct-admin-card {
+  min-width: 0;
+
   padding: 20px;
 
-  border:
-    1px solid
-    var(--ct-border);
-
+  border: 1px solid var(--ct-border);
   border-radius: 20px;
 
-  background: white;
-
-  box-shadow:
-    var(--ct-shadow);
+  background: #ffffff;
+  box-shadow: var(--ct-shadow);
 }
 
 .ct-admin-card-header {
   display: flex;
-
-  justify-content:
-    space-between;
+  justify-content: space-between;
 
   gap: 12px;
-
   margin-bottom: 18px;
 }
 
 .ct-admin-card-header h2 {
-  margin:
-    0
-    0
-    5px;
+  margin: 0 0 5px;
 
   font-size: 21px;
-
-  color:
-    var(--ct-dark);
+  color: var(--ct-dark);
 }
 
 .ct-admin-card-header p {
   margin: 0;
 
-  color:
-    var(--ct-muted);
-
   font-size: 14px;
+  color: var(--ct-muted);
 }
 
-/* ==========================================
-   AÇÕES RÁPIDAS
-========================================== */
+/* ======================================================
+   13. ÁREA DECORATIVA DE ANIMAIS
 
-.ct-admin-quick {
-  display: grid;
+   Substitui os quadros antigos:
+   - Ações rápidas
+   - Situação do sistema
 
-  grid-template-columns:
-    repeat(
-      2,
-      minmax(
-        0,
-        1fr
-      )
-    );
+   Ocupa toda a largura disponível.
+====================================================== */
 
-  gap: 10px;
-}
+.ct-admin-pet-area {
+  position: relative;
 
-.ct-admin-quick button,
-.ct-admin-toolbar button,
-.ct-admin-settings button,
-.ct-admin-honor-grid button {
-  padding:
-    12px
-    14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  border: 0;
+  isolation: isolate;
+  overflow: hidden;
 
-  border-radius: 12px;
+  width: 100%;
+  min-height: 245px;
 
-  background:
-    var(--ct-dark);
-
-  color: white;
-
-  cursor: pointer;
-
-  transition:
-    0.2s ease;
-}
-
-.ct-admin-quick button:hover,
-.ct-admin-toolbar button:hover,
-.ct-admin-settings button:hover,
-.ct-admin-honor-grid button:hover {
-  background:
-    var(--ct-dark-2);
-
-  transform:
-    translateY(-1px);
-}
-
-/* ==========================================
-   PENDÊNCIAS
-========================================== */
-
-.ct-admin-pendencias {
-  display: grid;
-
-  gap: 10px;
-}
-
-.ct-admin-pendencias p {
   margin: 0;
+  padding: 35px 28px;
 
-  padding:
-    13px
-    14px;
+  border: 1px solid var(--ct-border);
+  border-radius: 22px;
 
-  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #f2f8fa 55%,
+    #fff5f8 100%
+  );
 
-  background:
-    var(--ct-bg);
+  box-shadow: 0 8px 28px rgba(
+    13,43,62,0.05
+  );
 }
 
-/* ==========================================
-   TABELAS
-========================================== */
+/* ======================================================
+   14. CONTEÚDO DA DECORAÇÃO
+
+   Centraliza:
+   - Ícones dos animais
+   - Frase
+   - Descrição
+   - Etiquetas
+====================================================== */
+
+.ct-admin-pet-content {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  max-width: 700px;
+
+  text-align: center;
+}
+
+.ct-admin-pet-icon {
+  margin-bottom: 12px;
+
+  font-size: 35px;
+  line-height: 1.4;
+}
+
+.ct-admin-pet-content h2 {
+  margin: 0 0 12px;
+
+  font-size: clamp(
+    21px,
+    2.3vw,
+    28px
+  );
+
+  font-weight: 800;
+  line-height: 1.3;
+
+  color: var(--ct-dark);
+}
+
+.ct-admin-pet-content p {
+  max-width: 590px;
+  margin: 0 auto;
+
+  font-size: 15px;
+  line-height: 1.7;
+
+  color: #607481;
+}
+
+/* ======================================================
+   15. ETIQUETAS DECORATIVAS
+====================================================== */
+
+.ct-admin-pet-tags {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-wrap: wrap;
+  gap: 10px;
+
+  margin-top: 22px;
+}
+
+.ct-admin-pet-tags span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 9px 15px;
+
+  border-radius: 30px;
+
+  background: rgba(
+    13,43,62,0.06
+  );
+
+  color: #163a50;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ======================================================
+   16. PATINHAS DECORATIVAS
+
+   Elementos apenas visuais.
+   Não interferem nos cliques do painel.
+====================================================== */
+
+.ct-admin-pet-decoration {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ct-admin-pet-decoration .ct-paw {
+  position: absolute;
+
+  opacity: 0.10;
+
+  user-select: none;
+  filter: grayscale(1);
+}
+
+/* PATINHA SUPERIOR ESQUERDA */
+
+.ct-admin-pet-decoration .paw-1 {
+  top: 18px;
+  left: 6%;
+
+  font-size: 54px;
+  transform: rotate(-25deg);
+}
+
+/* PATINHA INFERIOR ESQUERDA */
+
+.ct-admin-pet-decoration .paw-2 {
+  bottom: 14px;
+  left: 23%;
+
+  font-size: 36px;
+  transform: rotate(20deg);
+}
+
+/* PATINHA SUPERIOR DIREITA */
+
+.ct-admin-pet-decoration .paw-3 {
+  top: 15px;
+  right: 11%;
+
+  font-size: 60px;
+  transform: rotate(28deg);
+}
+
+/* PATINHA INFERIOR DIREITA */
+
+.ct-admin-pet-decoration .paw-4 {
+  bottom: 14px;
+  right: 5%;
+
+  font-size: 38px;
+  transform: rotate(-15deg);
+}
+
+/* PATINHA CENTRAL DISCRETA */
+
+.ct-admin-pet-decoration .paw-5 {
+  top: 45%;
+  left: 50%;
+
+  font-size: 75px;
+
+  opacity: 0.035;
+  transform: translate(-50%,-50%) rotate(15deg);
+}
+
+/* ======================================================
+   17. TABELAS ADMINISTRATIVAS
+====================================================== */
 
 .ct-admin-table-wrap {
   width: 100%;
-
   overflow-x: auto;
 }
 
 .ct-admin-table {
   width: 100%;
+  min-width: 650px;
 
-  min-width: 760px;
-
-  border-collapse:
-    collapse;
+  border-collapse: collapse;
+  color: var(--ct-text);
 }
 
 .ct-admin-table th,
 .ct-admin-table td {
-  padding:
-    13px
-    12px;
+  padding: 13px 12px;
 
-  border-bottom:
-    1px solid
-    var(--ct-border);
+  border-bottom: 1px solid var(--ct-border);
 
   text-align: left;
-
-  vertical-align:
-    middle;
+  vertical-align: middle;
 }
 
 .ct-admin-table th {
   font-size: 12px;
+  font-weight: 700;
 
-  text-transform:
-    uppercase;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 
-  letter-spacing:
-    0.05em;
-
-  color:
-    var(--ct-muted);
-}
-
-.ct-admin-table tbody tr {
-  transition:
-    background
-    0.2s ease;
+  color: var(--ct-muted);
 }
 
 .ct-admin-table tbody tr:hover {
-  background:
-    #f8fafb;
+  background: #f8fafb;
 }
 
-/* ==========================================
-   BOTÕES DE AÇÃO
-========================================== */
+/* ======================================================
+   18. TABELA SEM REGISTROS
+====================================================== */
 
-.ct-admin-actions {
+.ct-admin-empty-cell {
+  padding: 36px 20px !important;
+
+  color: var(--ct-muted);
+
+  text-align: center !important;
+  font-size: 14px;
+}
+
+/* ======================================================
+   19. FILTROS DE PESQUISA
+
+   Organiza:
+   - Categoria
+   - Campo
+   - Texto pesquisado
+====================================================== */
+
+.ct-admin-search-filters {
+  display: grid;
+
+  grid-template-columns: repeat(
+    3,
+    minmax(0,1fr)
+  );
+
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.ct-admin-search-filters label {
   display: flex;
-
-  flex-wrap: wrap;
-
-  gap: 8px;
-}
-
-.ct-admin-actions button {
-  padding:
-    8px
-    11px;
-
-  border: 0;
-
-  border-radius: 9px;
-
-  color: white;
-
-  cursor: pointer;
-
-  transition:
-    0.2s ease;
-}
-
-.ct-admin-actions button:hover {
-  opacity: 0.88;
-
-  transform:
-    translateY(-1px);
-}
-
-.ct-admin-actions .secondary {
-  background:
-    var(--ct-purple);
-}
-
-.ct-admin-actions .success {
-  background:
-    var(--ct-success);
-}
-
-.ct-admin-actions .danger {
-  background:
-    var(--ct-danger);
-}
-
-/* ==========================================
-   STATUS
-========================================== */
-
-.ct-admin-status {
-  display: inline-flex;
-
-  align-items: center;
-
-  padding:
-    6px
-    9px;
-
-  border-radius: 999px;
-
-  font-size: 12px;
-
-  font-weight: 800;
-}
-
-.ct-admin-status.success {
-  color:
-    #21694c;
-
-  background:
-    #e5f5ed;
-}
-
-.ct-admin-status.warning {
-  color:
-    #875813;
-
-  background:
-    #fff2d8;
-}
-
-.ct-admin-status.danger {
-  color:
-    #8b3e3e;
-
-  background:
-    #fde9e9;
-}
-
-.ct-admin-status.neutral {
-  color:
-    #4d5d67;
-
-  background:
-    #edf1f4;
-}
-
-/* ==========================================
-   MATCH IA
-========================================== */
-
-.ct-admin-match-list {
-  display: grid;
-
-  gap: 14px;
-}
-
-.ct-admin-match-card {
-  display: grid;
-
-  grid-template-columns:
-    1fr
-    180px
-    1fr
-    auto;
-
-  align-items: center;
-
-  gap: 18px;
-
-  padding: 16px;
-
-  border:
-    1px solid
-    var(--ct-border);
-
-  border-radius: 16px;
-
-  background:
-    #fbfcfd;
-}
-
-.ct-admin-match-card strong {
-  display: block;
-
-  color:
-    var(--ct-dark);
-}
-
-.ct-admin-match-label {
-  display: block;
-
-  margin-bottom: 4px;
-
-  color:
-    var(--ct-muted);
-
-  font-size: 12px;
-}
-
-.ct-admin-match-score {
-  text-align: center;
-}
-
-.ct-admin-match-score strong {
-  font-size: 26px;
-
-  color:
-    var(--ct-pink);
-}
-
-.ct-admin-match-score span {
-  display: block;
-
-  font-size: 12px;
-
-  color:
-    var(--ct-muted);
-}
-
-.ct-admin-match-score input {
-  width: 100%;
-
-  margin-top: 8px;
-}
-
-/* ==========================================
-   TOOLBAR
-========================================== */
-
-.ct-admin-toolbar {
-  display: flex;
-
-  justify-content:
-    flex-end;
-
-  margin-bottom: 14px;
-}
-
-/* ==========================================
-   HONRARIAS
-========================================== */
-
-.ct-admin-honor-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(
-      3,
-      minmax(
-        0,
-        1fr
-      )
-    );
-
-  gap: 14px;
-}
-
-.ct-admin-honor-grid article {
-  padding: 18px;
-
-  border:
-    1px solid
-    var(--ct-border);
-
-  border-radius: 16px;
-
-  background:
-    #fbfcfd;
-}
-
-.ct-admin-honor-grid h3 {
-  margin:
-    8px
-    0
-    3px;
-}
-
-.ct-admin-honor-grid p {
-  color:
-    var(--ct-muted);
-}
-
-.ct-admin-honor-icon {
-  font-size: 36px;
-}
-
-.ct-admin-points-rules {
-  margin-top: 18px;
-
-  padding: 16px;
-
-  border-radius: 16px;
-
-  background:
-    #f8fafb;
-}
-
-.ct-admin-points-rules h3 {
-  margin-top: 0;
-}
-
-.ct-admin-points-rules p {
-  margin:
-    8px
-    0;
-
-  color:
-    var(--ct-muted);
-}
-
-/* ==========================================
-   RELATÓRIOS
-========================================== */
-
-.ct-admin-report-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(
-      3,
-      minmax(
-        0,
-        1fr
-      )
-    );
-
-  gap: 14px;
-
-  margin-bottom: 18px;
-}
-
-/* ==========================================
-   CONFIGURAÇÕES
-========================================== */
-
-.ct-admin-settings {
-  display: grid;
-
-  gap: 14px;
-
-  max-width: 720px;
-}
-
-.ct-admin-settings label {
-  display: grid;
+  flex-direction: column;
 
   gap: 7px;
-}
 
-.ct-admin-settings label > span {
+  color: var(--ct-dark);
+
   font-size: 13px;
-
   font-weight: 700;
-
-  color:
-    var(--ct-dark);
 }
 
-.ct-admin-settings input[type="text"],
-.ct-admin-settings input[type="email"],
-.ct-admin-settings input[type="number"],
-.ct-admin-settings input:not([type]) {
+/* ======================================================
+   20. CAMPOS DA PESQUISA
+====================================================== */
+
+.ct-admin-search-filters input,
+.ct-admin-search-filters select {
   width: 100%;
+  min-height: 44px;
 
-  padding:
-    12px
-    13px;
+  padding: 11px 13px;
 
-  border:
-    1px solid
-    var(--ct-border);
-
+  border: 1px solid var(--ct-border);
   border-radius: 11px;
+
+  background: #ffffff;
+  color: var(--ct-text);
 
   outline: none;
 }
 
-.ct-admin-settings input:focus {
-  border-color:
-    var(--ct-purple);
+/* DESTAQUE AO SELECIONAR */
 
-  box-shadow:
-    0
-    0
-    0
-    3px
-    rgba(
-      139,
-      95,
-      168,
-      0.1
-    );
+.ct-admin-search-filters input:focus,
+.ct-admin-search-filters select:focus {
+  border-color: var(--ct-purple);
+
+  box-shadow: 0 0 0 3px rgba(
+    139,95,168,0.12
+  );
 }
 
-.ct-admin-switch-row {
-  grid-template-columns:
-    1fr
-    auto;
+/* ======================================================
+   21. CONTADOR DE RESULTADOS
+====================================================== */
 
-  align-items: center;
+.ct-admin-search-count {
+  margin: 0 0 12px;
 
-  padding:
-    12px
-    0;
-
-  border-bottom:
-    1px solid
-    var(--ct-border);
+  font-size: 14px;
+  color: var(--ct-muted);
 }
 
-/* ==========================================
-   RESPONSIVO
-========================================== */
+/* ======================================================
+   22. RESPONSIVIDADE - TABLETS
+====================================================== */
 
 @media (max-width: 1180px) {
-
+  /* Indicadores em duas colunas */
   .ct-admin-stats {
-    grid-template-columns:
-      repeat(
-        2,
-        minmax(
-          0,
-          1fr
-        )
-      );
+    grid-template-columns: repeat(
+      2,
+      minmax(0,1fr)
+    );
   }
 
-  .ct-admin-match-card {
-    grid-template-columns:
-      1fr
-      150px
-      1fr;
+  /* Filtros em duas colunas */
+  .ct-admin-search-filters {
+    grid-template-columns: repeat(
+      2,
+      minmax(0,1fr)
+    );
   }
-
-  .ct-admin-match-card
-  .ct-admin-actions {
-    grid-column:
-      1 / -1;
-  }
-
 }
 
+/* ======================================================
+   23. RESPONSIVIDADE - TELAS MENORES
+====================================================== */
+
 @media (max-width: 900px) {
-
+  /* Menu acima do conteúdo */
   .ct-admin {
-    grid-template-columns:
-      1fr;
+    grid-template-columns: 1fr;
   }
 
-  .ct-admin-sidebar {
+  /* Sidebar sem altura fixa */
+  .ct-admin .ct-admin-sidebar {
     position: relative;
-
     height: auto;
+    min-height: auto;
+    overflow: visible;
   }
 
+  /* Menu em duas colunas */
+  .ct-admin .ct-admin-sidebar
   .ct-admin-nav {
     display: grid;
 
-    grid-template-columns:
-      repeat(
-        2,
-        minmax(
-          0,
-          1fr
-        )
-      );
+    grid-template-columns: repeat(
+      2,
+      minmax(0,1fr)
+    );
   }
 
-  .ct-admin-logout {
-    margin-top: 18px;
+  /* Botão de saída separado */
+  .ct-admin .ct-admin-logout {
+    margin-top: 20px;
   }
-
-  .ct-admin-grid-2,
-  .ct-admin-honor-grid,
-  .ct-admin-report-grid {
-    grid-template-columns:
-      1fr;
-  }
-
 }
 
-@media (max-width: 640px) {
+/* ======================================================
+   24. RESPONSIVIDADE - CELULARES
+====================================================== */
 
+@media (max-width: 640px) {
+  /* Espaçamento principal */
   .ct-admin-main {
     padding: 18px;
   }
 
+  /* Cabeçalho vertical */
   .ct-admin-header {
-    align-items:
-      flex-start;
-
-    flex-direction:
-      column;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
+  /* Área de pesquisa */
   .ct-admin-header-actions {
     width: 100%;
   }
@@ -1161,24 +945,54 @@
     width: 100%;
   }
 
+  /* Indicadores em uma coluna */
   .ct-admin-stats {
-    grid-template-columns:
-      1fr;
+    grid-template-columns: 1fr;
   }
 
+  /* Menu em uma coluna */
+  .ct-admin .ct-admin-sidebar
   .ct-admin-nav {
-    grid-template-columns:
-      1fr;
+    grid-template-columns: 1fr;
   }
 
-  .ct-admin-quick {
-    grid-template-columns:
-      1fr;
+  /* Filtros em uma coluna */
+  .ct-admin-search-filters {
+    grid-template-columns: 1fr;
   }
 
-  .ct-admin-match-card {
-    grid-template-columns:
-      1fr;
+  /* Área decorativa */
+  .ct-admin-pet-area {
+    min-height: 220px;
+    padding: 30px 18px;
   }
 
+  /* Ícones dos animais */
+  .ct-admin-pet-icon {
+    font-size: 28px;
+  }
+
+  /* Texto da decoração */
+  .ct-admin-pet-content p {
+    font-size: 13px;
+  }
+
+  /* Etiquetas */
+  .ct-admin-pet-tags {
+    gap: 7px;
+  }
+
+  .ct-admin-pet-tags span {
+    padding: 7px 10px;
+    font-size: 11px;
+  }
+
+  /* Patinhas mais discretas */
+  .ct-admin-pet-decoration .ct-paw {
+    opacity: 0.06;
+  }
 }
+
+/* ======================================================
+   FIM DO ARQUIVO ADMIN.CSS
+====================================================== */
