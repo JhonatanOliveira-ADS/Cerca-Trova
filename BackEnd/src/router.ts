@@ -18,7 +18,7 @@ import loginUsuariosControllers from "./Controllers/loginUsuariosControllers/log
 import loginONGsControllers from "./Controllers/loginONGsControllers/loginONGsControllers";
 import PetsTinderControllers from "./Controllers/petsTinderControllers";
 import AdminControllers from "./Controllers/adminControllers/adminCotrollers";
-
+import chatControllers from "./Controllers/chatControllers";
 
 //endpoints POST
 router.post('/CadastrarUsuarios', uploead.single('file'), new usuariosControllers().criarUsuarios)
@@ -30,6 +30,9 @@ router.post('/logarONGs', new loginONGsControllers().logarONG)
 router.post('/CriarPetTinder', uploead.single('file'), estaAutenticado, new PetsTinderControllers().criarPet)
 // Rota usada pelo Insomnia para criar a primeira conta administrativa.
 router.post('/CadastrarAdmin', new AdminControllers().criarAdministrador)
+// Conversas e mensagens usam exclusivamente o usuário identificado pelo JWT.
+router.post('/conversas/interesse', estaAutenticado, new chatControllers().criarOuObterConversa)
+router.post('/conversas/:id/mensagens', estaAutenticado, new chatControllers().criarMensagem)
 
 
 //endpoints GET
@@ -40,6 +43,8 @@ router.get('/visualizarFavorito', estaAutenticado, new favoritosControllers().vi
 // O feed é público; autenticação continua obrigatória para criar, editar e excluir.
 router.get('/visualizarPublicacao', new publicacoesControllers().visualizarPublicacoes)
 router.get('/visualizarPetsTinder', new PetsTinderControllers().listarPets)
+router.get('/conversas', estaAutenticado, new chatControllers().listarConversas)
+router.get('/conversas/:id/mensagens', estaAutenticado, new chatControllers().listarMensagens)
 
 
 //endpoints PUT

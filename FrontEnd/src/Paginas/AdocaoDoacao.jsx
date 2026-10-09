@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PetDetalhesModal from "../Componentes/PetDetalhesModal";
 import "../assets/css/AdocaoeDoacao.css";
-import { API_BASE_URL, listarPublicacoes } from "../servicos/autenticacao";
+import {
+  API_BASE_URL,
+  criarConversaPorInteresse,
+  listarPublicacoes,
+} from "../servicos/autenticacao";
 
 /*
   Tags disponíveis no filtro.
@@ -44,6 +49,28 @@ function adaptarPublicacao(publicacao) {
 function PostCard({ publicacao }) {
   /* Controla o modal aberto pela interação com a foto da publicação. */
   const [modalAberto, setModalAberto] = useState(false);
+  const [interesseCarregando, setInteresseCarregando] = useState(false);
+  const [mensagemInteresse, setMensagemInteresse] = useState("");
+  const navegar = useNavigate();
+
+  /* Cria ou reutiliza a conversa com o dono e abre o chat automaticamente. */
+  async function demonstrarInteresse() {
+    if (interesseCarregando) {
+      return;
+    }
+
+    try {
+      setInteresseCarregando(true);
+      const conversa = await criarConversaPorInteresse(publicacao.id);
+      navegar(`/chat?conversa=${encodeURIComponent(conversa.id)}`);
+    } catch (erro) {
+      setMensagemInteresse(
+        erro.message || "Entre na sua conta para demonstrar interesse.",
+      );
+    } finally {
+      setInteresseCarregando(false);
+    }
+  }
 
   return (
     <article className="adocao-post-card">
@@ -86,9 +113,16 @@ function PostCard({ publicacao }) {
       </button>
 
       <footer className="adocao-post-actions">
-        <button type="button">❤️ Tenho interesse</button>
+        <button type="button" onClick={demonstrarInteresse} disabled={interesseCarregando}>
+          {interesseCarregando ? "Abrindo chat..." : "❤️ Tenho interesse"}
+        </button>
         <button type="button">↗ Compartilhar</button>
       </footer>
+      {mensagemInteresse && (
+        <p className="adocao-interest-feedback" role="alert">
+          {mensagemInteresse}
+        </p>
+      )}
       {/* O mapa é ativado automaticamente pelo modal quando a tag é Perdido. */}
       <PetDetalhesModal
         pet={publicacao}

@@ -255,6 +255,32 @@ export async function listarPetsTinder() {
   return requisicaoApi("/visualizarPetsTinder");
 }
 
+/* Abre ou recupera a conversa com o proprietário da publicação selecionada. */
+export async function criarConversaPorInteresse(idPublicacao) {
+  return requisicaoApi("/conversas/interesse", {
+    method: "POST",
+    body: JSON.stringify({ id_publicacao: idPublicacao }),
+  });
+}
+
+/* Recupera as conversas persistidas do usuário autenticado. */
+export async function listarConversas() {
+  return requisicaoApi("/conversas");
+}
+
+/* Busca as mensagens reais de uma conversa autorizada. */
+export async function listarMensagensConversa(idConversa) {
+  return requisicaoApi(`/conversas/${idConversa}/mensagens`);
+}
+
+/* Persiste uma nova mensagem na conversa selecionada. */
+export async function enviarMensagemConversa(idConversa, texto) {
+  return requisicaoApi(`/conversas/${idConversa}/mensagens`, {
+    method: "POST",
+    body: JSON.stringify({ texto }),
+  });
+}
+
 /* Mantém uma função explícita para autenticação administrativa futura. */
 export async function loginAdministrador(email, senha) {
   throw new Error(

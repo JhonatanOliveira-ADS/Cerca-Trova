@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PetDetalhesModal from "./PetDetalhesModal";
 import {
+  criarConversaPorInteresse,
   criarFavorito,
   removerFavorito,
 } from "../servicos/autenticacao";
@@ -19,6 +21,28 @@ export default function CardAnimais({
 
   /* Controla a abertura do modal de detalhes acionada pela foto do card. */
   const [modalAberto, setModalAberto] = useState(false);
+  const [interesseCarregando, setInteresseCarregando] = useState(false);
+  const [mensagemInteresse, setMensagemInteresse] = useState("");
+  const navegar = useNavigate();
+
+  /* Abre a conversa persistida com o dono e leva o usuário diretamente ao chat. */
+  async function demonstrarInteresse() {
+    if (!pet.id || interesseCarregando) {
+      return;
+    }
+
+    try {
+      setInteresseCarregando(true);
+      const conversa = await criarConversaPorInteresse(pet.id);
+      navegar(`/chat?conversa=${encodeURIComponent(conversa.id)}`);
+    } catch (erro) {
+      setMensagemInteresse(
+        erro.message || "Entre na sua conta para demonstrar interesse.",
+      );
+    } finally {
+      setInteresseCarregando(false);
+    }
+  }
 
   /*
     Salva ou remove o card dos favoritos e atualiza o botão imediatamente.
@@ -94,9 +118,16 @@ export default function CardAnimais({
       </button>
 
       <div className="feed-card-acoes">
-        <button type="button">❤️ Tenho interesse</button>
+        <button type="button" onClick={demonstrarInteresse} disabled={interesseCarregando}>
+          {interesseCarregando ? "Abrindo chat..." : "❤️ Tenho interesse"}
+        </button>
         <button type="button">↗ Compartilhar</button>
       </div>
+      {mensagemInteresse && (
+        <p className="feed-card-feedback" role="alert">
+          {mensagemInteresse}
+        </p>
+      )}
       {/* Modal compartilhado com o mapa opcional para pets perdidos. */}
       <PetDetalhesModal
         pet={pet}

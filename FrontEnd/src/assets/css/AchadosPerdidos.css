@@ -152,9 +152,7 @@
   outline-offset: -3px;
 }
 
-.detalhe-foto-button:hover .detalhe-foto {
-  filter: brightness(0.94);
-}
+/* A foto permanece estável no hover; os detalhes são abertos somente por clique. */
 
 .detalhe-conteudo {
   padding: 22px;

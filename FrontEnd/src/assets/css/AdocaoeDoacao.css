@@ -300,15 +300,9 @@
   border-radius: 20px;
   background: #ffffff;
   box-shadow: 0 7px 20px rgba(22, 49, 71, 0.08);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
 }
 
-.adocao-post-card:hover {
-  box-shadow: 0 13px 28px rgba(22, 49, 71, 0.15);
-  transform: translateY(-4px);
-}
+/* O card permanece fixo; somente o clique na foto abre o modal de detalhes. */
 
 .adocao-post-header {
   display: flex;

@@ -28,13 +28,7 @@
   outline-offset: -3px;
 }
 
-.feed-card-image-button .feed-card-img {
-  transition: filter 160ms ease;
-}
-
-.feed-card-image-button:hover .feed-card-img {
-  filter: brightness(0.94);
-}
+/* A foto não muda de tamanho nem de brilho ao passar o mouse. A abertura ocorre somente no clique. */
 
 /* Equivalente visual para as imagens dos cards da página de Adoção e Doação. */
 .adocao-post-image-button {
@@ -51,9 +45,7 @@
   outline-offset: -3px;
 }
 
-.adocao-post-image-button:hover .adocao-post-image {
-  filter: brightness(0.94);
-}
+/* O botão permanece estável durante o hover para evitar estímulos visuais repetitivos. */
 
 /*
   O modal ocupa no máximo 80% da largura e da altura da tela,
@@ -67,20 +59,7 @@
   border-radius: 24px;
   background: #ffffff;
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
-  animation: pet-modal-entrada 180ms ease-out;
-}
-
-/* Entrada curta usando apenas opacidade e transformação para manter fluidez. */
-@keyframes pet-modal-entrada {
-  from {
-    opacity: 0;
-    transform: scale(0.97);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  /* O modal aparece de forma estável depois do clique, sem efeito de zoom. */
 }
 
 /* Cabeçalho com o nome do pet e uma ação de fechamento sempre visível. */
@@ -122,12 +101,11 @@
   font-size: 1.7rem;
   line-height: 1;
   cursor: pointer;
-  transition: transform 160ms ease, background 160ms ease;
+  transition: background 160ms ease;
 }
 
 .pet-modal-close:hover {
   background: #f4b25e;
-  transform: scale(1.04);
 }
 
 /* Corpo em duas colunas: imagem e dados do pet. */
@@ -340,10 +318,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pet-modal {
-    animation: none;
-  }
-
   .pet-modal-close {
     transition: none;
   }
